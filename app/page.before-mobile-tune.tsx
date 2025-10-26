@@ -1,0 +1,157 @@
+import FullPageVideo from "./_components/FullPageVideo";import Reveal from "./_components/Reveal";
+import Logo from "./_components/Logo";
+import StickySteps from "./_components/StickySteps";
+
+export default function Home() {
+  return (
+    <div className="relative min-h-[90vh] text-white">
+      {/* ★ ここが“固定”のフルスクリーン動画（-z-10 で最背面） */}
+      <FullPageVideo />
+
+      {/* ヘッダー（動画の上に乗るので relative + z-10） */}
+      <header className="fixed inset-x-0 top-0 z-40 backdrop-blur-sm bg-black/30">
+  <div className="w-full max-w-6xl mx-auto flex items-center justify-between px-3 sm:px-4 py-1">
+    <div className="flex items-center">
+      <a href="/" aria-label="Travoru">
+        <Logo className="h-12 w-auto" />
+      </a>
+    </div>
+    <nav className="space-x-4 text-[12px] leading-tight">
+      <a href="#features" className="hover:opacity-80">Features</a>
+      <a href="#how" className="hover:opacity-80">How it works</a>
+      <a href="/new" className="btn-ghost">Create plan</a>
+    </nav>
+  </div>
+</header>
+<div className="fixed inset-x-0 top-0 h-16 z-[15] pointer-events-none bg-gradient-to-b from-black/40 to-transparent"></div>
+
+      {/* ヒーロー（動画の上） */}
+      <section className="relative z-10 min-h-[80vh] flex items-center">
+        <div className="container">
+          <Reveal><h1 className="text-4xl sm:text-6xl font-semibold leading-[1.15] max-w-[52ch] drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
+            AIが、動画の高揚感そのままに旅程を描く。
+          </h1></Reveal>
+          <Reveal delay={0.1}><p className="text-white/90 mt-5 max-w-[60ch]">
+            日程と興味を選ぶだけ。時間最適のリアルなプランを自動生成。
+            主要OTAへのリンク導線も完備。
+          </p></Reveal>
+          <Reveal delay={0.2}><div className="mt-8 flex flex-wrap gap-3">
+            <a href="/new" className="btn">今すぐ旅程を作る（無料）</a>
+            <a href="#features" className="btn-ghost">人気の目的地</a>
+          </div></Reveal>
+        </div>
+      </section>
+
+      {/* Sticky Steps（スクロール中ヘッダーが粘着 → 高級感） */}
+      <div className="relative z-10">
+        <StickySteps
+          steps={[
+            { title: "入力", text: "日程・都市・興味を選ぶだけ", image: "/images/tokyo.jpg" },
+            { title: "生成", text: "移動時間や混雑も考慮した時間割を作成", image: "/images/kyoto.jpg" },
+            { title: "予約導線", text: "主要OTAリンクでスムーズに予約", image: "/images/osaka.jpg" },
+          ]}
+        />
+      </div>
+
+
+      {/* 人気の目的地：ここからは背景が白／文字黒 */}
+      <div className="h-20 bg-gradient-to-b from-transparent to-white"></div>
+
+<section id="features" className="relative z-10 bg-white/95 backdrop-blur-sm text-black">
+  <div className="container py-20">
+    <h2 className="text-2xl sm:text-3xl font-semibold mb-6">人気の目的地</h2>
+    <p className="text-neutral-600 -mt-4 mb-6 text-sm">写真をクリックしてイメージを膨らませましょう。</p>
+
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      {[
+        { title: "Tokyo", img: "/images/tokyo.jpg", desc: "グルメ・カルチャー・夜景" },
+        { title: "Kyoto", img: "/images/kyoto.jpg", desc: "寺社と四季、静かな街歩き" },
+        { title: "Osaka", img: "/images/osaka.jpg", desc: "粉もん・ミックスカルチャー" }
+      ].map((d, i) => (
+        <a
+          key={d.title || i}
+          href="/new"
+  className="group relative rounded-2xl overflow-hidden border border-white/20 shadow-[var(--shadow-soft)] transition-transform duration-300 will-change-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-black/20"
+        >
+          <img src={d.img} alt={d.title} loading="lazy" className="w-full h-56 object-cover rounded-xl" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+          <div className="absolute bottom-3 left-3 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
+            <h3 className="text-xl font-semibold">{d.title}</h3>
+            <p className="text-sm text-white/90">{d.desc}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div className="mt-8">
+      <a href="/new" className="btn">自分の旅程を作る</a>
+    </div>
+  </div>
+</section>
+
+      {/* How it works（半透明＋ブラーで下の動画がうっすら見える） */}
+      <section id="how" className="relative z-10 text-black backdrop-blur-sm bg-white/80 backdrop-blur-sm">
+        <div className="container py-20">
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-6">How it works</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="card p-0 overflow-hidden">
+              <div className="p-5">
+                <h3 className="font-semibold">Step 1 — 入力</h3>
+                <p className="text-sm text-neutral-600">日程・都市・興味を選ぶだけ</p>
+              </div>
+              <div className="bg-white">
+                <img src="/images/tokyo.jpg" alt="Form mock" className="w-full h-auto" />
+              </div>
+            </div>
+
+            <div className="card p-0 overflow-hidden">
+              <div className="p-5">
+                <h3 className="font-semibold">Step 2 — 生成</h3>
+                <p className="text-sm text-neutral-600">移動時間や混雑も考慮した時間割を作成</p>
+              </div>
+              <div className="bg-white">
+                <img src="/images/kyoto.jpg" alt="Itinerary mock" className="w-full h-auto" />
+              </div>
+            </div>
+          </div>
+
+          <div className="card mt-6">
+            <h3 className="font-semibold mb-2">Step 3 — 予約導線</h3>
+            <p className="text-sm text-neutral-600 mb-4">主要OTAのリンクでスムーズに予約。</p>
+            <div className="flex flex-wrap gap-2">
+              <a className="btn" href="/new">今すぐ試す</a>
+              <a className="btn-ghost" href="#features">人気の目的地を見る</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 強いCTA（フッター直前） */}
+      <section className="relative z-10 bg-white shadow-lg text-center py-16" style={{backgroundImage: "url(/images/wave.svg)", backgroundRepeat: "no-repeat", backgroundPosition: "center top", backgroundSize: "cover"}}>
+        <div className="container">
+          <Reveal><h3 className="text-2xl font-semibold">今すぐ旅程を作ってみる</h3></Reveal>
+        <Reveal delay={0.1}><p className="text-neutral-700 mt-2">無料プレビュー（回数制限あり）。詳細は購入後に解禁。</p></Reveal>
+          <Reveal delay={0.2}><div className="mt-6">
+            <a href="/new" className="btn">Create plan</a>
+          </div></Reveal>
+        </div>
+      </section>
+
+      {/* フッター（不透明） */}
+      <footer className="relative z-10 bg-black text-white">
+        <div className="container py-10">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="font-semibold tracking-wide">Travoru</div>
+            <nav className="text-sm space-x-4 text-white/80">
+              <a href="/new" className="hover:text-white">Create plan</a>
+              <a href="#features" className="hover:text-white">Features</a>
+              <a href="#how" className="hover:text-white">How it works</a>
+            </nav>
+          </div>
+          <p className="text-xs text-white/60 mt-4">© {new Date().getFullYear()} Travoru</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
