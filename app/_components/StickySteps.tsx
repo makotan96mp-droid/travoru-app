@@ -9,21 +9,21 @@ const STEPS: Step[] = [
   {
    id: 1,
     title: "Step 1 — 入力",
-    body: "都市・日付・興味を選ぶだけ。UIは最短入力で迷いません。",
+    body: "都市・日付・興味をさっと選択。30秒で入力完了。",
     image: "/shots/new-form.jpg",       // ← ここを差し替え
     alt: "入力フォーム画面のスクリーンショット",
   },
   {
     id: 2,
     title: "Step 2 — 生成",
-    body: "移動時間や天候も考慮した現実的なタイムテーブルを生成。",
+    body: "移動時間・混雑・屋内外を考慮して、無理のないプランへ。",
     image: "/shots/itinerary-top.jpg",  // ← ここを差し替え
     alt: "旅程プレビューのスクリーンショット",
   },
   {
     id: 3,
     title: "Step 3 — 予約導線",
-    body: "Booking / Agoda / Trip.com / 楽天などへスムーズに予約。",
+    body: "主要予約サイト（Booking・Agoda・Trip.com・楽天トラベル）にワンタップ。無料キャンセル可のプランを優先。",
     image: "/shots/booking-links.jpg",      // ← ここを差し替え
     alt: "予約導線のスクリーンショット",
   },
@@ -62,7 +62,7 @@ export default function StickySteps() {
                 ))}
               </ol>
               <div className="mt-6">
-                <a href="/new" className="btn w-full sm:w-auto">今すぐ試す</a>
+                <a href="/new" className="btn self-start mt-4 w-auto">今すぐ試す</a>
               </div>
             </div>
           </aside>
@@ -77,7 +77,7 @@ export default function StickySteps() {
               >
                 <div className="p-5">
                   <h3 className="font-semibold">{s.title}</h3>
-                  <p className="text-sm text-neutral-600">{s.body}</p>
+                  <p className="text-[15px] sm:text-base leading-relaxed text-neutral-800">{s.body}</p>
                 </div>
                 <div className="bg-white">
                   <Image
@@ -86,7 +86,7 @@ export default function StickySteps() {
                     width={1600}
                     height={900}
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="w-full h-auto"
+                    className=" h-auto"
                     priority={i === 0}
                   />
                 </div>
