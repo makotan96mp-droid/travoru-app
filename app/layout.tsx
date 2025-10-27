@@ -14,8 +14,10 @@ const inter = Inter({ subsets: ["latin"], display: "swap" });
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"], display:"swap", variable:"--font-playfair" });
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className + " " + playfair.variable}>
+    
+      <html lang="en"><head>
+        </head>
+    <body className={inter.className + " " + playfair.variable}>
         <header className="border-b">
           <div className="container flex items-center justify-between py-4">
             <div className="text-lg font-semibold">Travoru</div>
@@ -38,13 +40,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: base,
     title: { default: "Travoru – AI旅程ジェネレーター", template: "%s | Travoru" },
-    description: desc,
     openGraph: {
       type: "website",
       url: "/",
       siteName: "Travoru",
       title: "Travoru",
-      description: desc,
       images: [
         { url: "/og/og-1200x630.jpg", width: 1200, height: 630 },
         { url: "/og/og-1200x1200.jpg", width: 1200, height: 1200 }
@@ -54,7 +54,6 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: "Travoru",
-      description: desc,
       images: ["/og/og-1200x630.jpg"]
     },
     icons: {

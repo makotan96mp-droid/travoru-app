@@ -6,13 +6,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: { default: "Travoru – AI旅程ジェネレーター", template: "%s | Travoru" },
-  description: "",
   openGraph: {
     type: "website",
     url: "/",
     siteName: "Travoru",
     title: "Travoru",
-    description: "",
     images: [
       { url: "/og/og-1200x630.jpg",  width: 1200, height: 630 },
       { url: "/og/og-1200x1200.jpg", width: 1200, height: 1200 }
@@ -22,7 +20,6 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Travoru",
-    description: "",
     images: ["/og/og-1200x630.jpg"]
   },
   icons: {

@@ -62,7 +62,7 @@ const [start, setStart] = useState("");
       <form onSubmit={onSubmit} className="space-y-6 card">
         <div>
           <label className="label">City</label>
-          <select value={city} onChange={(e) => setCity(e.target.value)} className="select" aria-label="行き先">
+          <select value={city} onChange={(e) => setCity(e.target.value)} className="select" aria-label="行き先"> setCity(e.target.value)} className="select">
             <option value="tokyo">Tokyo</option>
             <option value="kyoto">Kyoto</option>
             <option value="osaka">Osaka</option>

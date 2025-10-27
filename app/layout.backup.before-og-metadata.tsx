@@ -7,7 +7,6 @@ const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata = {
   title: "Travoru App",
-  description: "AI itinerary planner",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

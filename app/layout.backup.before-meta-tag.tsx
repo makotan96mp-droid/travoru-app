@@ -6,14 +6,16 @@ import type { Metadata } from "next";
 import type { Metadata } from "next";
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
+
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"], display:"swap", variable:"--font-playfair" });
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className + " " + playfair.variable}>
         <header className="border-b">
           <div className="container flex items-center justify-between py-4">
             <div className="text-lg font-semibold">Travoru</div>
