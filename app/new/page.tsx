@@ -10,7 +10,9 @@ export default function NewPage() {
   const router = useRouter();
   const [showToast, setShowToast] = useState(false);
 
-  const [start, setStart] = useState("");
+  
+const [loading, setLoading] = useState(false);
+const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [city, setCity] = useState("tokyo");
   const [interests, setInterests] = useState<Interest[]>(["food"]);
@@ -91,7 +93,7 @@ export default function NewPage() {
         </div>
 
         <div className="flex gap-3">
-          <button className="btn" type="submit">Generate (dummy)</button>
+          <button className="btn" type="submit" disabled={loading}>{loading ? "Generating..." : "Generate (dummy)"}</button>
           <a className="inline-flex items-center text-sm underline" href="/">Cancel</a>
         </div>
       </form>

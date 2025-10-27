@@ -24,12 +24,12 @@ export default function Home() {
     </nav>
   </div>
 </header>
-<div className="fixed inset-x-0 top-0 h-16 z-[15] pointer-events-none bg-gradient-to-b from-black/20 to-transparent"></div>
+<div className="fixed inset-x-0 top-0 h-16 z-[15] pointer-events-none bg-gradient-to-b from-black/40 to-transparent"></div>
 
       {/* ヒーロー（動画の上） */}
       <section className="relative z-10 min-h-[80vh] flex items-center">
         <div className="container">
-          <Reveal><h1 className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.15] max-w-[44ch] drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] max-w-[18ch] sm:max-w-[22ch] font-playfair antialiased-strong">
+          <Reveal><h1 className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.15] max-w-[44ch] drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
             AIが、あなたの高揚感<br  />そのままに旅程を描く。<br /> 
           </h1></Reveal>
           <Reveal delay={0.1}><p className="text-white/90 text-base sm:text-lg mt-5 max-w-[60ch] whitespace-pre-line">

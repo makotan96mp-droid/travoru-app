@@ -35,7 +35,7 @@ export default function StickySteps() {
   const firstInView = useInView(firstRef, { margin: "-10% 0px -80% 0px" });
 
   return (
-    <section id="how" className="relative z-10 bg-neutral-50/90 backdrop-blur-sm text-black">
+    <section id="how" className="relative z-10 bg-neutral-50/90 backdrop-blur-sm">
       <div className="container py-20">
         <h2 className="text-2xl sm:text-3xl font-semibold mb-6">How it works</h2>
 
@@ -55,7 +55,7 @@ export default function StickySteps() {
                       {i + 1}
                     </span>
                     <div>
-                      <p className="font-semibold text-neutral-900">{s.title}</p>
+                      <p className="font-semibold">{s.title}</p>
                       <p className="text-neutral-600 whitespace-pre-line">{s.body}</p>
                     </div>
                   </li>
@@ -77,7 +77,7 @@ export default function StickySteps() {
               >
                 <div className="p-5">
                   <h3 className="font-semibold">{s.title}</h3>
-                  <p className="text-[15px] sm:text-base leading-relaxed text-neutral-800 whitespace-pre-line">{s.body}</p>
+                  <p className="text-[15px] sm:text-base leading-relaxed text-neutral-800">{s.body}</p>
                 </div>
                 <div className="bg-white">
                   <Image

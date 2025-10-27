@@ -22,11 +22,11 @@ export default function Home() {
       <section id="hero" className="relative z-10 min-h-[85vh] sm:min-h-[90vh] flex items-center text-white">
         <div className="container">
           <h1 className="text-4xl sm:text-6xl font-semibold leading-[1.15] max-w-[52ch] drop-shadow">
-            AIが、動画の高揚感そのままに旅程を描く。
+            AIが、動画の高揚感そのままに旅程を描く。<br /> 
           </h1>
           <p className="text-white/90 mt-5 max-w-[60ch]">
             日程と興味を選ぶだけ。時間最適のリアルなプランを自動生成。
-            主要OTAへのリンク導線も完備。
+            主要OTAへのリンク導線も完備。<br /> 
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="/new" className="btn">今すぐ旅程を作る（無料）</a>
@@ -39,7 +39,7 @@ export default function Home() {
       <section id="features" className="relative z-10 text-black bg-white/90 backdrop-blur-sm">
         <div className="container py-20">
           <h2 className="text-2xl sm:text-3xl font-semibold mb-6">人気の目的地</h2>
-          <p className="text-neutral-700 -mt-4 mb-6 text-sm">写真をクリックしてイメージを膨らませましょう。</p>
+          <p className="text-neutral-700 -mt-4 mb-6 text-sm">写真をクリックしてイメージを膨らませましょう。<br /> </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
@@ -95,7 +95,7 @@ export default function Home() {
 
           <div className="card mt-6">
             <h3 className="font-semibold mb-2">Step 3 — 予約導線</h3>
-            <p className="text-sm text-neutral-600 mb-4">主要OTAのリンクでスムーズに予約。</p>
+            <p className="text-sm text-neutral-600 mb-4">主要OTAのリンクでスムーズに予約。<br /> </p>
             <div className="flex flex-wrap gap-2">
               <a className="btn" href="/new">今すぐ試す</a>
               <a className="btn-ghost" href="#features">人気の目的地を見る</a>
@@ -108,7 +108,7 @@ export default function Home() {
       <section className="relative z-10 bg-white/95 backdrop-blur text-center py-16">
         <div className="container">
           <h3 className="text-2xl font-semibold">今すぐ旅程を作ってみる</h3>
-          <p className="text-neutral-700 mt-2">無料プレビュー（回数制限あり）。詳細は購入後に解禁。</p>
+          <p className="text-neutral-700 mt-2">無料プレビュー（回数制限あり）。詳細は購入後に解禁。<br /> </p>
           <div className="mt-6">
             <a href="/new" className="btn">Create plan</a>
           </div>

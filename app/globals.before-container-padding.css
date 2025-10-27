@@ -51,15 +51,3 @@ html,body { background:var(--bg); color:var(--fg); }
 @media (max-width: 640px) {
   .container { padding: 16px; }
 }
-/* --- Hero title font (Playfair Display) --- */
-.font-hero{
-  font-family: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-}
-
-/* --- Hero title font (Playfair Display) --- */
-.font-hero{
-  font-family: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-}
-/* --- Brand font utilities --- */
-.font-playfair{font-family:var(--font-playfair),ui-serif,Georgia,"Times New Roman",serif}
-.antialiased-strong{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}

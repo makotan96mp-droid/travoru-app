@@ -9,7 +9,7 @@ const STEPS: Step[] = [
   {
    id: 1,
     title: "Step 1 — 入力",
-    body: "都市・日付・興味をさっと選択。\n30秒で入力完了。",
+    body: "都市・日付・興味をさっと選択。30秒で入力完了。",
     image: "/shots/new-form.jpg",       // ← ここを差し替え
     alt: "入力フォーム画面のスクリーンショット",
   },
@@ -23,7 +23,7 @@ const STEPS: Step[] = [
   {
     id: 3,
     title: "Step 3 — 予約導線",
-    body: "主要予約サイト（Booking・Agoda・Trip.com・楽天トラベル）にワンタップ。\n無料キャンセル可のプランを優先。",
+    body: "主要予約サイト（Booking・Agoda・Trip.com・楽天トラベル）にワンタップ。無料キャンセル可のプランを優先。",
     image: "/shots/booking-links.jpg",      // ← ここを差し替え
     alt: "予約導線のスクリーンショット",
   },
@@ -35,7 +35,7 @@ export default function StickySteps() {
   const firstInView = useInView(firstRef, { margin: "-10% 0px -80% 0px" });
 
   return (
-    <section id="how" className="relative z-10 bg-neutral-50/90 backdrop-blur-sm text-black">
+    <section id="how" className="relative z-10 bg-neutral-50/90 backdrop-blur-sm">
       <div className="container py-20">
         <h2 className="text-2xl sm:text-3xl font-semibold mb-6">How it works</h2>
 
@@ -55,8 +55,8 @@ export default function StickySteps() {
                       {i + 1}
                     </span>
                     <div>
-                      <p className="font-semibold text-neutral-900">{s.title}</p>
-                      <p className="text-neutral-600 whitespace-pre-line">{s.body}</p>
+                      <p className="font-semibold">{s.title}</p>
+                      <p className="text-neutral-600">{s.body}</p>
                     </div>
                   </li>
                 ))}
@@ -77,7 +77,7 @@ export default function StickySteps() {
               >
                 <div className="p-5">
                   <h3 className="font-semibold">{s.title}</h3>
-                  <p className="text-[15px] sm:text-base leading-relaxed text-neutral-800 whitespace-pre-line">{s.body}</p>
+                  <p className="text-[15px] sm:text-base leading-relaxed text-neutral-800">{s.body}</p>
                 </div>
                 <div className="bg-white">
                   <Image
