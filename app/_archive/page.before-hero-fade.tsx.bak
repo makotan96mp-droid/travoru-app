@@ -1,7 +1,4 @@
 import FullPageVideo from "./_components/FullPageVideo";
-import StickySteps from "./_components/StickySteps";
-import StickySteps from "./_components/StickySteps";
-import Reveal from "./_components/Reveal";
 
 export default function Home() {
   return (
@@ -15,7 +12,7 @@ export default function Home() {
           <div className="text-xl font-semibold tracking-wide">Travoru</div>
           <nav className="space-x-4 text-sm">
             <a href="#features" className="hover:opacity-80">Features</a>
-            <a href="#how" className="hover:opacity-80">How it works</a>
+            <a href="#how-it-works" className="hover:opacity-80">How it works</a>
             <a href="/new" className="btn-ghost">Create plan</a>
           </nav>
         </div>
@@ -24,31 +21,19 @@ export default function Home() {
       {/* ヒーロー（動画の上） */}
       <section className="relative z-10 min-h-[80vh] flex items-center">
         <div className="container">
-          <Reveal><h1 className="text-4xl sm:text-6xl font-semibold leading-[1.15] max-w-[52ch] drop-shadow">
+          <h1 className="text-4xl sm:text-6xl font-semibold leading-[1.15] max-w-[52ch] drop-shadow">
             AIが、動画の高揚感そのままに旅程を描く。<br /> 
-          </h1></Reveal>
-          <Reveal delay={0.1}><p className="text-white/90 mt-5 max-w-[60ch]">
+          </h1>
+          <p className="text-white/90 mt-5 max-w-[60ch]">
             日程と興味を選ぶだけ。時間最適のリアルなプランを自動生成。
             主要OTAへのリンク導線も完備。<br /> 
-          </p></Reveal>
-          <Reveal delay={0.2}><div className="mt-8 flex flex-wrap gap-3">
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
             <a href="/new" className="btn">今すぐ旅程を作る（無料）</a>
             <a href="#features" className="btn-ghost">人気の目的地</a>
-          </div></Reveal>
+          </div>
         </div>
       </section>
-
-      {/* Sticky Steps（スクロール中ヘッダーが粘着 → 高級感） */}
-      <div className="relative z-10">
-        <StickySteps
-          steps={[
-            { title: "入力", text: "日程・都市・興味を選ぶだけ", image: "/images/tokyo.jpg" },
-            { title: "生成", text: "移動時間や混雑も考慮した時間割を作成", image: "/images/kyoto.jpg" },
-            { title: "予約導線", text: "主要OTAリンクでスムーズに予約", image: "/images/osaka.jpg" },
-          ]}
-        />
-      </div>
-
 
       {/* 人気の目的地：ここからは背景が白／文字黒 */}
       <div className="h-20 bg-gradient-to-b from-transparent to-white"></div>
@@ -122,11 +107,11 @@ export default function Home() {
       {/* 強いCTA（フッター直前） */}
       <section className="relative z-10 bg-white/95 backdrop-blur text-center py-16" style={{backgroundImage: "url(/images/wave.svg)", backgroundRepeat: "no-repeat", backgroundPosition: "center top", backgroundSize: "cover"}}>
         <div className="container">
-          <Reveal><h3 className="text-2xl font-semibold">今すぐ旅程を作ってみる</h3></Reveal>
-        <Reveal delay={0.1}><p className="text-neutral-700 mt-2">無料プレビュー（回数制限あり）。詳細は購入後に解禁。<br /> </p></Reveal>
-          <Reveal delay={0.2}><div className="mt-6">
+          <h3 className="text-2xl font-semibold">今すぐ旅程を作ってみる</h3>
+        <p className="text-neutral-700 mt-2">無料プレビュー（回数制限あり）。詳細は購入後に解禁。<br /> </p>
+          <div className="mt-6">
             <a href="/new" className="btn">Create plan</a>
-          </div></Reveal>
+          </div>
         </div>
       </section>
 
@@ -138,7 +123,7 @@ export default function Home() {
             <nav className="text-sm space-x-4 text-white/80">
               <a href="/new" className="hover:text-white">Create plan</a>
               <a href="#features" className="hover:text-white">Features</a>
-              <a href="#how" className="hover:text-white">How it works</a>
+              <a href="#how-it-works" className="hover:text-white">How it works</a>
             </nav>
           </div>
           <p className="text-xs text-white/60 mt-4">© {new Date().getFullYear()} Travoru</p>

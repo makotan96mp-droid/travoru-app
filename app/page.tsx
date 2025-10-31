@@ -10,7 +10,7 @@ export default function Home() {
       <FullPageVideo />
 
       {/* ヘッダー（動画の上に乗るので relative + z-10） */}
-      <header className="fixed inset-x-0 top-0 z-40 backdrop-blur-sm bg-black/30">
+      <header className="fixed inset-x-0 top-0 z-40  bg-black/30">
   <div className="w-full max-w-6xl mx-auto flex items-center justify-between px-3 sm:px-4 py-1">
     <div className="flex items-center">
       <a href="/" aria-label="Travoru">
@@ -19,7 +19,7 @@ export default function Home() {
     </div>
     <nav className="space-x-4 text-[12px] leading-tight">
       <a href="#features" className="hover:opacity-80">Features</a>
-      <a href="#how" className="hover:opacity-80">How it works</a>
+      <a href="#how-it-works" className="hover:opacity-80">How it works</a>
       <a href="/new" className="btn-ghost">Create plan</a>
     </nav>
   </div>
@@ -45,7 +45,7 @@ export default function Home() {
       </section>
 
       {/* Sticky Steps（スクロール中ヘッダーが粘着 → 高級感） */}
-      <div className="relative z-10">
+      <div className="hero relative z-10">
         <StickySteps
           steps={[
             { title: "入力", text: "日程・都市・興味を選ぶだけ", image: "/images/tokyo.jpg" },
@@ -59,7 +59,7 @@ export default function Home() {
       {/* 人気の目的地：ここからは背景が白／文字黒 */}
       <div className="h-20 bg-gradient-to-b from-transparent to-white"></div>
 
-<section id="features" className="relative z-10 bg-white/95 backdrop-blur-sm text-black">
+<section id="features" className="relative z-10 bg-white/95  text-black">
   <div className="container py-20">
     <h2 className="text-2xl sm:text-3xl font-semibold mb-6">人気の目的地</h2>
     <p className="text-neutral-600 -mt-4 mb-6 text-sm whitespace-pre-line">写真をクリックしてイメージを膨らませましょう。<br /> </p>
@@ -75,7 +75,7 @@ export default function Home() {
           href="/new"
   className="group relative rounded-2xl overflow-hidden border border-white/20 shadow-[var(--shadow-soft)] transition-transform duration-300 will-change-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-black/20"
         >
-          <Image priority fetchPriority="high" sizes="(max-width: 768px) 100vw, 1200px" src={d.img} alt={d.title} width={1200} height={672} sizes="(max-width: 640px) 100vw, 33vw" className="w-full h-56 object-cover rounded-xl" />
+          <Image priority={i===0} sizes="(max-width: 640px) 100vw, 33vw" src={d.img} alt={d.title} width={1200} height={672} className="w-full h-56 object-cover rounded-xl" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
           <div className="absolute bottom-3 left-3 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
             <h3 className="text-xl font-semibold">{d.title}</h3>
@@ -92,7 +92,7 @@ export default function Home() {
 </section>
 
       {/* How it works（半透明＋ブラーで下の動画がうっすら見える） */}
-      <section id="how" className="relative z-10 text-black backdrop-blur-sm bg-white/80 backdrop-blur-sm">
+      <section id="how-more" className="relative z-10 text-black  bg-white/80 ">
         <div className="container py-20">
           <h2 className="text-2xl sm:text-3xl font-semibold mb-6">How it works</h2>
 
@@ -103,7 +103,7 @@ export default function Home() {
                 <p className="text-sm text-neutral-600">日程・都市・興味を選ぶだけ</p>
               </div>
               <div className="bg-white">
-                <img src="/images/tokyo.jpg" alt="Form mock" className="w-full h-auto" />
+                <Image src="/images/tokyo.jpg" priority alt="Form mock" width={1200} height={800} className="w-full h-auto rounded-xl" sizes="(max-width: 640px) 100vw, 50vw" />
               </div>
             </div>
 
@@ -113,7 +113,7 @@ export default function Home() {
                 <p className="text-sm text-neutral-600">移動時間や混雑も考慮した時間割を作成</p>
               </div>
               <div className="bg-white">
-                <img src="/images/kyoto.jpg" alt="Itinerary mock" className="w-full h-auto" />
+                <Image src="/images/kyoto.jpg" alt="Itinerary mock" width={1200} height={800} className="w-full h-auto rounded-xl" sizes="(max-width: 640px) 100vw, 50vw" />
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@ export default function Home() {
             <nav className="text-sm space-x-4 text-white/80">
               <a href="/new" className="hover:text-white">Create plan</a>
               <a href="#features" className="hover:text-white">Features</a>
-              <a href="#how" className="hover:text-white">How it works</a>
+              <a href="#how-it-works" className="hover:text-white">How it works</a>
             </nav>
           </div>
           <p className="text-xs text-white/60 mt-4">© {new Date().getFullYear()} Travoru</p>

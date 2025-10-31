@@ -9,6 +9,7 @@ export default function Logo({ className = "h-7" }: { className?: string }) {
         alt="Travoru"
         width={140}
         height={28}
+        priority
         className={`w-auto ${className} drop-shadow-[0_1px_4px_rgba(0,0,0,0.35)]`}
       />
     </div>

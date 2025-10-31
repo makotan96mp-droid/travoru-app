@@ -45,7 +45,7 @@ export default function Home() {
       </section>
 
       {/* Sticky Steps（スクロール中ヘッダーが粘着 → 高級感） */}
-      <div className="hero relative z-10">
+      <div className="relative z-10">
         <StickySteps
           steps={[
             { title: "入力", text: "日程・都市・興味を選ぶだけ", image: "/images/tokyo.jpg" },
@@ -103,7 +103,7 @@ export default function Home() {
                 <p className="text-sm text-neutral-600">日程・都市・興味を選ぶだけ</p>
               </div>
               <div className="bg-white">
-                <Image src="/images/tokyo.jpg" priority alt="Form mock" width={1200} height={800} className="w-full h-auto rounded-xl" sizes="(max-width: 640px) 100vw, 50vw" />
+                <img src="/images/tokyo.jpg" alt="Form mock" className="w-full h-auto" />
               </div>
             </div>
 
@@ -113,7 +113,7 @@ export default function Home() {
                 <p className="text-sm text-neutral-600">移動時間や混雑も考慮した時間割を作成</p>
               </div>
               <div className="bg-white">
-                <Image src="/images/kyoto.jpg" alt="Itinerary mock" width={1200} height={800} className="w-full h-auto rounded-xl" sizes="(max-width: 640px) 100vw, 50vw" />
+                <img src="/images/kyoto.jpg" alt="Itinerary mock" className="w-full h-auto" />
               </div>
             </div>
           </div>

@@ -1,24 +1,24 @@
-import HeroVideo from "./_components/HeroVideo";
+import FullPageVideo from "./_components/FullPageVideo";
 
 export default function Home() {
   return (
     <div className="relative min-h-[90vh] text-white">
-      {/* 背景ヒーロー（動画または静止画ポスター） */}
-      <HeroVideo />
+      {/* ★ ここが“固定”のフルスクリーン動画（-z-10 で最背面） */}
+      <FullPageVideo />
 
-      {/* ヘッダー */}
-      <header className="relative z-10">
+      {/* ヘッダー（動画の上に乗るので relative + z-10） */}
+      <header className="fixed top-0 w-full z-20 bg-black/30 backdrop-blur-sm">
         <div className="container flex items-center justify-between py-5">
           <div className="text-xl font-semibold tracking-wide">Travoru</div>
           <nav className="space-x-4 text-sm">
             <a href="#features" className="hover:opacity-80">Features</a>
-            <a href="#how" className="hover:opacity-80">How it works</a>
+            <a href="#how-it-works" className="hover:opacity-80">How it works</a>
             <a href="/new" className="btn-ghost">Create plan</a>
           </nav>
         </div>
       </header>
 
-      {/* ヒーロー テキスト＋CTA */}
+      {/* ヒーロー（動画の上） */}
       <section className="relative z-10 min-h-[80vh] flex items-center">
         <div className="container">
           <h1 className="text-4xl sm:text-6xl font-semibold leading-[1.15] max-w-[52ch] drop-shadow">
@@ -35,9 +35,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 写真グリッド：人気の目的地 */}
-      <section id="features" className="relative z-10
-      bg-white text-black">
+      {/* 人気の目的地：ここからは背景が白／文字黒 */}
+      <div className="h-20 bg-gradient-to-b from-transparent to-white"></div>
+
+<section id="features" className="relative z-10 bg-white text-black">
         <div className="container py-20">
           <h2 className="text-2xl sm:text-3xl font-semibold mb-6">人気の目的地</h2>
           <p className="text-neutral-600 -mt-4 mb-6 text-sm">写真をクリックしてイメージを膨らませましょう。<br /> </p>
@@ -48,10 +49,7 @@ export default function Home() {
               { title: "Kyoto", img: "/images/kyoto.jpg", desc: "寺社と四季、静かな街歩き" },
               { title: "Osaka", img: "/images/osaka.jpg", desc: "粉もん・ミックスカルチャー" },
             ].map((d) => (
-              <article
-                key={d.title}
-                className="group relative rounded-2xl overflow-hidden shadow-[var(--shadow-soft)] transition-transform duration-300 will-change-transform hover:scale-[1.01]"
-              >
+              <article key={d.title} className="group relative rounded-2xl overflow-hidden shadow-[var(--shadow-soft)] transition-transform duration-300 will-change-transform hover:scale-[1.01]">
                 <img src={d.img} alt={d.title} loading="lazy" className="w-full h-56 object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
                 <div className="absolute bottom-3 left-3 text-white drop-shadow">
@@ -68,32 +66,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How it works（写真モック） */}
-      <section id="how" className="relative z-10
-      bg-neutral-50 text-black">
+      {/* How it works（半透明＋ブラーで下の動画がうっすら見える） */}
+      <section id="how" className="relative z-10 text-black bg-neutral-50/90 backdrop-blur-sm">
         <div className="container py-20">
           <h2 className="text-2xl sm:text-3xl font-semibold mb-6">How it works</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Step 1 */}
             <div className="card p-0 overflow-hidden">
               <div className="p-5">
                 <h3 className="font-semibold">Step 1 — 入力</h3>
                 <p className="text-sm text-neutral-600">日程・都市・興味を選ぶだけ</p>
               </div>
               <div className="bg-white">
-                <img src="/images/tokyo.jpg" alt="Form mock" className="w-full h-auto" loading="lazy" />
+                <img src="/images/tokyo.jpg" alt="Form mock" className="w-full h-auto" />
               </div>
             </div>
 
-            {/* Step 2 */}
             <div className="card p-0 overflow-hidden">
               <div className="p-5">
                 <h3 className="font-semibold">Step 2 — 生成</h3>
                 <p className="text-sm text-neutral-600">移動時間や混雑も考慮した時間割を作成</p>
               </div>
               <div className="bg-white">
-                <img src="/images/kyoto.jpg" alt="Itinerary mock" className="w-full h-auto" loading="lazy" />
+                <img src="/images/kyoto.jpg" alt="Itinerary mock" className="w-full h-auto" />
               </div>
             </div>
           </div>
@@ -109,28 +104,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* フッター直前の強いCTA */}
-      <section className="relative z-10
-      bg-white text-center py-16">
+      {/* 強いCTA（フッター直前） */}
+      <section className="relative z-10 bg-white/95 backdrop-blur text-center py-16" style={{backgroundImage: "url(/images/wave.svg)", backgroundRepeat: "no-repeat", backgroundPosition: "center top", backgroundSize: "cover"}}>
         <div className="container">
           <h3 className="text-2xl font-semibold">今すぐ旅程を作ってみる</h3>
-          <p className="text-neutral-600 mt-2">無料プレビュー（回数制限あり）。詳細は購入後に解禁。<br /> </p>
+        <p className="text-neutral-700 mt-2">無料プレビュー（回数制限あり）。詳細は購入後に解禁。<br /> </p>
           <div className="mt-6">
             <a href="/new" className="btn">Create plan</a>
           </div>
         </div>
       </section>
 
-      {/* フッター */}
-      <footer className="relative z-10
-      bg-black text-white">
+      {/* フッター（不透明） */}
+      <footer className="relative z-10 bg-black text-white">
         <div className="container py-10">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="font-semibold tracking-wide">Travoru</div>
             <nav className="text-sm space-x-4 text-white/80">
               <a href="/new" className="hover:text-white">Create plan</a>
               <a href="#features" className="hover:text-white">Features</a>
-              <a href="#how" className="hover:text-white">How it works</a>
+              <a href="#how-it-works" className="hover:text-white">How it works</a>
             </nav>
           </div>
           <p className="text-xs text-white/60 mt-4">© {new Date().getFullYear()} Travoru</p>

@@ -6,25 +6,19 @@ import { useRef } from "react";
 type Step = { title: string; body: string; image: string; alt: string };
 
 const STEPS: Step[] = [
-  {
-   id: 1,
-    title: "Step 1 — 入力",
-    body: "都市・日付・興味を選ぶだけ。UIは最短入力で迷いません。",
+  {    title: "Step 1 — 入力",
+    body: "都市・日付・興味をさっと選択。\n30秒で入力完了。",
     image: "/shots/new-form.jpg",       // ← ここを差し替え
     alt: "入力フォーム画面のスクリーンショット",
   },
-  {
-    id: 2,
-    title: "Step 2 — 生成",
-    body: "移動時間や天候も考慮した現実的なタイムテーブルを生成。",
+  {    title: "Step 2 — 生成",
+    body: "移動時間・混雑・屋内外を考慮して、無理のないプランへ。",
     image: "/shots/itinerary-top.jpg",  // ← ここを差し替え
     alt: "旅程プレビューのスクリーンショット",
   },
-  {
-    id: 3,
-    title: "Step 3 — 予約導線",
-    body: "Booking / Agoda / Trip.com / 楽天などへスムーズに予約。",
-    image: "/shots/booking-link.jpg",      // ← ここを差し替え
+  {    title: "Step 3 — 予約導線",
+    body: "主要予約サイト（Booking・Agoda・Trip.com・楽天トラベル）にワンタップ。\n無料キャンセル可のプランを優先。",
+    image: "/shots/booking-links.jpg",      // ← ここを差し替え
     alt: "予約導線のスクリーンショット",
   },
 ];
@@ -35,7 +29,7 @@ export default function StickySteps() {
   const firstInView = useInView(firstRef, { margin: "-10% 0px -80% 0px" });
 
   return (
-    <section id="how" className="relative z-10 bg-neutral-50/90 backdrop-blur-sm">
+    <section id="how" className="relative z-10 bg-neutral-50/90 backdrop-blur-sm text-black">
       <div className="container py-20">
         <h2 className="text-2xl sm:text-3xl font-semibold mb-6">How it works</h2>
 
@@ -45,7 +39,7 @@ export default function StickySteps() {
             <div
               className={
                 "card p-6 transition-shadow " +
-                (firstInView ? "shadow-[var(--shadow-soft)]" : "shadow-none")
+                (firstInView ? "shadow-xl" : "shadow-none")
               }
             >
               <ol className="space-y-5 text-sm text-neutral-700">
@@ -55,14 +49,14 @@ export default function StickySteps() {
                       {i + 1}
                     </span>
                     <div>
-                      <p className="font-semibold">{s.title}</p>
-                      <p className="text-neutral-600">{s.body}</p>
+                      <p className="font-semibold text-neutral-900">{s.title}</p>
+                      <p className="text-neutral-600 whitespace-pre-line">{s.body}</p>
                     </div>
                   </li>
                 ))}
               </ol>
               <div className="mt-6">
-                <a href="/new" className="btn w-full sm:w-auto">今すぐ試す</a>
+                <a href="/new" className="btn self-start mt-4 w-auto">今すぐ試す</a>
               </div>
             </div>
           </aside>
@@ -77,7 +71,7 @@ export default function StickySteps() {
               >
                 <div className="p-5">
                   <h3 className="font-semibold">{s.title}</h3>
-                  <p className="text-sm text-neutral-600">{s.body}</p>
+                  <p className="text-[15px] sm:text-base leading-relaxed text-neutral-800 whitespace-pre-line">{s.body}</p>
                 </div>
                 <div className="bg-white">
                   <Image
@@ -86,8 +80,8 @@ export default function StickySteps() {
                     width={1600}
                     height={900}
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="w-full h-auto"
-                    priority={i === 0}
+                    className=" h-auto"
+                    
                   />
                 </div>
               </div>

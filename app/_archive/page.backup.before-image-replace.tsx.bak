@@ -1,4 +1,3 @@
-import Image from "next/image";
 import FullPageVideo from "./_components/FullPageVideo";import Reveal from "./_components/Reveal";
 import Logo from "./_components/Logo";
 import StickySteps from "./_components/StickySteps";
@@ -19,7 +18,7 @@ export default function Home() {
     </div>
     <nav className="space-x-4 text-[12px] leading-tight">
       <a href="#features" className="hover:opacity-80">Features</a>
-      <a href="#how" className="hover:opacity-80">How it works</a>
+      <a href="#how-it-works" className="hover:opacity-80">How it works</a>
       <a href="/new" className="btn-ghost">Create plan</a>
     </nav>
   </div>
@@ -30,7 +29,7 @@ export default function Home() {
       <section className="relative z-10 min-h-[80vh] flex items-center">
         <div className="container">
           <Reveal><h1 className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.15] max-w-[44ch] drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
-            AIが、あなたの高揚感<br  />そのままに旅程を描く。<br /> 
+            AIが、動画の高揚感そのままに旅程を描く。<br /> 
           </h1></Reveal>
           <Reveal delay={0.1}><p className="text-white/90 text-base sm:text-lg mt-5 max-w-[60ch] whitespace-pre-line">
             日程と興味を選ぶだけ。<br/>
@@ -75,7 +74,7 @@ export default function Home() {
           href="/new"
   className="group relative rounded-2xl overflow-hidden border border-white/20 shadow-[var(--shadow-soft)] transition-transform duration-300 will-change-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-black/20"
         >
-          <Image priority fetchPriority="high" sizes="(max-width: 768px) 100vw, 1200px" src={d.img} alt={d.title} width={1200} height={672} sizes="(max-width: 640px) 100vw, 33vw" className="w-full h-56 object-cover rounded-xl" />
+          <img src={d.img} alt={d.title} loading="lazy" className="w-full h-56 object-cover rounded-xl" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
           <div className="absolute bottom-3 left-3 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
             <h3 className="text-xl font-semibold">{d.title}</h3>
@@ -149,7 +148,7 @@ export default function Home() {
             <nav className="text-sm space-x-4 text-white/80">
               <a href="/new" className="hover:text-white">Create plan</a>
               <a href="#features" className="hover:text-white">Features</a>
-              <a href="#how" className="hover:text-white">How it works</a>
+              <a href="#how-it-works" className="hover:text-white">How it works</a>
             </nav>
           </div>
           <p className="text-xs text-white/60 mt-4">© {new Date().getFullYear()} Travoru</p>

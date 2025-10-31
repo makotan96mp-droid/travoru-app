@@ -1,4 +1,6 @@
 import FullPageVideo from "./_components/FullPageVideo";
+import StickySteps from "./_components/StickySteps";
+import StickySteps from "./_components/StickySteps";
 import Reveal from "./_components/Reveal";
 
 export default function Home() {
@@ -13,7 +15,7 @@ export default function Home() {
           <div className="text-xl font-semibold tracking-wide">Travoru</div>
           <nav className="space-x-4 text-sm">
             <a href="#features" className="hover:opacity-80">Features</a>
-            <a href="#how" className="hover:opacity-80">How it works</a>
+            <a href="#how-it-works" className="hover:opacity-80">How it works</a>
             <a href="/new" className="btn-ghost">Create plan</a>
           </nav>
         </div>
@@ -35,6 +37,18 @@ export default function Home() {
           </div></Reveal>
         </div>
       </section>
+
+      {/* Sticky Steps（スクロール中ヘッダーが粘着 → 高級感） */}
+      <div className="relative z-10">
+        <StickySteps
+          steps={[
+            { title: "入力", text: "日程・都市・興味を選ぶだけ", image: "/images/tokyo.jpg" },
+            { title: "生成", text: "移動時間や混雑も考慮した時間割を作成", image: "/images/kyoto.jpg" },
+            { title: "予約導線", text: "主要OTAリンクでスムーズに予約", image: "/images/osaka.jpg" },
+          ]}
+        />
+      </div>
+
 
       {/* 人気の目的地：ここからは背景が白／文字黒 */}
       <div className="h-20 bg-gradient-to-b from-transparent to-white"></div>
@@ -124,7 +138,7 @@ export default function Home() {
             <nav className="text-sm space-x-4 text-white/80">
               <a href="/new" className="hover:text-white">Create plan</a>
               <a href="#features" className="hover:text-white">Features</a>
-              <a href="#how" className="hover:text-white">How it works</a>
+              <a href="#how-it-works" className="hover:text-white">How it works</a>
             </nav>
           </div>
           <p className="text-xs text-white/60 mt-4">© {new Date().getFullYear()} Travoru</p>

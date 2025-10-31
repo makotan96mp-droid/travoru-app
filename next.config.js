@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  images: { formats: ['image/avif', 'image/webp'] }
+const config = {
+  experimental: {
+    optimizeCss: true,      // ← これで Critters が有効化され、レンダーブロッキングCSSをインライン化
+  },
+  // 既存の他設定があればここに追記してOK
 };
-module.exports = nextConfig;
+module.exports = config;
