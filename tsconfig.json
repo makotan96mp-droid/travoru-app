@@ -1,33 +1,22 @@
 {
   "compilerOptions": {
-    // JSの変換系
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    // importまわり
+
+    "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    // 型チェックの厳しさ
+
     "strict": true,
     "skipLibCheck": true,
-    // よく使う lib の型 (DOM操作や最新のES機能)
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    // 便利系
+    "lib": ["dom", "dom.iterable", "esnext"],
     "noEmit": true,
-    "allowJs": true,
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "plugins": [{ "name": "next" }]
   },
   "include": [
     "next-env.d.ts",
@@ -36,7 +25,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
