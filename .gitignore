@@ -42,3 +42,6 @@ next-env.d.ts
 
 # raw video (do not commit)
 public/videos/*.mov
+
+# raw videos
+public/videos/*.mov
