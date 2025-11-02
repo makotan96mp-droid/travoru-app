@@ -1,65 +1,10 @@
-/* ① v4の読み込み */
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* ② デザイントークン（v4は @theme で宣言） */
-@theme {
-  /* Colors → bg-brand-primary / text-brand-primary などで利用可 */
-  --color-brand-primary: #0A66FF;
-  --color-brand-secondary: #FF3B30;
-  --color-brand-accent: #FFB800;
-  --color-brand-green: #34A853;
-
-  /* Border Radius → rounded-xl / rounded-2xl を有効化 */
-  --radius-xl: 1rem;
-  --radius-2xl: 1.25rem;
-
-  /* Shadow → shadow-soft で利用可 */
-  --shadow-soft: 0 10px 28px rgba(0,0,0,0.10);
-}
-
-/* ③ あなたの共通レイアウト */
-:root { --bg:#fff; --fg:#111; }
-html,body { background:var(--bg); color:var(--fg); }
-
-/* ④ コンポーネント用ヘルパ（@applyはv4でもOK） */
-.container { max-width:960px; margin:0 auto; padding:24px; }
-
-.btn {
-  @apply inline-flex items-center justify-center rounded-2xl px-5 py-3
-         bg-brand-primary text-white shadow-soft hover:opacity-90 transition;
-}
-
-.card {
-  @apply rounded-2xl border border-neutral-200 p-5 shadow-soft bg-white;
-}
-
-.label { @apply block text-sm font-medium mb-1; }
-
-.input,.select,.textarea {
-  @apply w-full rounded-xl border border-neutral-300 px-3 py-2 outline-none
-         focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition;
-}
-
-.btn {
-  @apply inline-block px-5 py-2 rounded-full font-medium bg-blue-600 text-white shadow hover:bg-blue-700 transition;
-}
-
-.btn-ghost {
-  @apply inline-block px-5 py-2 rounded-full font-medium bg-white/20 text-white hover:bg-white/30 transition;
-}
-/* --- mobile-friendly container --- */
-@media (max-width: 640px) {
-  .container { padding: 16px; }
-}
-/* --- Hero title font (Playfair Display) --- */
-.font-hero{
-  font-family: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-}
-
-/* --- Hero title font (Playfair Display) --- */
-.font-hero{
-  font-family: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-}
-/* --- Brand font utilities --- */
-.font-playfair{font-family:var(--font-playfair),ui-serif,Georgia,"Times New Roman",serif}
-.antialiased-strong{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+/* 追加の素のCSS（必要なら） */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+img, video { max-width: 100%; height: auto; display: block; }
+main { max-width: 1200px; margin: 0 auto; padding: 24px; }
