@@ -59,8 +59,8 @@ export default function Page() {
           {DESTS.map((d, i) => (
             <a
               key={d.href}
-              href={d.href}
-              className="group relative rounded-lg sm:rounded-xl overflow-hidden border border-white/35 bg-slate-900/60 shadow-[0_20px_40px_rgba(0,0,0,0.28)] ring-1 ring-white/25 ring-1 ring-white/10 transition hover:shadow-md cursor-pointer stretched-container z-20"
+              href={d.href} aria-label={`${d.title} の詳細へ`}
+              className="group relative rounded-lg sm:rounded-xl overflow-hidden border border-white/35 bg-slate-900/60 shadow-[0_20px_40px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition hover:shadow-md cursor-pointer stretched-container z-20"
             >
               <Image decoding="async" priority={i===0}
                 sizes="(max-width: 640px) 100vw, 33vw" src={d.img}
