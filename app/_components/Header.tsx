@@ -17,7 +17,7 @@ export default function Header() {
         </a>
 
         {/* 右ナビは小さめにしてロゴを主役に */}
-        <nav className="flex items-center gap-3 text-xs sm:text-xs sm:text-sm opacity-85">
+        <nav aria-label="主要ナビ" className="flex items-center gap-3 text-xs sm:text-xs sm:text-sm opacity-85">
           <a href="/about" className="hover:opacity-100 leading-none">使い方</a>
           <a
             href="/new"
