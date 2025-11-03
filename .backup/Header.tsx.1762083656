@@ -1,0 +1,27 @@
+"use client";
+import Image from "next/image";
+
+export default function Header() {
+  return (
+    <header className="sticky top-0 z-50 bg-slate-950/70 backdrop-blur border-b border-white/10">
+      <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
+        <a href="/" className="flex items-center gap-2" aria-label="Travoru">
+          <Image
+            src="/logo.png"
+            alt="Travoru"
+            width={120}
+            height={28}
+            priority
+            className="h-7 w-auto select-none"
+          />
+        </a>
+        <nav className="text-sm opacity-85 space-x-4">
+          <a href="/about" className="hover:opacity-100">使い方</a>
+          <a href="/new" className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-3 py-1.5 hover:bg-white/15">
+            今すぐプランを作る
+          </a>
+        </nav>
+      </div>
+    </header>
+  );
+}

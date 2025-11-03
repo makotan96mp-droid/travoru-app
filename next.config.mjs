@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // experimental: { turbopack: false }, // 必要ならコメント解除でTurbopackを完全OFFにできます
+  experimental: {
+    allowedDevOrigins: ['http://192.168.0.23:3000', 'http://192.168.0.23']
+  }
 };
 export default nextConfig;

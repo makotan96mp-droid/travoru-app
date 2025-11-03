@@ -1,0 +1,21 @@
+"use client";
+import Link from "next/link";
+
+export default function Header() {
+  return (
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/60 backdrop-blur supports-[backdrop-filter]:bg-slate-950/40">
+      <div className="mx-auto max-w-6xl px-4 h-14 flex items-center">
+        {/* 左のスペーサー：ロゴを中央に */}
+        <div className="flex-1" />
+        {/* 中央ロゴ */}
+        <Link href="/" className="font-semibold tracking-wide">Travoru</Link>
+        {/* 右メニュー */}
+        <nav className="flex-1 flex justify-end gap-4 text-sm text-white/80">
+          <Link href="/new" className="hover:text-white transition">今すぐプランを作る</Link>
+          {/* /about が無ければこの行はコメントアウト可 */}
+          <Link href="/about" className="hover:text-white transition">使い方</Link>
+        </nav>
+      </div>
+    </header>
+  );
+}
