@@ -26,8 +26,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja" className={`${playfair.variable} ${notoSerifJP.variable}`}>
       <body className="antialiased bg-slate-950 text-white">
+    <a href="#main" className="skip-link">コンテンツへスキップ</a>
+
         <Header />
-        <main className="min-h-dvh pb-24">{children}</main>
+        <main className="min-h-dvh pb-24" id="main">{children}</main>
         <Footer />
       </body>
     </html>
