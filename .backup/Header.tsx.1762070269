@@ -1,0 +1,33 @@
+"use client";
+import Link from "next/link";
+
+export default function Header() {
+  return (
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/55 backdrop-blur supports-[backdrop-filter]:bg-slate-950/40">
+      <div className="mx-auto max-w-6xl px-4 h-14 grid grid-cols-[1fr_auto_1fr] items-center">
+        {/* 左：ロゴ */}
+        <div className="justify-self-start">
+          <Link href="/" className="inline-flex items-center gap-2">
+            <span className="inline-block h-2 w-2 rounded-full bg-white/80" />
+            <span className="font-semibold tracking-wide">Travoru</span>
+          </Link>
+        </div>
+
+        {/* 中央：ナビ（使い方） */}
+        <nav className="justify-self-center hidden sm:flex items-center gap-6 text-sm text-white/85">
+          <Link href="/#how-it-works" className="hover:text-white transition">使い方</Link>
+        </nav>
+
+        {/* 右：CTA */}
+        <div className="justify-self-end">
+          <Link
+            href="/new"
+            className="rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-sm hover:bg-white/15 transition"
+          >
+            今すぐプランを作る
+          </Link>
+        </div>
+      </div>
+    </header>
+  );
+}

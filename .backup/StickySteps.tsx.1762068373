@@ -1,0 +1,122 @@
+"use client";
+import Image from "next/image";
+import useEmblaCarousel from "embla-carousel-react";
+import { useCallback, useState } from "react";
+
+type Step = { title: string; body: string; image: string; alt: string };
+type InputStep = { title: string; text?: string; body?: string; image: string; alt?: string };
+
+const STEPS: Step[] = [
+  {
+    title: "Step 1 — 入力",
+    body: "都市・日付・興味をさっと選ぶ。30秒で完了。",
+    image: "/shots/new-form.jpg",
+    alt: "入力フォームのスクリーンショット",
+  },
+  {
+    title: "Step 2 — 生成",
+    body: "移動時間・混雑・屋内外を考慮して無理のないプランを作成。",
+    image: "/shots/itinerary-top.jpg",
+    alt: "旅程プレビューのスクリーンショット",
+  },
+  {
+    title: "Step 3 — 予約導線",
+    body: "Booking / Agoda / Trip.com / 楽天トラベルへスムーズに遷移。",
+    image: "/shots/booking-links.jpg",
+    alt: "予約導線のスクリーンショット",
+  },
+];
+
+export default function StickySteps({ steps }: { steps?: InputStep[] }) {
+  const DATA: Step[] = (steps ?? STEPS).map((s: any) => ({
+    title: s.title,
+    body: s.body ?? s.text ?? "",
+    image: s.image,
+    alt: s.alt ?? s.title,
+  }));
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "start" });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  if (emblaApi) emblaApi.on("select", onSelect);
+
+  return (
+    <section id="how-it-works" className="scroll-mt-24 relative z-10">
+      <div className="mx-auto max-w-6xl px-4 py-16">
+        <h2 className="text-2xl sm:text-3xl font-semibold mb-6">How it works</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* 左：番号付き説明 */}
+          <aside className="md:sticky md:top-24 h-fit">
+            <div className="rounded-2xl border border-white/15 bg-slate-900/40 backdrop-blur p-6 shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
+              <ol className="space-y-5 text-sm text-white/80">
+                {DATA.map((s, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span
+                      className={
+                        "inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold " +
+                        (selectedIndex === i ? "bg-white text-black" : "bg-white/15 text-white")
+                      }
+                    >
+                      {i + 1}
+                    </span>
+                    <div>
+                      <p className="font-semibold text-white">{s.title}</p>
+                      <p className="opacity-80 whitespace-pre-line">{s.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <a href="/new" className="mt-6 inline-flex items-center rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm hover:bg-white/15">
+                今すぐ試す
+              </a>
+            </div>
+          </aside>
+
+          {/* 右：横スライダー */}
+          <div className="space-y-3">
+            <div className="overflow-hidden rounded-2xl border border-white/15 bg-slate-900/40" ref={emblaRef}>
+              <div className="flex gap-4 p-4">
+                {DATA.map((s, i) => (
+                  <article
+                    key={i}
+                    className="min-w-[85%] sm:min-w-[420px] rounded-xl overflow-hidden border border-white/15 bg-slate-900/60"
+                  >
+                    <div className="p-4">
+                      <h3 className="font-semibold">{s.title}</h3>
+                      <p className="text-sm opacity-80 whitespace-pre-line">{s.body}</p>
+                    </div>
+                    <Image
+                      src={s.image}
+                      alt={s.alt}
+                      width={1600}
+                      height={900}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="h-auto w-full"
+                    />
+                  </article>
+                ))}
+              </div>
+            </div>
+            {/* ドット */}
+            <div className="flex gap-2">
+              {DATA.map((_, i) => (
+                <button
+                  key={i}
+                  aria-label={`Go to slide ${i + 1}`}
+                  onClick={() => emblaApi?.scrollTo(i)}
+                  className={"h-2 w-2 rounded-full " + (selectedIndex === i ? "bg-white" : "bg-white/30")}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
