@@ -81,3 +81,7 @@ return (
     </main>
   );
 }
+
+export async function generateStaticParams() {
+  return Object.keys(CITY_META).map((id) => ({ id }));
+}
