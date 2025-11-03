@@ -60,15 +60,15 @@ export default function Page() {
             <a
               key={d.href}
               href={d.href}
-              className="group relative rounded-lg sm:rounded-xl overflow-hidden border border-white/35 bg-slate-900/60 shadow-[0_20px_40px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition hover:shadow-md cursor-pointer stretched-container z-20"
+              className="group relative rounded-lg sm:rounded-xl overflow-hidden border border-white/35 bg-slate-900/60 shadow-[0_20px_40px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition hover:shadow-md cursor-pointer stretched-container z-20 focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black/30 motion-reduce:transition-none motion-reduce:hover:scale-100"
              aria-labelledby={`dest--title`} aria-describedby={`dest--desc`}>
-              <Image decoding="async" priority={i < 3}
+              <Image decoding="async" priority={i===0}
                 sizes="(max-width: 640px) 100vw, 33vw" src={d.img}
                 alt="" aria-hidden="true"
                 width={1200}
                 height={672}
                 className="w-full h-48 sm:h-56 object-cover"
-               fetchPriority={i < 3 ? "high" : "auto"} />
+               fetchPriority={i===0 ? "high" : "auto"} />
               <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none" />
               <div className="absolute bottom-3 left-3 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.28)]">
                 <h3 id={`dest--title`} className="text-xl font-semibold">{d.title}</h3>
