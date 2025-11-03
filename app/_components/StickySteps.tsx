@@ -61,13 +61,13 @@ export default function StickySteps({ steps }: { steps?: InputStep[] }) {
                       {i + 1}
                     </span>
                     <div>
-                      <p className="font-semibold text-white">{s.title}</p>
-                      <p className="opacity-90 whitespace-pre-line">{s.body}</p>
+                      <h3 id={`step--title`} className="font-semibold text-white">{s.title}</h3>
+                      <p id={`step--desc`} className="opacity-90 whitespace-pre-line">{s.body}</p>
                     </div>
                   </li>
                 ))}
               </ol>
-              <a href="/new" className="mt-6 inline-flex items-center rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm hover:bg-white/15">
+              <a href="/new" className="mt-6 inline-flex items-center rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm hover:bg-white/15" aria-describedby={`step--desc`} >
                 今すぐ試す
               </a>
             </div>
