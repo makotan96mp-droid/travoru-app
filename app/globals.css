@@ -197,3 +197,13 @@
 .skip-link{ position:absolute; left:-999px; top:auto; width:1px; height:1px; overflow:hidden; }
 .skip-link:focus{ left:1rem; top:1rem; width:auto; height:auto; padding:.5rem .75rem;
   background:#111827; color:white; border-radius:.5rem; outline:2px solid rgba(255,255,255,.6); z-index:50; }
+
+/* ===== Skip link: bring to front & fix position ===== */
+.skip-link{ position:fixed; left:-999px; top:-100px; width:1px; height:1px; overflow:hidden; }
+.skip-link:focus, .skip-link:focus-visible{
+  left:1rem; top:1rem; width:auto; height:auto; padding:.5rem .75rem;
+  background:#111827; color:white; border-radius:.5rem;
+  outline:2px solid rgba(255,255,255,.6);
+  box-shadow:0 8px 24px rgba(0,0,0,.28);
+  z-index:9999; /* header より前へ（z-50等を超える） */
+}
