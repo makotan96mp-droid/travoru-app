@@ -47,7 +47,23 @@ export default async function CityPage({ params }: Props) {
   const city = CITY_META[key as keyof typeof CITY_META];
   if (!city) return <main className="min-h-dvh p-8">Not found</main>;
 
-  return (
+  const jsonLd=(id,city)=>({
+  "@context":"https://schema.org",
+  "@type":"WebPage",
+  "url": `${process.env.NEXT_PUBLIC_SITE_URL||"http://localhost:3001"}/i/${id}`,
+  "name": city.title,
+  "description": city.description,
+  "breadcrumb": {
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"Home","item":`${process.env.NEXT_PUBLIC_SITE_URL||"http://localhost:3001"}`},
+      {"@type":"ListItem","position":2,"name": city.title,"item":`${process.env.NEXT_PUBLIC_SITE_URL||"http://localhost:3001"}/i/${id}`}
+    ]
+  }
+});
+return (
+  <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(key, city)) }} />
     <main className="min-h-dvh p-8 space-y-6">
       <h1 className="text-3xl font-semibold">{city.title}</h1>
       <p className="text-white/80 max-w-prose">{city.description}</p>
