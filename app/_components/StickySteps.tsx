@@ -67,7 +67,7 @@ export default function StickySteps({ steps }: { steps?: InputStep[] }) {
                   </li>
                 ))}
               </ol>
-              <a href="/new" className="mt-6 inline-flex items-center rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm hover:bg-white/15" aria-describedby={`step--desc`} >
+              <a href="/new" className="mt-6 inline-flex items-center rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm hover:bg-white/15" aria-describedby={`step-0-desc`} >
                 今すぐ試す
               </a>
             </div>
