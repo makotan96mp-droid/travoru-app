@@ -34,13 +34,13 @@ export default function Page() {
           <a href="/new"
              className="inline-flex h-10 items-center rounded-full px-5 text-[15px] font-medium
                         text-white bg-black/85 hover:bg-black/90 active:bg-black
-                        shadow-[0_6px_20px_rgba(0,0,0,.35)] backdrop-blur lift-1 z-20">
+                        shadow-[0_6px_20px_rgba(0,0,0,.35)] backdrop-blur lift-1 z-20" aria-labelledby={`dest--title`} aria-describedby={`dest--desc`}>
             今すぐプランを作る
           </a>
           <a href="#how-it-works"
              className="inline-flex h-10 items-center rounded-full px-5 text-[15px] font-medium
                         text-white/95 border border-white/30 bg-white/10 hover:bg-white/15
-                        shadow-[0_2px_10px_rgba(0,0,0,.25)] backdrop-blur lift-1 z-20">
+                        shadow-[0_2px_10px_rgba(0,0,0,.25)] backdrop-blur lift-1 z-20" aria-labelledby={`dest--title`} aria-describedby={`dest--desc`}>
             使い方を見る
           </a>
         </div>
@@ -59,27 +59,27 @@ export default function Page() {
           {DESTS.map((d, i) => (
             <a
               key={d.href}
-              href={d.href} aria-label={`${d.title} の詳細へ`}
+              href={d.href}
               className="group relative rounded-lg sm:rounded-xl overflow-hidden border border-white/35 bg-slate-900/60 shadow-[0_20px_40px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition hover:shadow-md cursor-pointer stretched-container z-20"
-            >
+             aria-labelledby={`dest--title`} aria-describedby={`dest--desc`}>
               <Image decoding="async" priority={i < 3}
                 sizes="(max-width: 640px) 100vw, 33vw" src={d.img}
-                alt={d.alt ?? d.title}
+                alt="" aria-hidden="true"
                 width={1200}
                 height={672}
                 className="w-full h-48 sm:h-56 object-cover"
                fetchPriority={i < 3 ? "high" : "auto"} />
               <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none" />
               <div className="absolute bottom-3 left-3 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.28)]">
-                <h3 className="text-xl font-semibold">{d.title}</h3>
-                <p className="text-sm text-white/80">{d.desc}</p>
+                <h3 id={`dest--title`} className="text-xl font-semibold">{d.title}</h3>
+                <p id={`dest--desc`} className="text-sm text-white/80">{d.desc}</p>
               </div>
             </a>
           ))}
         </div>
 
         <div className="mt-8">
-          <a href="/new" className="btn z-20">自分の旅程を作る</a>
+          <a href="/new" className="btn z-20" aria-labelledby={`dest--title`} aria-describedby={`dest--desc`}>自分の旅程を作る</a>
         </div>
       </section>
 </main>
