@@ -62,13 +62,13 @@ export default function Page() {
               href={d.href} aria-label={`${d.title} の詳細へ`}
               className="group relative rounded-lg sm:rounded-xl overflow-hidden border border-white/35 bg-slate-900/60 shadow-[0_20px_40px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition hover:shadow-md cursor-pointer stretched-container z-20"
             >
-              <Image decoding="async" priority={i===0}
+              <Image decoding="async" priority={i < 3}
                 sizes="(max-width: 640px) 100vw, 33vw" src={d.img}
                 alt={d.title}
                 width={1200}
                 height={672}
                 className="w-full h-48 sm:h-56 object-cover"
-              />
+               fetchPriority={i < 3 ? "high" : "auto"} />
               <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none" />
               <div className="absolute bottom-3 left-3 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.28)]">
                 <h3 className="text-xl font-semibold">{d.title}</h3>
