@@ -1,64 +1,64 @@
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import Image from "next/image";
+// プロジェクトで "@/lib/seo" エイリアスが使えない場合は下の1行を
+// import { CITY_META, absoluteImage, SITE_URL } from "../../lib/seo";
+import { CITY_META, absoluteImage, SITE_URL } from "@/lib/seo";
 
-type Params = { id: string };
-type SearchParams = { city?: string; start?: string; end?: string; interests?: string };
+type Props = { params: { id: string } };
 
-const DUMMY_ITINERARY = [
-  { time: "09:00", activity: "Check-in / Luggage drop" },
-  { time: "10:00", activity: "Top spot #1 (indoor if rainy)" },
-  { time: "12:00", activity: "Local lunch (foodie pick)" },
-  { time: "14:00", activity: "Transit-optimized move to spot #2" },
-  { time: "16:00", activity: "Cafe break & shopping" },
-  { time: "19:00", activity: "Dinner reservation (free-cancel eligible)" },
-];
+export async function generateMetadata(
+  { params }: Props,
+  _parent: ResolvingMetadata
+): Promise<Metadata> {
+  const id = params.id?.toLowerCase();
+  const city = CITY_META[id];
 
-// Next.js 16 / React 19: params & searchParams は Promise なので await する
-export default async function ItineraryPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<Params>;
-  searchParams: Promise<SearchParams>;
-}) {
-  const { id } = await params;
-  const { city = "tokyo", start = "—", end = "—", interests = "—" } = await searchParams;
+  const title = city?.title ?? "Travoru";
+  const description = city?.description ?? "あなたの旅程をサクッと作成。";
+  const ogImage = absoluteImage(city?.image ?? "/images/hero-poster.jpg");
+  const url = `${SITE_URL}/i/${id ?? ""}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      url,
+      title,
+      description,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+    robots: { index: true, follow: true },
+  };
+}
+
+export default function CityPage({ params }: Props) {
+  const id = params.id?.toLowerCase();
+  const city = CITY_META[id];
+  if (!city) return <main className="min-h-dvh p-8">Not found</main>;
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Itinerary: {id}</h1>
-        <Link href="/new" className="underline text-sm">Create another</Link>
+    <main className="min-h-dvh p-8 space-y-6">
+      <h1 className="text-3xl font-semibold">{city.title}</h1>
+      <p className="text-white/80 max-w-prose">{city.description}</p>
+      <div className="rounded-2xl overflow-hidden border border-white/15 max-w-3xl">
+        <Image
+          src={city.image}
+          alt={city.title}
+          width={1600}
+          height={900}
+          sizes="(max-width: 768px) 100vw, 75vw"
+          className="w-full h-auto object-cover"
+          priority
+        />
       </div>
-
-      <div className="card">
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div><span className="font-medium">City:</span> {city}</div>
-          <div><span className="font-medium">Dates:</span> {start} → {end}</div>
-          <div className="col-span-2"><span className="font-medium">Interests:</span> {interests}</div>
-        </div>
-      </div>
-
-      <div className="card">
-        <h2 className="text-lg font-semibold mb-3">Day 1 (dummy)</h2>
-        <ul className="space-y-2">
-          {DUMMY_ITINERARY.map((row, i) => (
-            <li key={i} className="flex gap-4">
-              <div className="w-20 text-neutral-600">{row.time}</div>
-              <div className="flex-1">{row.activity}</div>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="card">
-        <h3 className="font-semibold mb-2">Booking links (dummy)</h3>
-        <div className="flex flex-wrap gap-2 text-sm">
-          <a className="btn" href="https://www.booking.com" target="_blank">Booking</a>
-          <a className="btn" href="https://www.agoda.com" target="_blank">Agoda</a>
-          <a className="btn" href="https://www.trip.com" target="_blank">Trip.com</a>
-          <a className="btn" href="https://travel.rakuten.co.jp" target="_blank">Rakuten</a>
-        </div>
-      </div>
-    </div>
+    </main>
   );
 }
