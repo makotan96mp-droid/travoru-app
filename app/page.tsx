@@ -3,9 +3,9 @@ import FullPageVideo from "./_components/FullPageVideo";
 import StickySteps from "./_components/StickySteps";
 
 const DESTS = [
-  { href: "/i/tokyo", title: "Tokyo",  desc: "夜景とカルチャー", img: "/images/tokyo.jpg"  },
-  { href: "/i/kyoto", title: "Kyoto",  desc: "歴史と街歩き",       img: "/images/kyoto.jpg"  },
-  { href: "/i/osaka", title: "Osaka",  desc: "グルメとエネルギー", img: "/images/osaka.jpg"  },
+  { href: "/i/tokyo", title: "Tokyo",  desc: "夜景とカルチャー", img: "/images/tokyo.jpeg",  alt: "夜の東京タワーと高層ビル群の夜景" },
+  { href: "/i/kyoto", title: "Kyoto",  desc: "歴史と街歩き",       img: "/images/kyoto.jpeg", alt: "京都・八坂の塔へ続く石畳の路地を歩く着物姿の2人" },
+  { href: "/i/osaka", title: "Osaka",  desc: "グルメとエネルギー", img: "/images/osaka.jpeg", alt: "青空の下の大阪城と桜並木" },
 ];
 
 export default function Page() {
@@ -64,7 +64,7 @@ export default function Page() {
             >
               <Image decoding="async" priority={i < 3}
                 sizes="(max-width: 640px) 100vw, 33vw" src={d.img}
-                alt={d.title}
+                alt={d.alt ?? d.title}
                 width={1200}
                 height={672}
                 className="w-full h-48 sm:h-56 object-cover"
