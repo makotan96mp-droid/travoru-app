@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postbuild": "node scripts/inline-critical-css.mjs"
+    "postbuild": "node scripts/inline-critical-css.mjs",
+    "dev:clean": "pkill -f \"next dev|next-server|turbopack\" || true && rm -f .next/dev/lock && next dev -p 3001"
   },
   "dependencies": {
     "embla-carousel-react": "^8.6.0",
