@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL, CITY_META } from "@/lib/seo";
+import { SITE_URL, CITY_META } from "../lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date().toISOString();
