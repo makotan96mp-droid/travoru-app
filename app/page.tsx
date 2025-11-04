@@ -1,12 +1,18 @@
 import Image from "next/image";
+import { CITY_META } from "@/lib/seo";
 import FullPageVideo from "./_components/FullPageVideo";
 import StickySteps from "./_components/StickySteps";
 
-const DESTS = [
-  { href: "/i/tokyo", title: "Tokyo",  desc: "夜景とカルチャー", img: "/images/tokyo.jpeg",  alt: "夜の東京タワーと高層ビル群の夜景" },
-  { href: "/i/kyoto", title: "Kyoto",  desc: "歴史と街歩き",       img: "/images/kyoto.jpeg", alt: "京都・八坂の塔へ続く石畳の路地を歩く着物姿の2人" },
-  { href: "/i/osaka", title: "Osaka",  desc: "グルメとエネルギー", img: "/images/osaka.jpeg", alt: "青空の下の大阪城と桜並木" },
-];
+const DESTS = (["tokyo","kyoto","osaka"] as const).map((id) => {
+  const c = CITY_META[id];
+  return {
+    href: `/i/${id}`,
+    title: c.title,
+    desc: (c as any).tagline ?? "",
+    img: c.image,
+    alt: ` のイメージ`,
+  };
+});
 
 export default function Page() {
   return (
