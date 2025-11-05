@@ -1,104 +1,24 @@
-"use client";
+import ItineraryForm from "@/_components/ItineraryForm";
+import ThemeToggle from "@/_components/ThemeToggle";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Toast from "../_components/Toast";
+export const metadata = {
+  title: "旅程の作成 — Travoru",
+  description: "都市と日付、ざっくり希望と行きたい場所を入れて、旅程プレビューを生成します。",
+  robots: "index, follow",
+};
 
-type Interest = "food" | "art" | "nature" | "shopping" | "nightlife";
-
-export default function NewPage() {
-  const router = useRouter();
-  const [showToast, setShowToast] = useState(false);
-
-  
-const [loading, setLoading] = useState(false);
-const [start, setStart] = useState("");
-  const [end, setEnd] = useState("");
-  const [city, setCity] = useState("tokyo");
-  const [interests, setInterests] = useState<Interest[]>(["food"]);
-
-  const toggleInterest = (value: Interest) => {
-    setInterests((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    );
-  };
-
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!start || !end || !city) {
-      alert("Please fill the required fields.");
-      return;
-    }
-    const dummyId = `demo-${Date.now()}`;
-    setShowToast(true);
-    setTimeout(() => {
-      router.push(
-        `/i/${dummyId}?city=${city}&start=${start}&end=${end}&interests=${interests.join(",")}`
-      );
-    }, 800);
-  };
-
-  const interestBtn = (value: Interest, label: string) => (
-    <button
-      type="button"
-      onClick={() => toggleInterest(value)}
-      className={`px-3 py-2 rounded-xl border text-sm transition ${
-        interests.includes(value)
-          ? "bg-brand-primary text-white border-brand-primary"
-          : "bg-white text-black border-neutral-300 hover:border-brand-primary"
-      }`}
-    >
-      {label}
-    </button>
-  );
-
+export default function NewPlanPage() {
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-2">Create a new itinerary</h1>
-      <p className="text-neutral-600 mb-6">
-        Enter dates, city and interests. We’ll generate a realistic, time-aware plan.
-      </p>
-
-      <form onSubmit={onSubmit} className="space-y-6 card">
-        <div>
-          <label className="label">City</label>
-          <select value={city} onChange={(e) => setCity(e.target.value)} className="select" aria-label="行き先">
-            <option value="tokyo">Tokyo</option>
-            <option value="kyoto">Kyoto</option>
-            <option value="osaka">Osaka</option>
-            <option value="okinawa">Okinawa</option>
-          </select>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="label">Start date</label>
-            <input type="date" value={start} onChange={(e) => setStart(e.target.value)} className="input" />
-          </div>
-          <div>
-            <label className="label">End date</label>
-            <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} className="input" />
-          </div>
-        </div>
-
-        <div>
-          <label className="label">Interests</label>
-          <div className="flex flex-wrap gap-2">
-            {interestBtn("food", "Food")}
-            {interestBtn("art", "Art")}
-            {interestBtn("nature", "Nature")}
-            {interestBtn("shopping", "Shopping")}
-            {interestBtn("nightlife", "Nightlife")}
-          </div>
-        </div>
-
-        <div className="flex gap-3">
-          <button className="btn" type="submit" disabled={loading}>{loading ? "Generating..." : "Generate (dummy)"}</button>
-          <a className="inline-flex items-center text-sm underline" href="/">Cancel</a>
-        </div>
-      </form>
-
-      {showToast && <Toast message="Plan created (dummy). Redirecting..." />}
-    </div>
+    <main className="min-h-dvh p-6 sm:p-8">
+      <div className="mx-auto max-w-6xl space-y-6">
+        <div className="flex items-start justify-between gap-4"><div className="flex items-start justify-between gap-4"><div className="flex items-start justify-between gap-4"><header className="space-y-2">
+          <h1 className="text-2xl sm:text-3xl font-semibold">自分の旅程を作る</h1>
+          <p className="text-[color:var(--fg-muted)] max-w-prose">
+            都市／日付／ざっくり希望を選んで、行きたい場所を入れるだけ。まずは無料プレビューで雰囲気を確認。
+          </p>
+        </header><ThemeToggle /></div></div></div>
+        <ItineraryForm />
+      </div>
+    </main>
   );
 }

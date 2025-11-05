@@ -207,3 +207,565 @@
   box-shadow:0 8px 24px rgba(0,0,0,.28);
   z-index:9999; /* header より前へ（z-50等を超える） */
 }
+
+/* ===== Dark UI: form controls & date picker visibility ===== */
+@media (prefers-color-scheme: dark) {
+  /* 入力・セレクトのデフォルト文字/背景/枠 */
+  input[type="text"],
+  input[type="date"],
+  input[type="search"],
+  input[type="email"],
+  input[type="number"],
+  textarea,
+  select {
+    background-color: rgba(255,255,255,0.06);
+    color: #f5f5f5;
+    border: 1px solid rgba(255,255,255,0.16);
+  }
+  input::placeholder, textarea::placeholder {
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* 日付ピッカーを暗色用に */
+  
+  /* Safari/Chrome系: カレンダーアイコンを反転して見やすく */
+  
+  /* Firefox: アイコン色の代替（完全一致ではないが視認性UP）*/
+  input[type="date"]::-moz-focus-inner { border: 0; }
+}
+
+/* 白背景ボタンは常に濃い文字色（継承対策） */
+.btn-on-white,
+button.bg-white, .bg-white > button {
+  color: #111 !important;
+}
+
+/* アイコン系の小ボタン（↑↓×）の視認性 */
+.button-ghost {
+  background: transparent;
+  color: #f5f5f5;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.button-ghost:hover { background: rgba(255,255,255,0.08); }
+
+/* 主要ボタンのフォーカスリング */
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.25);
+  border-radius: 0.5rem;
+}
+
+/* ===== Date input: visible calendar icon on dark UI ===== */
+@media (prefers-color-scheme: dark) {
+  /* 右側にアイコンぶんの余白を確保 */
+  
+  /* WebKit系: 既定アイコンを上書きして白SVGに */
+  
+  /* ホバー/フォーカス時の下地でコントラストUP */
+  input[type="date"]::-webkit-calendar-picker-indicator:hover{
+    background-color: rgba(255,255,255,0.08);
+  }
+  input[type="date"]:focus-visible::-webkit-calendar-picker-indicator{
+    outline: 2px solid rgba(255,255,255,0.25);
+    outline-offset: 2px;
+  }
+}
+
+/* Lightモードでも見やすいように（任意） */
+@media (prefers-color-scheme: light) {
+  
+  
+}
+
+/* ==== Date icon: robust overlay approach ==== */
+@media (prefers-color-scheme: dark) {
+  
+  /* 既定アイコンは見た目を消すが、クリックは残す */
+  
+  input[type="date"]:hover{
+    background-color: rgba(255,255,255,0.04);
+  }
+  input[type="date"]:focus-visible{
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.25);
+  }
+}
+
+/* Light モード用（黒アイコン） */
+@media (prefers-color-scheme: light) {
+  
+  
+}
+
+/* ========== Color Tokens (light/dark) ========== */
+:root{
+  --brand-500:#47b3ff;        /* メイン（フォーカスリングなど） */
+  --brand-600:#1aa2ff;
+  --text-strong:#0f172a;      /* zinc-900 近似（light用） */
+  --text-muted:#475569;
+  --bg-elev:#0f1624;          /* ダーク背景 */
+  --bg-input:#1b2433;         /* 入力の下地 */
+  --border-subtle:rgba(255,255,255,0.18);
+  --border-strong:rgba(255,255,255,0.28);
+  --text-on-dark:#f5f7fb;     /* text-zinc-50 近似 */
+  --text-on-dark-muted:rgba(245,247,251,0.72);
+}
+
+/* ========== Tailwind components layer ========== */
+@layer components{
+  /* 48px 高で統一するフィールド（date/text/自由入力） */
+  .ui-field{
+    @apply w-full rounded-md border px-3 py-2 text-[15px] leading-[24px];
+    height: 48px;                      /* ← 高さを統一 */
+    background: var(--bg-input);
+    color: var(--text-on-dark);
+    border-color: var(--border-subtle);
+  }
+  .ui-field::placeholder{ color: var(--text-on-dark-muted); }
+
+  /* フォーカスリングをブランド色に統一 */
+  .ui-focus{
+    outline: none;
+    box-shadow: 0 0 0 2px var(--brand-500) !important;
+  }
+
+  /* チップ（目的/mustSee のボタン） */
+  .chip{
+    @apply rounded-full border text-sm px-3 py-1.5 transition;
+    border-color: var(--border-subtle);
+    background: rgba(255,255,255,0.10);
+    color: var(--text-on-dark);
+  }
+  .chip:hover{ background: rgba(255,255,255,0.14); }
+  .chip--active{
+    background:#fff;
+    color:#111827; /* text-gray-900 */
+    border-color:#fff;
+  }
+
+  /* 小ボタン（↑↓×） */
+  .btn-ghost{
+    @apply px-2 py-1 rounded border transition;
+    border-color: var(--border-strong);
+    color: var(--text-on-dark);
+  }
+  .btn-ghost:hover{ background: rgba(255,255,255,0.10); }
+
+  /* 主要ボタン */
+  .btn-primary{
+    @apply px-4 py-2 rounded-md font-medium transition disabled:opacity-50;
+    background:#fff; color:#111827;
+  }
+}
+
+/* :focus-visible はブランドリングに */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible{ outline: none; box-shadow: 0 0 0 2px var(--brand-500); }
+
+/* Date input: 右端ボタンの当たり判定が分かるよう hover */
+[data-date-button]:hover{ background: rgba(255,255,255,0.10); border-radius: .5rem; }
+
+/* ===== Theming via data-theme on <html> ===== */
+:root[data-theme="light"]{
+  --brand-500:#1a8cff;
+  --brand-600:#0077ea;
+  --text-strong:#0f172a;
+  --text-muted:#475569;
+  --bg-elev:#ffffff;
+  --bg-input:#f4f6fb;
+  --border-subtle:rgba(15,23,42,0.14);
+  --border-strong:rgba(15,23,42,0.28);
+  --text-on-dark:#0f172a;
+  --text-on-dark-muted:rgba(15,23,42,0.72);
+}
+:root[data-theme="dark"]{
+  --brand-500:#47b3ff;
+  --brand-600:#1aa2ff;
+  --text-strong:#f5f7fb;
+  --text-muted:#c7d2fe;
+  --bg-elev:#0f1624;
+  --bg-input:#1b2433;
+  --border-subtle:rgba(255,255,255,0.18);
+  --border-strong:rgba(255,255,255,0.28);
+  --text-on-dark:#f5f7fb;
+  --text-on-dark-muted:rgba(245,247,251,0.72);
+}
+
+/* デフォルトはダーク */
+:root{ color-scheme: dark; }
+
+/* ==== Page base (全画面をテーマで切替) ==== */
+html, body {
+  height: 100%;
+}
+body{
+  background: var(--bg-elev);
+  color: var(--text-on-dark);
+}
+
+/* Cardやパネル用の薄い面色が必要なとき */
+.surface {
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-on-dark);
+}
+
+/* ===== THEME TOKENS (dark default) ===== */
+:root{
+  /* 基本（Darkをデフォルトに） */
+  --bg: #0f1624;             /* 画面全体の背景 */
+  --surface: #1b2433;        /* 入力欄/カードの面 */
+  --fg: #f5f7fb;             /* 基本文字色 */
+  --fg-muted: rgba(245,247,251,0.72);
+  --border-subtle: rgba(255,255,255,0.18);
+  --border-strong: rgba(255,255,255,0.28);
+  --brand-500: #47b3ff;
+  --brand-600: #1aa2ff;
+
+  /* 既存クラスとの互換（以前の名前にも同値を割当） */
+  --bg-elev: var(--bg);
+  --bg-input: var(--surface);
+  --text-on-dark: var(--fg);
+  --text-on-dark-muted: var(--fg-muted);
+
+  color-scheme: dark;
+}
+
+/* Lightは data-theme="light" 時に上書き */
+:root[data-theme="light"]{
+  --bg: #ffffff;
+  --surface: #f4f6fb;
+  --fg: #0f172a;
+  --fg-muted: rgba(15,23,42,0.72);
+  --border-subtle: rgba(15,23,42,0.14);
+  --border-strong: rgba(15,23,42,0.28);
+  --brand-500: #1a8cff;
+  --brand-600: #0077ea;
+
+  --bg-elev: var(--bg);
+  --bg-input: var(--surface);
+  --text-on-dark: var(--fg);
+  --text-on-dark-muted: var(--fg-muted);
+
+  color-scheme: light;
+}
+
+/* 全画面にテーマ適用（背景/文字） */
+html, body { height: 100%; }
+body{
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* 入力/カード用ユーティリティ（既存の .ui-field 等が使う） */
+.surface { background: var(--surface); border: 1px solid var(--border-subtle); color: var(--fg); }
+
+/* 既存components層のユーティリティが var(--*) を使えるようにするための保険 */
+@layer components{
+  .ui-field{
+    height: 48px;
+    background: var(--surface);
+    color: var(--fg);
+    border-color: var(--border-subtle);
+  }
+  .ui-field::placeholder{ color: var(--fg-muted); }
+  .ui-focus{ outline: none; box-shadow: 0 0 0 2px var(--brand-500) !important; }
+  .btn-ghost{ color: var(--fg); border-color: var(--border-strong); }
+}
+
+/* ===== Patch: tokens for hover veil & slightly stronger light borders ===== */
+:root{
+  --veil: rgba(255,255,255,0.10);   /* dark hover veil */
+}
+:root[data-theme="light"]{
+  --veil: rgba(15,23,42,0.08);      /* light hover veil */
+  --border-subtle: rgba(15,23,42,0.18); /* ↑ 0.18に上げて視認性UP */
+}
+
+/* 背景/文字はテーマで全画面切替（再掲だが安全のため） */
+html, body { height: 100%; }
+body{ background: var(--bg); color: var(--fg); }
+
+/* ===== components：見やすさUP（高さ統一・境界・フォーカス） ===== */
+@layer components{
+  /* 入力欄 */
+  .ui-field{
+    @apply w-full rounded-md border px-3 py-2 text-[15px] leading-[24px];
+    height: 48px;
+    background: var(--surface);
+    color: var(--fg);
+    border-color: var(--border-subtle);
+  }
+  .ui-field::placeholder{ color: var(--fg-muted); }
+
+  /* フォーカスリングを太め＆ブランドに（2→3px） */
+  .ui-focus{ outline: none; box-shadow: 0 0 0 3px var(--brand-500) !important; }
+
+  /* 目的/mustSeeチップ */
+  .chip{
+    @apply rounded-full border text-sm px-3 py-1.5 transition;
+    border-color: var(--border-subtle);
+    background: var(--surface);
+    color: var(--fg);
+  }
+  .chip:hover{ background: var(--veil); }
+  /* 選択状態は白地＋濃色文字で明確に（どのテーマでも視認性◎） */
+  .chip--active{
+    background: #ffffff;
+    color: #111827;
+    border-color: #ffffff;
+  }
+
+  /* 小ボタン（↑↓×） */
+  .btn-ghost{
+    @apply px-2 py-1 rounded border transition;
+    border-color: var(--border-strong);
+    color: var(--fg);
+  }
+  .btn-ghost:hover{ background: var(--veil); }
+
+  /* 主要ボタン（必要なら後で brand 実装に変更可） */
+  .btn-primary{
+    @apply px-4 py-2 rounded-md font-medium transition disabled:opacity-50;
+    background: #ffffff; color:#111827; border:1px solid var(--border-subtle);
+  }
+}
+
+/* カレンダーアイコンのホバー視認性（Lightでも見える） */
+[data-date-button]:hover{ background: var(--veil); border-radius: .5rem; }
+
+/* ===== v2: ヘッダー/ナビもテーマ追随 ===== */
+@layer base{
+  header[role="banner"], nav[aria-label="Top"], .topbar, .site-topbar{
+    background: var(--bg);
+    color: var(--fg);
+  }
+}
+
+/* surface の段差（Light側強め） */
+:root[data-theme="light"]{
+  --border-subtle: rgba(15,23,42,0.20); /* 0.18→0.20 で境界UP */
+}
+
+/* カード/面の影（必要時に .surface-shadow を付与） */
+.surface-shadow{
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* チップの未選択/hover コントラスト少し強め */
+@layer components{
+  .chip{ border-color: var(--border-subtle); background: var(--surface); }
+  .chip:hover{ background: color-mix(in oklab, var(--surface) 85%, #fff 15%); }
+}
+
+/* 主要ボタンを brand 配色に（Hoverで少し濃く） */
+@layer components{
+  .btn-primary{
+    background: var(--brand-600);
+    color: #fff;
+    border: 1px solid color-mix(in oklab, var(--brand-600) 70%, #000 30%);
+  }
+  .btn-primary:hover{
+    background: color-mix(in oklab, var(--brand-600) 86%, #000 14%);
+  }
+}
+
+/* 入力群を面に載せる場合に使えるクラス（任意） */
+.form-surface{ background: var(--surface); border: 1px solid var(--border-subtle); border-radius: .75rem; }
+
+/* ===== Purpose chips: selected state clearly visible ===== */
+/* 既存の .chip--active に加えて、ARIA属性でも反映されるようにする */
+.chip[aria-pressed="true"],
+.chip[aria-selected="true"],
+.chip--active{
+  background: #ffffff;
+  color: #111827;
+  border-color: #ffffff;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.06) inset;
+}
+.chip[aria-pressed="true"]:focus-visible,
+.chip[aria-selected="true"]:focus-visible,
+.chip--active:focus-visible{
+  box-shadow: 0 0 0 3px var(--brand-500);
+}
+
+/* 「選択中の目的」サマリのピル */
+.purpose-pill{
+  display:inline-flex; align-items:center; gap:.375rem;
+  padding:.2rem .5rem; border-radius:9999px;
+  background:#fff; color:#111827;
+  border:1px solid var(--border-subtle);
+  margin-right:.5rem; margin-bottom:.375rem;
+}
+
+/* purpose summary pills */
+.purpose-pill{
+  display:inline-flex; align-items:center; gap:.35rem;
+  padding:.22rem .55rem; border-radius:9999px;
+  background:#fff; color:#111827;
+  border:1px solid var(--border-subtle);
+  margin-right:.5rem; margin-bottom:.4rem;
+}
+.pill-x{
+  inline-size:1.125rem; block-size:1.125rem;
+  display:inline-grid; place-items:center;
+  border-radius:9999px; line-height:1;
+  background: color-mix(in oklab,#000 6%,#fff 94%);
+  color:#111; border:1px solid var(--border-subtle);
+}
+.pill-x:hover{ background: color-mix(in oklab,#000 12%,#fff 88%); }
+
+/* ===== UI polish (dark/light 両対応) ===== */
+
+/* 行の操作アイコン（↑↓×）の視認性UP */
+.icon-btn,
+[aria-label="上へ"], [aria-label="下へ"], [aria-label="削除"],
+[title="上へ"], [title="下へ"], [title="削除"]{
+  color: var(--fg-muted);
+  border-radius: .5rem;
+}
+.icon-btn:hover,
+[aria-label="上へ"]:hover, [aria-label="下へ"]:hover, [aria-label="削除"]:hover,
+[title="上へ"]:hover, [title="下へ"]:hover, [title="削除"]:hover{
+  background: color-mix(in oklab, var(--surface) 80%, #fff 20%);
+  color: var(--fg);
+}
+.icon-btn:focus-visible,
+[aria-label="上へ"]:focus-visible, [aria-label="下へ"]:focus-visible, [aria-label="削除"]:focus-visible,
+[title="上へ"]:focus-visible, [title="下へ"]:focus-visible, [title="削除"]:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px var(--brand-500);
+}
+
+/* Light の未選択チップ：境界をほんの少し濃く */
+:root[data-theme="light"]{
+  --border-subtle: rgba(15,23,42,0.22);
+}
+
+/* Dark のピル × ボタン：濃度&フォーカスリング強化 */
+.pill-x{
+  outline: none;
+}
+.pill-x:focus-visible{
+  box-shadow: 0 0 0 3px var(--brand-500);
+}
+:root[data-theme="dark"] .pill-x:hover{
+  background: color-mix(in oklab,#000 18%,#fff 82%);
+}
+
+/* Placeholder 可読性（Dark） */
+:root[data-theme="dark"] ::placeholder{
+  color: color-mix(in oklab, #fff 70%, #000 30%);
+  opacity: 1;
+}
+
+/* 並べ替え中の行：掴み感UP */
+.is-dragging{
+  cursor: move;
+  box-shadow: 0 1px 2px rgba(0,0,0,.24), 0 8px 24px rgba(0,0,0,.28);
+  outline: 2px solid color-mix(in oklab, var(--brand-500) 70%, #000 30%);
+  outline-offset: -2px;
+}
+
+/* ===== Date input: hide native indicator & add room for custom icon ===== */
+
+
+input[type="date"]::-ms-clear,
+input[type="date"]::-ms-reveal { display:none; }
+/* カスタムのカレンダーアイコンを右に置く場合の共通スタイル */
+.date-icon{
+  position:absolute; right:.75rem; top:50%; transform:translateY(-50%);
+  pointer-events:none; color: var(--fg-muted);
+}
+
+/* 操作アイコンの hover/focus */
+.icon-btn,
+[aria-label="上へ"], [aria-label="下へ"], [aria-label="削除"],
+[title="上へ"], [title="下へ"], [title="削除"]{
+  color: var(--fg-muted);
+  border-radius: .5rem;
+}
+.icon-btn:hover,
+[aria-label="上へ"]:hover, [aria-label="下へ"]:hover, [aria-label="削除"]:hover,
+[title="上へ"]:hover, [title="下へ"]:hover, [title="削除"]:hover{
+  background: color-mix(in oklab, var(--surface) 80%, #fff 20%);
+  color: var(--fg);
+}
+.icon-btn:focus-visible,
+[aria-label="上へ"]:focus-visible, [aria-label="下へ"]:focus-visible, [aria-label="削除"]:focus-visible,
+[title="上へ"]:focus-visible, [title="下へ"]:focus-visible, [title="削除"]:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px var(--brand-500);
+}
+
+/* Lightの未選択チップ：境界をほんの少しだけ強める */
+:root[data-theme="light"]{
+  --border-subtle: rgba(15,23,42,0.24);
+}
+
+/* ==== date input: hide native calendar icon when we render our own button ==== */
+input[type="date"].ui-date-noicon::-webkit-calendar-picker-indicator{
+  opacity: 0;
+  display: none;
+}
+input[type="date"].ui-date-noicon{
+  background: none;
+}
+/* ついでに不要なスピン/クリアも非表示 */
+input[type="date"].ui-date-noicon::-webkit-inner-spin-button,
+input[type="date"].ui-date-noicon::-webkit-clear-button{
+  display: none;
+}
+
+/* ---- date input: hide native indicator & keep theme ---- */
+
+
+
+/* 汎用：右側にトレーリングアイコンが来る入力 */
+  /* ≒ pr-12 */
+
+
+/* ---- summary pills close button: larger hit area & focus ring ---- */
+.pill-x{
+  inline-size:1.75rem; block-size:1.75rem;  /* 28px */
+  display:inline-grid; place-items:center;
+  border-radius:9999px; line-height:1;
+  background: color-mix(in oklab,#000 6%,#fff 94%);
+  color:#111; border:1px solid var(--border-subtle);
+}
+.pill-x:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px color-mix(in oklab, var(--brand-500) 40%, #fff 60%);
+}
+.btn-primary:disabled{
+  opacity:.6; cursor:not-allowed; filter:saturate(.75);
+}
+
+
+/* ===== Canonical date input & trailing icon utilities ===== */
+input[type="date"]{
+  appearance: none;
+  -webkit-appearance: none;
+  color-scheme: light dark;
+}
+input[type="date"]::-webkit-calendar-picker-indicator{
+  opacity: 0;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.has-trailing-icon{ padding-right: 3rem !important; } /* ≒ pr-12 */
+
+.icon-trailing{
+  position: absolute;
+  inset-inline-end: .75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  inline-size: 1.75rem;  /* 28px */
+  block-size: 1.75rem;
+  line-height: 1;
+}
