@@ -7,7 +7,13 @@ type Props = { poster?: string };
 export default function FullPageVideo({ poster = "/videos/hero-poster.jpg" }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => { try { if ("connection" in navigator && (navigator as any).connection.saveData) { const v = ref.current; if (v) v.preload = "metadata"; } } catch (_) {} 
+  useEffect(() => {
+    try {
+      if ("connection" in navigator && (navigator as any).connection.saveData) {
+        const v = ref.current;
+        if (v) v.preload = "metadata";
+      }
+    } catch {}
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mql.matches) ref.current?.pause();
   }, []);
@@ -21,10 +27,12 @@ export default function FullPageVideo({ poster = "/videos/hero-poster.jpg" }: Pr
         muted
         loop
         playsInline
-        poster={poster} onLoadedData={() => console.log("video loaded")} onError={(e)=>console.error("video error", e.currentTarget.error)}
+        poster={poster}
+        onLoadedData={() => console.log("video loaded")}
+        onError={(e) => console.error("video error", e.currentTarget.error)}
       >
-        <source src="/videos/travoru-hero-4k.mp4?v=20251102a" type="video/webm" />
         <source src="/videos/travoru-hero-4k.mp4?v=20251102a" type="video/mp4" />
+        <source src="/videos/travoru-hero-4k.webm?v=20251102a" type="video/webm" />
         お使いのブラウザは動画に対応していません。
       </video>
       {/* テキスト可読性を保つための薄いオーバーレイ（濃すぎる場合は数値↓） */}

@@ -1,24 +1,31 @@
-const fs = require('fs');
-const path = 'app/api/plan/route.ts';
-let s = fs.readFileSync(path, 'utf8');
+const fs = require("fs");
+const path = "app/api/plan/route.ts";
+let s = fs.readFileSync(path, "utf8");
 
 // 1) 「mustSee を day1..dayN に配分」部分を、for (const spot of mustSee) 起点で見つける
 const start = s.search(/for\s*\(\s*const\s+spot\s+of\s+mustSee\s*\)/);
 if (start === -1) {
-  console.error('❌ 配分ループ（for (const spot of mustSee)）が見つかりません。ファイル構造が変わっていないか確認してください。');
+  console.error(
+    "❌ 配分ループ（for (const spot of mustSee)）が見つかりません。ファイル構造が変わっていないか確認してください。",
+  );
   process.exit(1);
 }
 
 // 2) 終点は「各日の並びを時刻順に」を示す for (let d=1; …) の直前に設定
-const end = s.slice(start).search(/for\s*\(\s*let\s+d\s*=\s*1\s*;\s*d\s*<=\s*diffDays\s*;\s*d\+\+\s*\)\s*\{/);
+const end = s
+  .slice(start)
+  .search(/for\s*\(\s*let\s+d\s*=\s*1\s*;\s*d\s*<=\s*diffDays\s*;\s*d\+\+\s*\)\s*\{/);
 if (end === -1) {
-  console.error('❌ 終点（for (let d = 1; d <= diffDays; d++)）が見つかりません。コメント位置がズレている可能性があります。');
+  console.error(
+    "❌ 終点（for (let d = 1; d <= diffDays; d++)）が見つかりません。コメント位置がズレている可能性があります。",
+  );
   process.exit(1);
 }
 const endAbs = start + end;
 
 // 3) 置換する本文（重複タイトル除外＋時刻被りなし＋Set 管理）
-const replacement = `
+const replacement =
+  `
 {
   // 既存タイトルを全日から収集（重複挿入防止）
   const existingTitles = new Set<string>();
@@ -73,9 +80,9 @@ const replacement = `
     i++;
   }
 }
-`.trim() + '\n';
+`.trim() + "\n";
 
 // 4) 置換して保存
 const out = s.slice(0, start) + replacement + s.slice(endAbs);
 fs.writeFileSync(path, out);
-console.log('✅ 配分ロジックを重複なし・時刻被りなし版に置換しました:', path);
+console.log("✅ 配分ロジックを重複なし・時刻被りなし版に置換しました:", path);

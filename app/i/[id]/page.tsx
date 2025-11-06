@@ -9,7 +9,7 @@ type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata(
   { params }: Props,
-  _parent: ResolvingMetadata
+  _parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { id } = await params;
   const key = id?.toLowerCase();
@@ -56,8 +56,18 @@ export default async function CityPage({ params }: Props) {
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type":"ListItem", position:1, name:"Home", item: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"}` },
-        { "@type":"ListItem", position:2, name: city.title, item: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"}/i/${key}` },
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"}`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: city.title,
+          item: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"}/i/${key}`,
+        },
       ],
     },
   };

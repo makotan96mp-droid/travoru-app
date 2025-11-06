@@ -40,7 +40,12 @@ export default function StickySteps({ steps }: { steps?: InputStep[] }) {
   const firstInView = useInView(firstRef, { margin: "-10% 0px -80% 0px" });
 
   return (
-    <section id="how-it-works" className="relative z-10" role="region" aria-labelledby="how-it-works">
+    <section
+      id="how-it-works"
+      className="relative z-10"
+      role="region"
+      aria-labelledby="how-it-works"
+    >
       <div className="mx-auto max-w-6xl px-4 py-16">
         <h2 id="how-steps">使い方</h2>
 
@@ -61,13 +66,21 @@ export default function StickySteps({ steps }: { steps?: InputStep[] }) {
                       {i + 1}
                     </span>
                     <div>
-                      <h3 id={`step--title`} className="font-semibold text-white">{s.title}</h3>
-                      <p id={`step--desc`} className="opacity-90 whitespace-pre-line">{s.body}</p>
+                      <h3 id={`step--title`} className="font-semibold text-white">
+                        {s.title}
+                      </h3>
+                      <p id={`step--desc`} className="opacity-90 whitespace-pre-line">
+                        {s.body}
+                      </p>
                     </div>
                   </li>
                 ))}
               </ol>
-              <a href="/new" className="mt-6 inline-flex items-center rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm hover:bg-white/15" aria-describedby={`step-0-desc`} >
+              <a
+                href="/new"
+                className="mt-6 inline-flex items-center rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm hover:bg-white/15"
+                aria-describedby={`step-0-desc`}
+              >
                 今すぐ試す
               </a>
             </div>
@@ -76,15 +89,16 @@ export default function StickySteps({ steps }: { steps?: InputStep[] }) {
           {/* 右：StepPanelで縦積み */}
           <div className="space-y-6 max-w-2xl md:max-w-3xl md:mx-0 mx-auto">
             {DATA.map((s, i) => (
-              <StepPanel
-                key={i}
-                step={i + 1}
-                title={s.title}
-                caption={s.body}
-              >
+              <StepPanel key={i} step={i + 1} title={s.title} caption={s.body}>
                 <div ref={i === 0 ? firstRef : undefined}>
-                  <div className="relative overflow-hidden rounded-xl border border-slate-200/80 dark:border-white/15 bg-white dark:bg-slate-900/40" role="listitem">
-                    <Image loading="lazy" decoding="async" src={s.image}
+                  <div
+                    className="relative overflow-hidden rounded-xl border border-slate-200/80 dark:border-white/15 bg-white dark:bg-slate-900/40"
+                    role="listitem"
+                  >
+                    <Image
+                      loading="lazy"
+                      decoding="async"
+                      src={s.image}
                       alt={s.alt}
                       width={1600}
                       height={900}

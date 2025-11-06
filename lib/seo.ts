@@ -1,11 +1,10 @@
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-  "http://localhost:3001";
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3001";
 
 export type CityMeta = {
   title: string;
   description: string;
-  image: string;   // absolute or path under /public
+  image: string; // absolute or path under /public
 };
 
 export const CITY_META: Record<string, CityMeta> = {

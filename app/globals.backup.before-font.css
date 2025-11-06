@@ -9,25 +9,68 @@
 /* ② デザイントークン（v4は @theme で宣言） */
 @theme {
   /* Colors → bg-brand-primary / text-brand-primary などで利用可 */
-  --color-brand-primary: #0A66FF;
-  --color-brand-secondary: #FF3B30;
-  --color-brand-accent: #FFB800;
-  --color-brand-green: #34A853;
+  --color-brand-primary: #0a66ff;
+  --color-brand-secondary: #ff3b30;
+  --color-brand-accent: #ffb800;
+  --color-brand-green: #34a853;
 
   /* Border Radius → rounded-xl / rounded-2xl を有効化 */
   --radius-xl: 1rem;
   --radius-2xl: 1.25rem;
 
   /* Shadow → shadow-soft で利用可 */
-  --shadow-soft: 0 10px 28px rgba(0,0,0,0.10);
+  --shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.1);
 }
 
 /* ③ あなたの共通レイアウト */
-:root { --bg:#fff; --fg:#111; --radius: 0.625rem; --background: oklch(1 0 0); --foreground: oklch(0.145 0 0); --card: oklch(1 0 0); --card-foreground: oklch(0.145 0 0); --popover: oklch(1 0 0); --popover-foreground: oklch(0.145 0 0); --primary: oklch(0.205 0 0); --primary-foreground: oklch(0.985 0 0); --secondary: oklch(0.97 0 0); --secondary-foreground: oklch(0.205 0 0); --muted: oklch(0.97 0 0); --muted-foreground: oklch(0.556 0 0); --accent: oklch(0.97 0 0); --accent-foreground: oklch(0.205 0 0); --destructive: oklch(0.577 0.245 27.325); --border: oklch(0.922 0 0); --input: oklch(0.922 0 0); --ring: oklch(0.708 0 0); --chart-1: oklch(0.646 0.222 41.116); --chart-2: oklch(0.6 0.118 184.704); --chart-3: oklch(0.398 0.07 227.392); --chart-4: oklch(0.828 0.189 84.429); --chart-5: oklch(0.769 0.188 70.08); --sidebar: oklch(0.985 0 0); --sidebar-foreground: oklch(0.145 0 0); --sidebar-primary: oklch(0.205 0 0); --sidebar-primary-foreground: oklch(0.985 0 0); --sidebar-accent: oklch(0.97 0 0); --sidebar-accent-foreground: oklch(0.205 0 0); --sidebar-border: oklch(0.922 0 0); --sidebar-ring: oklch(0.708 0 0); }
-html,body { background:var(--bg); color:var(--fg); }
+:root {
+  --bg: #fff;
+  --fg: #111;
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
 
 /* ④ コンポーネント用ヘルパ（@applyはv4でもOK） */
-.container { max-width:960px; margin:0 auto; padding:24px; }
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+}
 
 .btn {
   @apply inline-flex items-center justify-center rounded-2xl px-5 py-3
@@ -38,9 +81,13 @@ html,body { background:var(--bg); color:var(--fg); }
   @apply rounded-2xl border border-neutral-200 p-5 shadow-soft bg-white;
 }
 
-.label { @apply block text-sm font-medium mb-1; }
+.label {
+  @apply block text-sm font-medium mb-1;
+}
 
-.input,.select,.textarea {
+.input,
+.select,
+.textarea {
   @apply w-full rounded-xl border border-neutral-300 px-3 py-2 outline-none
          focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition;
 }
@@ -54,7 +101,9 @@ html,body { background:var(--bg); color:var(--fg); }
 }
 /* --- mobile-friendly container --- */
 @media (max-width: 640px) {
-  .container { padding: 16px; }
+  .container {
+    padding: 16px;
+  }
 }
 
 @theme inline {

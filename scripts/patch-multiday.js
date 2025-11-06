@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = 'app/_components/ItineraryForm.tsx';
-let src = fs.readFileSync(path, 'utf8');
+const fs = require("fs");
+const path = "app/_components/ItineraryForm.tsx";
+let src = fs.readFileSync(path, "utf8");
 
 // day1固定ブロックを汎用レンダリングへ置換
 const re = /\{Array\.isArray\(preview\.day1\)[\s\S]*?\n\s*\}\)\n\s*\}/m;
@@ -26,10 +26,12 @@ const replacement = `
 `.trim();
 
 if (!re.test(src)) {
-  console.error('置換対象の day1 ブロックが見つかりませんでした。ファイルの該当部分が変わっていないか確認してください。');
+  console.error(
+    "置換対象の day1 ブロックが見つかりませんでした。ファイルの該当部分が変わっていないか確認してください。",
+  );
   process.exit(1);
 }
 
-src = src.replace(re, replacement + '\n');
+src = src.replace(re, replacement + "\n");
 fs.writeFileSync(path, src);
-console.log('✅ multiday パッチを適用しました:', path);
+console.log("✅ multiday パッチを適用しました:", path);

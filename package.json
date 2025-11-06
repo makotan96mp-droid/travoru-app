@@ -8,19 +8,24 @@
     "start": "next start",
     "lint": "eslint",
     "postbuild": "node scripts/inline-critical-css.mjs",
-    "dev:clean": "pkill -f \"next dev|next-server|turbopack\" || true && rm -f .next/dev/lock && next dev -p 3001",
+    "dev:clean": "rm -rf .next/dev/lock",
     "prebuild": "bash scripts/check-all.sh",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
     "e2e:local": "TMPDIR=.tmp playwright test",
-    "dev:3001": "next dev -p 3001",
-    "test:api": "scripts/test-plan.sh"
+    "dev:3001": "PORT=3001 next dev -p 3001",
+    "test:api": "scripts/test-plan.sh",
+    "dev:kill": "node -e \"const {execSync}=require('child_process');try{const p=execSync('lsof -ti :3000,:3001',{stdio:['ignore','pipe','ignore']}).toString().trim(); if(p) execSync('kill '+p);}catch(e){}\"",
+    "dev:kill:hard": "node -e \"const {execSync}=require('child_process');try{const p=execSync('lsof -ti :3000,:3001',{stdio:['ignore','pipe','ignore']}).toString().trim(); if(p) execSync('kill -9 '+p);}catch(e){}\"",
+    "dev:start": "pnpm run dev:kill && pnpm run dev:clean && pnpm run dev:3001",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@hello-pangea/dnd": "^18.0.1",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -44,8 +49,10 @@
     "critters": "^0.0.23",
     "eslint": "^9",
     "eslint-config-next": "16.0.0",
+    "eslint-config-prettier": "^10.1.8",
     "glob": "^11.0.3",
     "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4.1.15",
     "typescript": "^5"
   }
