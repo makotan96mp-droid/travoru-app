@@ -1,25 +1,28 @@
-const fs = require('fs');
-const path = 'app/api/plan/route.ts';
-let src = fs.readFileSync(path, 'utf8');
+const fs = require("fs");
+const path = "app/api/plan/route.ts";
+let src = fs.readFileSync(path, "utf8");
 
 // 1) 旧ブロックを全削除（scaffold / real / auto-injected / distribute）
 src = src
-  .replace(/\/\/\s*====\s*multi-day scaffold[\s\S]*?catch\s*\{\}\s*/m, '')
-  .replace(/\/\/\s*====\s*multi-day real logic[\s\S]*?catch\s*\(.*?\)\s*\{[\s\S]*?\}\s*/m, '')
-  .replace(/\/\/\s*====\s*multi-day real logic\s*\(auto-injected[\s\S]*?catch\s*\{\s*\}\s*/m, '')
-  .replace(/\/\/\s*mustSee\s*を\s*day1[\s\S]*?\/\/\s*各日の並びを時刻順に/m, '');
+  .replace(/\/\/\s*====\s*multi-day scaffold[\s\S]*?catch\s*\{\}\s*/m, "")
+  .replace(/\/\/\s*====\s*multi-day real logic[\s\S]*?catch\s*\(.*?\)\s*\{[\s\S]*?\}\s*/m, "")
+  .replace(/\/\/\s*====\s*multi-day real logic\s*\(auto-injected[\s\S]*?catch\s*\{\s*\}\s*/m, "")
+  .replace(/\/\/\s*mustSee\s*を\s*day1[\s\S]*?\/\/\s*各日の並びを時刻順に/m, "");
 
 // 2) 返却アンカーをゆるく検索（NextResponse or Response）
-const anchorRe = /^[ \t]*(?:return|const\s+\w+\s*=|let\s+\w+\s*=)?[ \t]*(?:NextResponse|Response)\.json\s*\(.*$/m;
+const anchorRe =
+  /^[ \t]*(?:return|const\s+\w+\s*=|let\s+\w+\s*=)?[ \t]*(?:NextResponse|Response)\.json\s*\(.*$/m;
 const m = src.match(anchorRe);
 if (!m) {
-  console.error('❌ 返却のアンカー行（NextResponse.json/Response.json）が見つかりません。周辺のコードを確認してください。');
+  console.error(
+    "❌ 返却のアンカー行（NextResponse.json/Response.json）が見つかりません。周辺のコードを確認してください。",
+  );
   process.exit(1);
 }
 
 // アンカー行の先頭位置
 const idx = src.indexOf(m[0]);
-const lineStart = src.lastIndexOf('\n', idx) + 1;
+const lineStart = src.lastIndexOf("\n", idx) + 1;
 
 // 3) 切替ブロック本体（前回ご案内の MODE: off/scaffold/roundrobin）
 const block = `
@@ -105,4 +108,4 @@ try {
 // 4) 注入
 src = src.slice(0, lineStart) + block + src.slice(lineStart);
 fs.writeFileSync(path, src);
-console.log('✅ route.ts に MULTIDAY_MODE 切替ブロックを注入しました（汎用アンカー対応）。');
+console.log("✅ route.ts に MULTIDAY_MODE 切替ブロックを注入しました（汎用アンカー対応）。");

@@ -1,16 +1,20 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig } from "@playwright/test";
+
+const PORT = process.env.PORT || "3100";
+const BASE = `http://localhost:${PORT}`;
 
 export default defineConfig({
-  testDir: 'tests/e2e',
+  testDir: "tests/e2e",
   timeout: 30_000,
   use: {
-    baseURL: 'http://localhost:3001',
+    baseURL: BASE, // page.goto('/') が BASE に通る
+    trace: "on-first-retry",
   },
-  // Next.js devサーバを自動起動（ポート衝突時は再利用）
   webServer: {
-    command: 'pnpm dev -p 3001',
-    url: 'http://localhost:3001',
-    reuseExistingServer: true,
-    timeout: 60_000,
+    command: `PORT=${PORT} pnpm next dev -p ${PORT}`,
+    url: BASE,
+    reuseExistingServer: true, // 既に起動してたら再利用
+    timeout: 120_000,
+    env: { TMPDIR: `${process.cwd()}/.tmp` }, // 変換キャッシュをプロジェクト内に
   },
 });

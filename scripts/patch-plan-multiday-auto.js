@@ -1,21 +1,21 @@
-const fs = require('fs');
-const path = 'app/api/plan/route.ts';
-let src = fs.readFileSync(path, 'utf8');
+const fs = require("fs");
+const path = "app/api/plan/route.ts";
+let src = fs.readFileSync(path, "utf8");
 
 // 既存の暫定ブロックがあれば除去
-src = src.replace(/\/\/ ==== multi-day scaffold[\s\S]*?catch \{\}\s*/m, '');
+src = src.replace(/\/\/ ==== multi-day scaffold[\s\S]*?catch \{\}\s*/m, "");
 
 // NextResponse.json(IDENT) の IDENT を特定
 const m = src.match(/NextResponse\.json\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)/);
 if (!m) {
-  console.error('❌ NextResponse.json(…) の第1引数が単純な変数ではありません。');
+  console.error("❌ NextResponse.json(…) の第1引数が単純な変数ではありません。");
   process.exit(1);
 }
 const varName = m[1];
 
 // 挿入位置（NextResponse.json の行頭直前）
 const idx = src.indexOf(m[0]);
-const lineStart = src.lastIndexOf('\n', idx) + 1;
+const lineStart = src.lastIndexOf("\n", idx) + 1;
 
 // 実ロジック：mustSee を day1..dayN に配分、宿泊ONなら day1へチェックイン
 const realLogic = `
@@ -69,4 +69,4 @@ try {
 
 const out = src.slice(0, lineStart) + realLogic + src.slice(lineStart);
 fs.writeFileSync(path, out);
-console.log('✅ Injected multi-day logic targeting variable:', varName);
+console.log("✅ Injected multi-day logic targeting variable:", varName);

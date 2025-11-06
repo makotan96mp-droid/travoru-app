@@ -1,12 +1,13 @@
-const fs = require('fs');
-const path = 'app/api/plan/route.ts';
-let src = fs.readFileSync(path, 'utf8');
+const fs = require("fs");
+const path = "app/api/plan/route.ts";
+let src = fs.readFileSync(path, "utf8");
 
 /**
  * 既存の「暫定: day1を複製」ブロックを検出して、実ロジックに置換します。
  * （見つからない場合は、NextResponse.json(data)直前に挿入）
  */
-const markerStart = /\/\/ ==== multi-day scaffold \(temporary\): clone day1 into day2\+ for preview ====/;
+const markerStart =
+  /\/\/ ==== multi-day scaffold \(temporary\): clone day1 into day2\+ for preview ====/;
 const resLine = /const\s+res\s*=\s*NextResponse\.json\(data\);/;
 
 const realLogic = `
@@ -57,17 +58,16 @@ try {
 
 if (markerStart.test(src)) {
   // 暫定ブロックごと置換（開始行〜catch {} まで）
-  src = src.replace(
-    /\/\/ ==== multi-day scaffold[\s\S]*?catch \{\}\s*/m,
-    realLogic + '\n'
-  );
+  src = src.replace(/\/\/ ==== multi-day scaffold[\s\S]*?catch \{\}\s*/m, realLogic + "\n");
 } else if (resLine.test(src)) {
   // 暫定ブロックが見つからない場合：res直前に挿入
-  src = src.replace(resLine, realLogic + '\n$&');
+  src = src.replace(resLine, realLogic + "\n$&");
 } else {
-  console.error('挿入位置が見つかりませんでした。NextResponse.json(data) の位置を確認してください。');
+  console.error(
+    "挿入位置が見つかりませんでした。NextResponse.json(data) の位置を確認してください。",
+  );
   process.exit(1);
 }
 
 fs.writeFileSync(path, src);
-console.log('✅ /api/plan に実ロジックを適用しました:', path);
+console.log("✅ /api/plan に実ロジックを適用しました:", path);

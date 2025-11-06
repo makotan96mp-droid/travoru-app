@@ -21,11 +21,15 @@ export default function StepPanel({
                  dark:bg-slate-950/70 dark:text-white overflow-hidden"
     >
       {/* ヘッダー帯 */}
-      <header className="flex items-center gap-3 px-5 py-3
+      <header
+        className="flex items-center gap-3 px-5 py-3
                          bg-gradient-to-r from-slate-900/65 via-slate-900/52 to-slate-900/38
-                         text-white border-b border-white/15">
-        <span className="inline-flex h-6 min-w-6 items-center justify-center
-                         rounded-full bg-white/95 text-slate-900 text-[12px] font-bold">
+                         text-white border-b border-white/15"
+      >
+        <span
+          className="inline-flex h-6 min-w-6 items-center justify-center
+                         rounded-full bg-white/95 text-slate-900 text-[12px] font-bold"
+        >
           {step}
         </span>
         <div className="leading-tight">

@@ -2,13 +2,16 @@ export type CityKey = "tokyo" | "kyoto" | "osaka";
 
 export const SITE_URL = "https://travoru.example.com";
 
-export const CITY_META: Record<CityKey, {
-  path: string;
-  title: string;
-  description: string;
-  image: string;
-  alt: string;
-}> = {
+export const CITY_META: Record<
+  CityKey,
+  {
+    path: string;
+    title: string;
+    description: string;
+    image: string;
+    alt: string;
+  }
+> = {
   tokyo: {
     path: "/i/tokyo",
     title: "Tokyo — まるっと東京",
@@ -32,7 +35,7 @@ export const CITY_META: Record<CityKey, {
   },
 };
 
-export const SITE_ORIGIN = SITE_URL.replace(/\/+$/,"");
+export const SITE_ORIGIN = SITE_URL.replace(/\/+$/, "");
 
 export const absoluteImage = (src: string) =>
   /^https?:\/\//.test(src) ? src : `${SITE_ORIGIN}${src}`;

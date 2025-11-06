@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = 'app/_components/ItineraryForm.tsx';
-let src = fs.readFileSync(path, 'utf8');
+const fs = require("fs");
+const path = "app/_components/ItineraryForm.tsx";
+let src = fs.readFileSync(path, "utf8");
 
 const replacement = `
 {Object.entries(preview)
@@ -26,11 +26,12 @@ const replacement = `
 const reA = /\{Array\.isArray\(preview\.day1\)[\s\S]*?\n\s*\}\)\n\s*\}/m;
 
 // パターンB: "Day 1" の見出しを含むコンテナを置換
-const reB = /\{Array\.isArray\(preview\.day1\)[\s\S]*?<div[^>]*>\s*Day\s*1\s*<\/div>[\s\S]*?<\/div>\s*\)\s*\)/m;
+const reB =
+  /\{Array\.isArray\(preview\.day1\)[\s\S]*?<div[^>]*>\s*Day\s*1\s*<\/div>[\s\S]*?<\/div>\s*\)\s*\)/m;
 
 let changed = false;
 if (reA.test(src)) {
-  src = src.replace(reA, replacement + '\n');
+  src = src.replace(reA, replacement + "\n");
   changed = true;
 } else if (reB.test(src)) {
   src = src.replace(reB, replacement);
@@ -38,11 +39,11 @@ if (reA.test(src)) {
 }
 
 if (!changed) {
-  console.error('❌ day1 固定ブロックを見つけられませんでした。周辺テキストの例：');
-  const head = src.indexOf('preview.day1');
-  if (head >= 0) console.error(src.slice(Math.max(0, head-200), head+400));
+  console.error("❌ day1 固定ブロックを見つけられませんでした。周辺テキストの例：");
+  const head = src.indexOf("preview.day1");
+  if (head >= 0) console.error(src.slice(Math.max(0, head - 200), head + 400));
   process.exit(1);
 }
 
 fs.writeFileSync(path, src);
-console.log('✅ multiday パッチを適用しました:', path);
+console.log("✅ multiday パッチを適用しました:", path);

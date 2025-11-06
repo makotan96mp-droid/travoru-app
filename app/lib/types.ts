@@ -1,13 +1,25 @@
-export type TravelMode = "walk" | "transit" | "drive";
-export type Purpose = "観光" | "ショッピング" | "グルメ" | "宿泊" | "体験" | "写真" | "宿泊";
-0
-export interface PlanDay {
-  date: string;
-  items: { time: string; title: string; note?: string }[];
-}
-export interface PlanResponse {
-  previewCountLeft: number; // 無料プレビュー残回数
+/**
+ * Minimal shared types for API and components.
+ * Later, replace `any` with concrete shapes.
+ */
+export type PlanRequest = {
   city: string;
-  days: PlanDay[];
-  notes?: string[];
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
+  purposes: string[]; // 例: ["グルメ","宿泊","観光"]
+  places?: string[];
+  hotelName?: string | null;
+  days?: number;
+  adults?: number;
+  children?: number;
+  [k: string]: any;
+};
+
+// API response (暫定：緩め)
+export interface _PlanResponse {
+  [k: string]: any;
 }
+
+// Keep-alive markers (安全)
+export type __TypesMarker = unknown;
+export const __TYPES_ALIVE = true;

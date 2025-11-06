@@ -4,14 +4,14 @@
  */
 const OSAKA_HINT: Record<string, number> = {
   "梅田スカイビル 空中庭園": 10,
-  "大阪城": 20,
-  "道頓堀": 30,
-  "黒門市場": 35,
+  大阪城: 20,
+  道頓堀: 30,
+  黒門市場: 35,
   "アメリカ村（アメ村）": 40,
-  "通天閣": 50,
-  "海遊館": 70,
+  通天閣: 50,
+  海遊館: 70,
   "カニ道楽 本店": 32,
-  "USJ": 80
+  USJ: 80,
 };
 
 export function getDistanceHint(city: string | undefined, title: string | undefined): number {

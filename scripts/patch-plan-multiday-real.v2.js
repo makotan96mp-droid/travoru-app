@@ -1,19 +1,19 @@
-const fs = require('fs');
-const path = 'app/api/plan/route.ts';
-let src = fs.readFileSync(path, 'utf8');
+const fs = require("fs");
+const path = "app/api/plan/route.ts";
+let src = fs.readFileSync(path, "utf8");
 
 // 既存の暫定スキャフォールドを削除（入っていれば）
-src = src.replace(/\/\/ ==== multi-day scaffold[\s\S]*?catch \{\}\s*/m, '');
+src = src.replace(/\/\/ ==== multi-day scaffold[\s\S]*?catch \{\}\s*/m, "");
 
 // NextResponse.json(...) の最初の登場位置を探す（return/const 問わず）
-const idx = src.indexOf('NextResponse.json(');
+const idx = src.indexOf("NextResponse.json(");
 if (idx === -1) {
-  console.error('❌ NextResponse.json(...) が見つかりません。ファイルの該当箇所をご確認ください。');
+  console.error("❌ NextResponse.json(...) が見つかりません。ファイルの該当箇所をご確認ください。");
   process.exit(1);
 }
 
 // 差し込み位置は、その行の直前
-const lineStart = src.lastIndexOf('\n', idx) + 1;
+const lineStart = src.lastIndexOf("\n", idx) + 1;
 
 const realLogic = `
 // ==== multi-day real logic: distribute mustSee across days ====
@@ -64,4 +64,4 @@ try {
 
 const out = src.slice(0, lineStart) + realLogic + src.slice(lineStart);
 fs.writeFileSync(path, out);
-console.log('✅ /api/plan に実ロジックを挿入しました（NextResponse.json の直前）。');
+console.log("✅ /api/plan に実ロジックを挿入しました（NextResponse.json の直前）。");

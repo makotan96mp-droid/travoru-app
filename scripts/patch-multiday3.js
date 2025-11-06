@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = 'app/_components/ItineraryForm.tsx';
-let src = fs.readFileSync(path, 'utf8');
+const fs = require("fs");
+const path = "app/_components/ItineraryForm.tsx";
+let src = fs.readFileSync(path, "utf8");
 
 const replacement = `
 {Object.entries(preview)
@@ -24,15 +24,16 @@ const replacement = `
 
 // パターンC: 実コード断片に合わせて、条件開始〜閉じ括弧までをゆるくキャプチャ
 // {Array.isArray(preview.day1) ... ( <div> <div>Day 1</div> ... </div> ) }
-const reC = /\{Array\.isArray\(preview\.day1\)[\s\S]*?\(\s*<div[^>]*>\s*<div[^>]*>Day\s*1<\/div>[\s\S]*?<\/div>\s*\)\s*\}/m;
+const reC =
+  /\{Array\.isArray\(preview\.day1\)[\s\S]*?\(\s*<div[^>]*>\s*<div[^>]*>Day\s*1<\/div>[\s\S]*?<\/div>\s*\)\s*\}/m;
 
 if (!reC.test(src)) {
-  console.error('❌ day1 固定ブロックを見つけられませんでした。周辺を表示します:');
-  const head = src.indexOf('Array.isArray(preview.day1)');
-  if (head >= 0) console.error(src.slice(Math.max(0, head-200), head+600));
+  console.error("❌ day1 固定ブロックを見つけられませんでした。周辺を表示します:");
+  const head = src.indexOf("Array.isArray(preview.day1)");
+  if (head >= 0) console.error(src.slice(Math.max(0, head - 200), head + 600));
   process.exit(1);
 }
 
-src = src.replace(reC, replacement + '\n');
+src = src.replace(reC, replacement + "\n");
 fs.writeFileSync(path, src);
-console.log('✅ multiday パッチを適用しました:', path);
+console.log("✅ multiday パッチを適用しました:", path);
