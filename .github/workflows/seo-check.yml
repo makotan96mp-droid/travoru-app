@@ -1,0 +1,48 @@
+name: SEO health check
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+concurrency:
+  group: seo-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PORT: 3001
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      # 本番ビルド → next start → / と /new 疎通 → OG一貫性チェック
+      - name: Run SEO checks (prod)
+        run: MODE=prod bash tools/seo-check.sh
+
+      # 失敗時にログ拾う（必要ならパスを調整）
+      - name: Upload Next logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-logs
+          path: |
+            .next/trace
+            .next/**/*.log
+            .next-run.pid
