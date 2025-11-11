@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 // app/demo/page.tsx (Next.js 16: サーバーコンポーネントでSSR fetch)
-import ItineraryDayCard from "@/_components/ItineraryDayCard";
+import ItineraryDayCard from "../_components/ItineraryDayCard";
 
 async function fetchPlan(baseURL: string) {
   const seed = {
