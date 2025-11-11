@@ -3,6 +3,18 @@ import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 import { pickIconFrom } from "@/lib/iconMap";
 
+/** Render icon or short text badge as a React element */
+function renderIconNode(it: any) {
+  const iconOrString = (getIconFor as any)(it);
+  if (typeof iconOrString === "string") {
+    return <span className="inline-block text-[10px] font-semibold leading-none">{iconOrString}</span>;
+  }
+  const IconComp = iconOrString as any;
+  return IconComp ? <IconComp className="h-4 w-4" aria-hidden /> : null;
+}
+
+
+
 type Item = {
   time?: string;
   title?: string;
@@ -12,15 +24,6 @@ type Item = {
   isMain?: boolean;
   isNow?: boolean;
   meta?: { distanceHint?: number };
-function renderIconNode(it: Item) {
-  const iconOrString = (getIconFor as any)(it);
-  if (typeof iconOrString === "string") {
-    return <span className="inline-block text-[10px] font-semibold leading-none">{iconOrString}</span>;
-  }
-  const IconComp = iconOrString as any; // ComponentType を要素化
-  return IconComp ? <IconComp className="h-4 w-4" aria-hidden /> : null;
-}
-
 };
 
 type Density = "compact" | "cozy" | "comfortable";
