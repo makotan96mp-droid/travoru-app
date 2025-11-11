@@ -12,6 +12,15 @@ type Item = {
   isMain?: boolean;
   isNow?: boolean;
   meta?: { distanceHint?: number };
+function renderIconNode(it: Item) {
+  const iconOrString = (getIconFor as any)(it);
+  if (typeof iconOrString === "string") {
+    return <span className="inline-block text-[10px] font-semibold leading-none">{iconOrString}</span>;
+  }
+  const IconComp = iconOrString as any; // ComponentType を要素化
+  return IconComp ? <IconComp className="h-4 w-4" aria-hidden /> : null;
+}
+
 };
 
 type Density = "compact" | "cozy" | "comfortable";
@@ -339,7 +348,7 @@ function renderItem(it: Item, i: number, t: any, showDistance: boolean, hour12: 
           className={`${t.iconBox} ${isMain ? "bg-emerald-500/15 ring-emerald-400/30" : ""}`}
           dataMain={isMain}
         >
-          {getIconFor(it)}
+          {renderIconNode(it)}
         </IconBubble>
 
         <div className="min-w-0">
