@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,7 +23,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "app/*"
+      ]
     },
     "baseUrl": "."
   },
@@ -31,5 +37,9 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "app/**/*backup*.tsx", "app/**/*before-*.tsx"]
+  "exclude": [
+    "node_modules",
+    "app/**/*backup*.tsx",
+    "app/**/*before-*.tsx"
+  ]
 }
