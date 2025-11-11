@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     branches: [ main ]
+
 concurrency:
   group: seo-${{ github.ref }}
   cancel-in-progress: true
@@ -11,10 +12,11 @@ concurrency:
 jobs:
   seo:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env:
       PORT: 3001
       NEXT_TELEMETRY_DISABLED: 1
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,17 +35,35 @@ jobs:
       - name: Install deps
         run: pnpm install --frozen-lockfile
 
-      # 本番ビルド → next start → / と /new 疎通 → OG一貫性チェック
       - name: Run SEO checks (prod)
         run: MODE=prod bash tools/seo-check.sh
 
-      # 失敗時にログ拾う（必要ならパスを調整）
-      - name: Upload Next logs (on failure)
+      # 失敗時にログをその場で表示
+      - name: Print logs to console (on failure)
         if: failure()
+        run: |
+          echo "::group::.next dir"
+          ls -la .next || true
+          echo "::endgroup::"
+          for f in .next/*.log; do
+            echo "::group::$(basename "$f")"
+            tail -n +1 "$f" || true
+            echo "::endgroup::"
+          done
+          echo "::group::next-start excerpt"
+          tail -n 200 .next/next-start.log || true
+          echo "::endgroup::"
+          echo "::group::next-build excerpt"
+          tail -n 200 .next/next-build.log || true
+          echo "::endgroup::"
+
+      # 成否に関係なく .next をアーティファクト化
+      - name: Upload Next logs (always)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: next-logs
           path: |
-            .next/trace
-            .next/**/*.log
+            .next/**
             .next-run.pid
+          retention-days: 3
