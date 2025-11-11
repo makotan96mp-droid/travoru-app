@@ -1,137 +1,182 @@
-import type { PlanRequest, _PlanResponse } from "@/lib/types";
-
 import { NextRequest, NextResponse } from "next/server";
-import { _cloneDay1ToOthers, roundRobinDistribute, calcDiffDays } from "@/lib/distribute";
-import { readMultiDayMode } from "@/lib/multiday";
-import { getDistanceHint } from "@/lib/distanceDict";
-import { addArrivalDepartureTransfers } from "@/lib/postprocess";
-import { clampMainPerDay } from "@/lib/postprocess";
-import { balanceByHotelCenter } from "@/lib/distance";
+import type { PlanRequest, _PlanResponse as PlanResponse } from "@/lib/types";
 
 export const runtime = "edge";
 
-export async function POST(req: NextRequest) {
-  const body = (await req.json()) as PlanRequest;
+/**
+ * 安全な文字トリム
+ */
+function trimOrNull(v: unknown): string | null {
+  if (typeof v !== "string") return null;
+  const t = v.trim();
+  if (!t || ["未定", "tbd", "TBD", "null", "undefined"].includes(t)) return null;
+  return t;
+}
 
-  const data: Record<string, any> = {};
-  if (!body?.city || !body?.startDate || !body?.endDate) {
-    // === enforceMainCap: 返却直前に各日のメイン件数を cap に揃える（移動は保護） ===
-    try {
-      const days = calcDiffDays((body as any).startDate as any, (body as any).endDate as any);
+/**
+ * "HH:MM" を返すだけ（実際の日付結合はクライアント側で行う想定）
+ */
+function hhmm(h: number, m: number = 0): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(h)}:${pad(m)}`;
+}
 
-      // route側の cap 定義（libのcapForと同等に調整）
-      const defaultMax = 2;
-      const perDayRule: Record<string, number | undefined> = { 1: 2, last: 2 };
-      const capFor = (d: number) =>
-        d === days && perDayRule.last != null ? perDayRule.last! : (perDayRule[d] ?? defaultMax);
-
-      const isMeal = (t: any) => /ランチ|夕食/.test(String(t?.title || ""));
-      const isHotelCheckin = (t: any) => String(t?.title || "").includes("ホテルチェックイン");
-      // ★テスト定義に合わせて「メイン判定」は“食事/ホテルチェックイン以外”を基準にする
-      const isMainForView = (t: any) =>
-        !isMeal(t) &&
-        !isHotelCheckin(t) &&
-        !(t?.type === "移動" || (t?.meta && t.meta.auto === true));
-      // 保護対象（削らない）
-      const isProtected = (t: any) => t?.type === "移動" || (t?.meta && t.meta.auto === true);
-
-      // 削除優先度（低いもの＝先に削る）
-      const delPriority = (t: any) => {
-        const title = String(t?.title || "");
-        if (/サブスポット（候補）/.test(title)) return 1;
-        if (/フリータイム（予備日）/.test(title)) return 2;
-        if (/近隣散策（候補）/.test(title)) return 3;
-        if (/カフェ休憩（候補）/.test(title)) return 4;
-        if (/ショッピング（候補）/.test(title)) return 5;
-        // それ以外（mustSee等）は高優先度=削りにくい
-        return 999;
-      };
-
-      for (let d = 1; d <= days; d++) {
-        const key = `day${d}`;
-        const arr = (data as any)[key];
-        if (!Array.isArray(arr)) continue;
-
-        const cap = capFor(d);
-        // 現在の「表示上のメイン」件数
-        const mainIdxs = arr
-          .map((it, idx) => ({ it, idx }))
-          .filter((x) => isMainForView(x.it))
-          .map((x) => x.idx);
-
-        if (mainIdxs.length > cap) {
-          // 削除候補（保護対象は除外）
-          const candidates = arr
-            .map((it, idx) => ({ it, idx }))
-            .filter((x) => isMainForView(x.it) && !isProtected(x.it))
-            // プレースホルダ優先で削除
-            .sort((a, b) => delPriority(a.it) - delPriority(b.it));
-
-          let needRemove = mainIdxs.length - cap;
-          const toRemove = [];
-          for (const c of candidates) {
-            if (needRemove <= 0) break;
-            toRemove.push(c.idx);
-            needRemove--;
-          }
-          if (toRemove.length > 0) {
-            // index降順で削除（ズレ防止）
-            toRemove.sort((a, b) => b - a).forEach((i) => arr.splice(i, 1));
-          }
-        }
-
-        // 時刻順リソート（削除後も整える）
-        (data as any)[key] = arr
-          .slice()
-          .sort((a: any, b: any) => String(a?.time ?? "").localeCompare(String(b?.time ?? "")));
-      }
-    } catch {}
-    // === /enforceMainCap ===
-    return NextResponse.json({ error: "必須項目が不足しています" }, { status: 400 });
-  }
-
-  const wantsFood = Array.isArray(body.purposes) ? body.purposes.includes("グルメ") : false;
-  const diffDays = calcDiffDays(body.startDate, body.endDate);
-  const MODE =
-    (typeof readMultiDayMode === "function" ? readMultiDayMode() : "roundrobin") || "roundrobin";
-
-  // マルチデイ出力オブジェクト
+// 開始日と終了日の日数差（>=0）
+function daysBetween(a: string, b: string): number {
   try {
-    // mustSee 取得
-    const ms = Array.isArray((body as any).mustSee) ? ((body as any).mustSee as string[]) : [];
+    const d1 = new Date(a + "T00:00:00");
+    const d2 = new Date(b + "T00:00:00");
+    const t1 = d1.getTime(),
+      t2 = d2.getTime();
+    if (Number.isNaN(t1) || Number.isNaN(t2)) return 0;
+    const diff = Math.floor((t2 - t1) / 86400000);
+    return diff < 0 ? 0 : diff;
+  } catch {
+    return 0;
+  }
+}
 
-    // ★ B方針: 2枠固定 + seed を上限にカウント
-    roundRobinDistribute(data as any, diffDays, ms, {
-      startOffset: diffDays > 1 ? 1 : 0,
-      maxPerDay: 2,
-      maxPerDayByDayIndex: { 1: 2, last: 2 },
-      addPlaceholders: true,
-      wantsFood,
-      countMealsAsMain: false,
-      includeSeedInCap: true,
+/**
+ * 目的から簡易フラグ導出
+ */
+function deriveWants(purposes: string[] | undefined) {
+  const ps = (purposes ?? []).map((s) => String(s).toLowerCase());
+  const wantsFood = ps.some((p) => ["グルメ", "food", "eat", "gourmet"].includes(p));
+  const wantsStay = ps.some((p) => ["宿泊", "stay", "hotel"].includes(p));
+  const wantsShop = ps.some((p) => ["ショッピング", "shopping", "shop"].includes(p));
+  const wantsSight = ps.some((p) => ["観光", "sightseeing", "tour"].includes(p));
+  return { wantsFood, wantsStay, wantsShop, wantsSight };
+}
+
+/**
+ * 到着/出発・ホテルIN/OUTのダミースロットを作る
+ * - options.autoTransfer が未指定なら true 扱い（初期体験を親切に）
+ * - hotelName が未定ならホテル系は生成しない
+ */
+function seedSystemSlots(req: PlanRequest) {
+  type Slot = {
+    time: string;
+    title: string;
+    tags?: string[];
+    isMain?: boolean;
+    meta?: { dayOffset?: number };
+  };
+  const slots: Slot[] = [];
+  const autoTransfer = (req as any)?.options?.autoTransfer ?? true;
+  const hotelName = trimOrNull((req as any)?.hotelName);
+  const start = String((req as any)?.startDate || "");
+  const end = String((req as any)?.endDate || "");
+  const lastOffset = daysBetween(start, end); // 0=同日, 1=翌日...
+
+  if (autoTransfer) {
+    // 到着: 初日
+    slots.push({
+      time: hhmm(9, 0),
+      title: "到着 / トランスファ",
+      tags: ["transfer"],
+      meta: { dayOffset: 0 },
     });
+  }
+  if (hotelName) {
+    // チェックイン: 初日
+    slots.push({
+      time: hhmm(15, 0),
+      title: `チェックイン / ${hotelName}`,
+      tags: ["hotel"],
+      meta: { dayOffset: 0 },
+    });
+  }
+  if (hotelName) {
+    // チェックアウト: 最終日
+    slots.push({
+      time: hhmm(10, 0),
+      title: `チェックアウト / ${hotelName}`,
+      tags: ["hotel"],
+      meta: { dayOffset: lastOffset },
+    });
+  }
+  if (autoTransfer) {
+    // 出発: 最終日
+    slots.push({
+      time: hhmm(17, 0),
+      title: "出発 / トランスファ",
+      tags: ["transfer"],
+      meta: { dayOffset: lastOffset },
+    });
+  }
+  return slots;
+}
 
-    // distanceHint を常に数値で注入（未登録は 999）
-    for (const k of Object.keys(data)) {
-      if (!/^day\d+$/.test(k)) continue;
-      const arr = Array.isArray((data as any)[k]) ? (data as any)[k] : [];
-      for (const it of arr) {
-        if (!it.meta) it.meta = {};
-        it.meta.distanceHint = getDistanceHint((body as any)?.city, it.title);
-      }
-    }
+/**
+ * 固定POIをシンプルに時刻割り当てしてマージ
+ * - 指定 time があれば尊重、無ければ [11:30, 14:00, 16:30] を循環で付与
+ */
+function mergeFixedPOIs(
+  req: any,
+  slots: Array<{
+    time: string;
+    title: string;
+    tags?: string[];
+    isMain?: boolean;
+    meta?: { dayOffset?: number };
+  }>,
+) {
+  const fixed = Array.isArray(req?.fixedPois) ? req.fixedPois : [];
+  if (!fixed.length) return slots;
 
-    // 到着/出発 移動行の付与 → 距離簡易バランス → 最終クランプ（B方針: 各日2）
-    addArrivalDepartureTransfers(data as any, body.hotelName ?? undefined);
-    await balanceByHotelCenter(data as any, { name: body.hotelName ?? undefined });
-    clampMainPerDay(data as any);
-  } catch (e) {
-    console.error("plan route error:", e);
+  const times = ["11:30", "14:00", "16:30"];
+  let i = 0;
+  const normalized = fixed.map((p: any) => ({
+    time:
+      typeof p?.time === "string" && /\d{2}:\d{2}/.test(p.time)
+        ? p.time
+        : times[i++ % times.length],
+    title: String(p?.title || "スポット"),
+    tags: Array.isArray(p?.tags) ? p.tags : [],
+    isMain: !!p?.isMain,
+    meta: p && typeof p.meta === "object" ? p.meta : undefined, // 例: { dayOffset: 1 }
+  }));
+
+  const merged = [...slots, ...normalized];
+  merged.sort((a, b) => {
+    const ao = a?.meta?.dayOffset ?? 0;
+    const bo = b?.meta?.dayOffset ?? 0;
+    return ao !== bo ? ao - bo : a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
+  });
+  return merged;
+}
+
+export async function POST(req: NextRequest) {
+  let body: PlanRequest;
+  try {
+    body = (await req.json()) as PlanRequest;
+  } catch {
+    return NextResponse.json({ error: "JSONの解析に失敗しました" }, { status: 400 });
   }
 
-  // 返却
-  const res = NextResponse.json(data);
-  res.headers.set("x-multiday-mode", String(MODE || ""));
-  res.headers.set("x-diffdays", String(diffDays));
-  return res;
+  // 必須チェック
+  if (!(body as any)?.city || !(body as any)?.startDate || !(body as any)?.endDate) {
+    return NextResponse.json(
+      { error: "必須項目が不足しています（city/startDate/endDate）" },
+      { status: 400 },
+    );
+  }
+
+  // 目的フラグ
+  const flags = deriveWants((body as any)?.purposes);
+
+  // ダミースロット生成
+  let systemItems = seedSystemSlots(body);
+  systemItems = mergeFixedPOIs(body, systemItems);
+  // ここでは「最小の応答」を返す（後でPOI生成/最適化に接続）
+  // PlanResponse の形状差異はキャストで許容（開発中フェーズ）
+  const resp = {
+    city: (body as any).city,
+    startDate: (body as any).startDate,
+    endDate: (body as any).endDate,
+    items: systemItems,
+    flags,
+  } as any as PlanResponse;
+
+  return NextResponse.json(resp, { status: 200 });
 }

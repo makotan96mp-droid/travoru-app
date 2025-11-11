@@ -1,0 +1,38 @@
+name: OG meta & files check
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  check-og:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm exec next build
+
+      # ローカルでNextを立ち上げ → wait-on で待機 → check-og を実行
+      - name: Serve & run OG checks
+        env:
+          NEXT_PUBLIC_SITE_URL: http://localhost:3001
+        run: |
+          pnpm exec next start -p 3001 & NEXT_PID=$!
+          trap 'kill $NEXT_PID' EXIT
+          npx --yes wait-on http://localhost:3001
+          pnpm run check:og

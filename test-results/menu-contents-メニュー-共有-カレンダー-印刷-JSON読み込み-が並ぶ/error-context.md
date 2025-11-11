@@ -1,0 +1,89 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+    - link "コンテンツへスキップ" [ref=e2] [cursor=pointer]:
+        - /url: "#main"
+    - banner [ref=e3]:
+        - generic [ref=e4]:
+            - link "Travoru" [ref=e5] [cursor=pointer]:
+                - /url: /
+                - img "Travoru" [ref=e6]
+            - navigation "主要ナビ" [ref=e7]:
+                - link "使い方" [ref=e8] [cursor=pointer]:
+                    - /url: /about
+                - link "今すぐプランを作る" [ref=e9] [cursor=pointer]:
+                    - /url: /new
+    - main [ref=e10]:
+        - main [ref=e11]:
+            - generic [ref=e12]:
+                - generic [ref=e13]:
+                    - generic [ref=e14]:
+                        - button "Reset" [ref=e15]
+                        - button "＋ 予定を追加" [ref=e16]
+                        - button "今日" [ref=e17]
+                        - button "表示の大きさ(標準)" [ref=e18]:
+                            - text: 表示の大きさ
+                            - generic [ref=e19]: (標準)
+                        - button "距離 表示📍" [pressed] [ref=e20]
+                    - button "メニュー" [expanded] [ref=e22]: メニュー⋯
+                - menu:
+                    - generic [ref=e23]:
+                        - generic [ref=e24]: メニュー
+                        - list [ref=e25]:
+                            - listitem [ref=e26]:
+                                - button "共有リンクをコピー" [ref=e27]
+                            - listitem [ref=e28]:
+                                - button "カレンダーに追加（Google/ICS）" [ref=e29]
+                            - listitem [ref=e30]:
+                                - button "印刷/PDF" [ref=e31]
+                            - listitem [ref=e32]:
+                                - button "JSON読み込み" [ref=e33]
+            - generic [ref=e34]:
+                - generic [ref=e35]:
+                    - generic [ref=e36]:
+                        - heading "Day 1 · 2025-11-09" [level=3] [ref=e37]
+                        - paragraph [ref=e38]: 4 items
+                    - textbox "日付を変更" [ref=e39] [cursor=pointer]: 2025-11-09
+                    - textbox [ref=e40]: 2025-11-09
+                - list [ref=e42]:
+                    - button "09:00 駅 → 観光A transfer" [ref=e43]:
+                        - listitem [ref=e44]:
+                            - generic [ref=e45]: 09:00
+                            - generic [ref=e48]:
+                                - generic [ref=e50]: 🚉
+                                - generic [ref=e52]: 駅 → 観光A
+                            - generic [ref=e54]: transfer
+                    - button "12:00 昼食" [ref=e55]:
+                        - listitem [ref=e56]:
+                            - generic [ref=e57]: 12:00
+                            - generic [ref=e60]:
+                                - generic [ref=e62]: 🍜
+                                - generic [ref=e64]: 昼食
+                    - button "15:00 観光B" [ref=e65]:
+                        - listitem [ref=e66]:
+                            - generic [ref=e67]: 15:00
+                            - generic [ref=e70]:
+                                - generic [ref=e72]: 🏛️
+                                - generic [ref=e74]: 観光B
+                    - button "18:00 夕食" [ref=e75]:
+                        - listitem [ref=e76]:
+                            - generic [ref=e77]: 18:00
+                            - generic [ref=e80]:
+                                - generic [ref=e82]: 🍜
+                                - generic [ref=e84]: 夕食
+            - generic [ref=e85]:
+                - generic [ref=e86]: "Try query params:"
+                - code [ref=e87]: "?density=compact"
+                - text: ","
+                - code [ref=e88]: "?density=cozy"
+                - text: ","
+                - code [ref=e89]: "?dist=0"
+    - contentinfo [ref=e90]:
+        - generic [ref=e92]:
+            - paragraph [ref=e93]: © 2025 Travoru
+            - paragraph [ref=e94]: AI旅程ジェネレーター — あなたの高揚感をそのままに。
+    - button "Open Next.js Dev Tools" [ref=e100] [cursor=pointer]:
+        - img [ref=e101]
+    - alert [ref=e104]
+```
