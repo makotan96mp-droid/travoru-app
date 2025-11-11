@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import Image from "next/image";
 // "@/lib/seo" が使えない場合は下行に切り替え:
-// import { CITY_META, absoluteImage, SITE_URL } from "../../lib/seo";
+// import { CITY_META, absoluteImage, SITE_URL } from "@/lib/seo";
 import { CITY_META, absoluteImage, SITE_URL } from "@/lib/seo";
 
 // Next.js 16: params は Promise なので await が必要

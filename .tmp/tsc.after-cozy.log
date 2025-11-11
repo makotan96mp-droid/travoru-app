@@ -1,0 +1,6 @@
+
+> travoru-app@0.1.0 typecheck /Users/shiraishi/Projects/travoru-app
+> tsc -p tsconfig.json --noEmit
+
+app/demo-itinerary/DemoClient.tsx(136,3): error TS2322: Type 'string' is not assignable to type 'Density | null'.
+ ELIFECYCLE  Command failed with exit code 1.

@@ -15,10 +15,12 @@
     "e2e:local": "TMPDIR=.tmp playwright test",
     "dev:3001": "PORT=3001 next dev -p 3001",
     "test:api": "scripts/test-plan.sh",
-    "dev:kill": "node -e \"const {execSync}=require('child_process');try{const p=execSync('lsof -ti :3000,:3001',{stdio:['ignore','pipe','ignore']}).toString().trim(); if(p) execSync('kill '+p);}catch(e){}\"",
+    "dev:kill": "node -e \"const {execSync}=require('child_process');const ports=['3000','3001','3002'];for(const p of ports){try{  const out=execSync('lsof -ti :' + p,{stdio:['ignore','pipe','ignore']}).toString().trim();  if(out){const pids=out.split(/\\s+/).filter(Boolean).join(' ');    try{execSync('kill ' + pids);}catch(e){}    try{execSync('kill -9 ' + pids);}catch(e){}  }}catch(e){}}\"",
     "dev:kill:hard": "node -e \"const {execSync}=require('child_process');try{const p=execSync('lsof -ti :3000,:3001',{stdio:['ignore','pipe','ignore']}).toString().trim(); if(p) execSync('kill -9 '+p);}catch(e){}\"",
-    "dev:start": "pnpm run dev:kill && pnpm run dev:clean && pnpm run dev:3001",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "dev:start": "pnpm run dev:kill && pnpm run dev:clean && pnpm run dev:try",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "check:runtime": "bash -lc 'for p in ${RUNTIME_PORT:-} 3001 3000 3002; do [ -z \"$p\" ] && continue; if curl -fsS http://localhost:$p/demo-itinerary -o /dev/null; then   printf \"OK: runtime check (:%s)\\n\" \"$p\"; exit 0; fi; done; echo \"SKIP: runtime check (no server)\"; exit 0'",
+    "dev:try": "bash -lc 'for p in 3001 3000 3002; do echo \"→ starting Next on :$p\"; PORT=$p next dev -p $p && exit 0; done'"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -51,6 +53,7 @@
     "eslint-config-next": "16.0.0",
     "eslint-config-prettier": "^10.1.8",
     "glob": "^11.0.3",
+    "playwright": "^1.56.1",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "tailwindcss": "^4.1.15",

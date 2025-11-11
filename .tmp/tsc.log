@@ -1,0 +1,20 @@
+
+> travoru-app@0.1.0 typecheck /Users/shiraishi/Projects/travoru-app
+> tsc -p tsconfig.json --noEmit
+
+app/demo-itinerary/DemoClient.tsx(326,5): error TS2657: JSX expressions must have one parent element.
+app/demo-itinerary/DemoClient.tsx(332,9): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(332,11): error TS17002: Expected corresponding JSX closing tag for 'div'.
+app/demo-itinerary/DemoClient.tsx(337,9): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(337,11): error TS17002: Expected corresponding JSX closing tag for 'main'.
+app/demo-itinerary/DemoClient.tsx(342,9): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(353,16): error TS1005: '>' expected.
+app/demo-itinerary/DemoClient.tsx(358,16): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(358,16): error TS1005: ')' expected.
+app/demo-itinerary/DemoClient.tsx(358,17): error TS1135: Argument expression expected.
+app/demo-itinerary/DemoClient.tsx(359,9): error TS1128: Declaration or statement expected.
+app/demo-itinerary/DemoClient.tsx(360,7): error TS1109: Expression expected.
+app/demo-itinerary/DemoClient.tsx(361,7): error TS2657: JSX expressions must have one parent element.
+app/demo-itinerary/DemoClient.tsx(380,5): error TS1128: Declaration or statement expected.
+app/demo-itinerary/DemoClient.tsx(381,3): error TS1109: Expression expected.
+ ELIFECYCLE  Command failed with exit code 1.

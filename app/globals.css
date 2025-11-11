@@ -1046,3 +1046,601 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   block-size: 1.75rem;
   line-height: 1;
 }
+
+/* @@print_patch@@ */
+@media print {
+  body {
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .shadow-soft,
+  .shadow-xl {
+    box-shadow: none !important;
+  }
+  .border-white\/20,
+  .border-white\/15 {
+    border-color: #ddd !important;
+  }
+}
+
+/* === Hide right-side duplicate day date in header === */
+/* 想定: ヘッダー行に同一日付が2個並ぶケース → 右側を非表示 */
+@layer utilities {
+  /* 行内の並びで右側を潰したいので、インライン要素にも効くように */
+  .day-date {
+    display: inline-block;
+  }
+}
+
+/* 1行内で2つ以上の .day-date がある場合、左だけ残して後続は消す */
+[data-day-header] .day-date ~ .day-date {
+  display: none !important;
+}
+
+/* data-* が仕込めていない場合でも、日付2個が同一行に並ぶときは右を消す */
+:root ._dayHeaderRow:has(.day-date) .day-date ~ .day-date {
+  display: none !important;
+}
+/* === Toolbar ordering & layout (CSS only) === */
+[data-toolbar="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+[data-toolbar="true"] button[title="すべてリセット"] {
+  order: 10;
+}
+[data-toolbar="true"] button[title="予定を追加"] {
+  order: 20;
+}
+[data-toolbar="true"] button[title="今日の日付にする"] {
+  order: 30;
+}
+[data-toolbar="true"] button[title="表示の大きさ"] {
+  order: 40;
+}
+[data-toolbar="true"] button[title="距離の表示切替"] {
+  order: 50;
+}
+[data-toolbar="true"] [title="本日の移動目安"] {
+  order: 60;
+}
+[data-toolbar="true"] [aria-label="その他"] {
+  order: 70;
+  margin-left: auto;
+}
+
+/* === Toolbar ordering & layout (CSS only, wrapper-flatten) === */
+[data-toolbar="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* 子ラッパー(div等)を display:contents にして中の button/span の order を効かせる */
+[data-toolbar="true"] > :not([role="menu"]) {
+  display: contents;
+}
+
+/* 並び順（中の button / span に対して効く） */
+[data-toolbar="true"] button[title="すべてリセット"] {
+  order: 10;
+}
+[data-toolbar="true"] button[title="予定を追加"] {
+  order: 20;
+}
+[data-toolbar="true"] button[title="今日の日付にする"] {
+  order: 30;
+}
+[data-toolbar="true"] button[title="表示の大きさ"] {
+  order: 40;
+}
+[data-toolbar="true"] button[title="距離の表示切替"] {
+  order: 50;
+}
+[data-toolbar="true"] [title="本日の移動目安"] {
+  order: 60;
+}
+/* … メニューは右端へ */
+[data-toolbar="true"] [aria-label="その他"] {
+  order: 70;
+  margin-left: auto;
+}
+
+/* === Toolbar order via :has (stable) === */
+[data-toolbar="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* ここから「親ラッパー」に order を付ける（子のボタン/ピルを手掛かりにマッチ） */
+[data-toolbar="true"] > :has(> button[title="すべてリセット"]) {
+  order: 10;
+}
+[data-toolbar="true"] > :has(> button[title="予定を追加"]) {
+  order: 20;
+}
+[data-toolbar="true"] > :has(> button[title="今日の日付にする"]) {
+  order: 30;
+}
+[data-toolbar="true"] > :has(> button[title="表示の大きさ"]) {
+  order: 40;
+}
+[data-toolbar="true"] > :has(> button[title="距離の表示切替"]) {
+  order: 50;
+}
+[data-toolbar="true"] > :has(> [title="本日の移動目安"]) {
+  order: 60;
+}
+/* 「…」メニューの親だけ右寄せ */
+[data-toolbar="true"] > :has(> [aria-label="その他"]) {
+  order: 70;
+  margin-left: auto;
+}
+
+/* === Toolbar order via [data-slot] (robust & final) === */
+[data-toolbar="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+[data-toolbar="true"] > [data-slot="reset"] {
+  order: 10;
+}
+[data-toolbar="true"] > [data-slot="add"] {
+  order: 20;
+}
+[data-toolbar="true"] > [data-slot="today"] {
+  order: 30;
+}
+[data-toolbar="true"] > [data-slot="size"] {
+  order: 40;
+}
+[data-toolbar="true"] > [data-slot="distance"] {
+  order: 50;
+}
+[data-toolbar="true"] > [data-slot="move"] {
+  order: 60;
+}
+[data-toolbar="true"] > [data-slot="menu"] {
+  order: 70;
+  margin-left: auto;
+}
+
+/* === Toolbar order via [data-slot] (final) === */
+[data-toolbar="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+[data-toolbar="true"] > [data-slot="reset"] {
+  order: 10;
+}
+[data-toolbar="true"] > [data-slot="add"] {
+  order: 20;
+}
+[data-toolbar="true"] > [data-slot="today"] {
+  order: 30;
+}
+[data-toolbar="true"] > [data-slot="size"] {
+  order: 40;
+}
+[data-toolbar="true"] > [data-slot="distance"] {
+  order: 50;
+}
+[data-toolbar="true"] > [data-slot="move"] {
+  order: 60;
+}
+[data-toolbar="true"] > [data-slot="menu"] {
+  order: 70;
+  margin-left: auto;
+}
+/* === Toolbar order via [data-slot] (v2-hybrid — override) === */
+[data-toolbar="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* 子孫指定（階層変化に強い） */
+[data-toolbar="true"] [data-slot="reset"] {
+  order: 10;
+}
+[data-toolbar="true"] [data-slot="add"] {
+  order: 20;
+}
+[data-toolbar="true"] [data-slot="today"] {
+  order: 30;
+}
+[data-toolbar="true"] [data-slot="size"] {
+  order: 40;
+}
+[data-toolbar="true"] [data-slot="distance"] {
+  order: 50;
+}
+[data-toolbar="true"] [data-slot="move"] {
+  order: 60;
+}
+
+/* menu は直下子を右寄せ */
+[data-toolbar="true"] > [data-slot="menu"] {
+  order: 70;
+  margin-left: auto;
+}
+/* === Toolbar order via [data-slot] (v2-hybrid — direct children override) === */
+[data-toolbar="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+[data-toolbar="true"] > [data-slot="reset"] {
+  order: 10;
+}
+[data-toolbar="true"] > [data-slot="add"] {
+  order: 20;
+}
+[data-toolbar="true"] > [data-slot="today"] {
+  order: 30;
+}
+[data-toolbar="true"] > [data-slot="size"] {
+  order: 40;
+}
+[data-toolbar="true"] > [data-slot="distance"] {
+  order: 50;
+}
+[data-toolbar="true"] > [data-slot="move"] {
+  order: 60;
+}
+/* menu は右寄せ */
+[data-toolbar="true"] > [data-slot="menu"] {
+  order: 70;
+  margin-left: auto;
+}
+
+/* === Toolbar order via :has([data-slot="..."]) — SAFE（DOMを動かさない） === */
+[data-toolbar="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* 親直下のラッパーを、内側にあるボタンの種類で並び替え */
+
+/* menu は右端＋右寄せ */
+
+/* --- Toolbar layout (safe) --- */
+[data-toolbar="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* 1) 直下ラッパー(div/span/section)がボタンを含む場合は透過して孫ボタンをフレックス直参加へ */
+[data-toolbar="true"] > :is(div, span, section):has(button, [role="button"]) {
+  display: contents;
+}
+
+/* 2) 並び順はボタン(= data-slot が付いている実体)に直接指定 */
+[data-toolbar="true"] [data-slot="reset"] {
+  order: 10;
+}
+[data-toolbar="true"] [data-slot="add"] {
+  order: 20;
+}
+[data-toolbar="true"] [data-slot="today"] {
+  order: 30;
+}
+[data-toolbar="true"] [data-slot="size"] {
+  order: 40;
+}
+[data-toolbar="true"] [data-slot="distance"] {
+  order: 50;
+}
+[data-toolbar="true"] [data-slot="move"] {
+  order: 60;
+}
+
+/* 3) menu は右端へ */
+[data-toolbar="true"] [data-slot="menu"] {
+  order: 70;
+  margin-left: auto;
+}
+
+/* toolbar: menu を右端へ（data-slot を使う。DOMは動かさない） */
+[data-toolbar="true"] button[data-slot="menu"] {
+  order: 70;
+  margin-left: auto;
+}
+
+/* ---- Toolbar layout (flatten wrappers & order by slot) ---- */
+[data-toolbar="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* ラッパー(div/span/section)がボタンを含むときは透過して孫ボタンを直参加させる */
+[data-toolbar="true"] > :is(div, span, section):has(button, [role="button"]) {
+  display: contents;
+}
+
+/* ボタン自身に付いた data-slot で順序を制御（DOMは動かさない） */
+[data-toolbar="true"] [data-slot="reset"] {
+  order: 10;
+}
+[data-toolbar="true"] [data-slot="add"] {
+  order: 20;
+}
+[data-toolbar="true"] [data-slot="today"] {
+  order: 30;
+}
+[data-toolbar="true"] [data-slot="size"] {
+  order: 40;
+}
+[data-toolbar="true"] [data-slot="distance"] {
+  order: 50;
+}
+[data-toolbar="true"] [data-slot="move"] {
+  order: 60;
+}
+
+/* menu は右端へ（すでに追加済みなら重複OK） */
+[data-toolbar="true"] [data-slot="menu"] {
+  order: 70;
+  margin-left: auto;
+}
+@media (min-width: 1024px) {
+  [data-toolbar="true"] {
+    flex-wrap: nowrap;
+  }
+}
+
+/* menu は必ず右端（勝ちに行く） */
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="menu"] {
+  order: 999 !important;
+  margin-left: auto !important;
+}
+/* もし wrapper が order を持っている実装でもフォロー */
+[data-toolbar="true"] > :is(div, span, section):has([data-slot="menu"]) {
+  order: 999 !important;
+  margin-left: auto !important;
+}
+
+/* ---- Toolbar: stop flattening wrappers (make them real flex items) ---- */
+[data-toolbar="true"] > :is(div, span, section):has(button, [role="button"]) {
+  display: initial !important; /* was: contents */
+}
+
+/* ---- Order by slot on DIRECT children (wrapper) ---- */
+
+/* menu は wrapper ごと右端へ（margin-left: auto は wrapper に付ける） */
+
+/* ---- Toolbar: one-line, no shrink, no wrap ---- */
+[data-toolbar="true"] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap !important; /* ここが肝 */
+  overflow-x: auto; /* はみ出す場合の保険（必要なら） */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 直下ラッパー（flex item）を縮ませない。中のラベルも改行させない */
+[data-toolbar="true"] > * {
+  flex: 0 0 auto !important; /* grow 0 / shrink 0 */
+  white-space: nowrap !important;
+}
+[data-toolbar="true"] button,
+[data-toolbar="true"] [role="button"] {
+  white-space: nowrap !important;
+}
+
+/* wrapper を slot で並べる（既存） */
+
+/* menu は wrapper ごと右端へ */
+
+/* === Toolbar: 1行固定（これは現状のまま維持） === */
+[data-toolbar="true"] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+[data-toolbar="true"] > * {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+[data-toolbar="true"] button,
+[data-toolbar="true"] [role="button"] {
+  white-space: nowrap !important;
+}
+
+/* === ここが本題：wrapper を透過し、孫ボタンを flex アイテム化 === */
+[data-toolbar="true"] > :is(div, span, section):has(button, [role="button"]) {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* === 並び順は “ボタン” の data-slot で制御（!importantで確実に勝つ） === */
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="reset"] {
+  order: 10 !important;
+}
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="add"] {
+  order: 20 !important;
+}
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="today"] {
+  order: 30 !important;
+}
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="size"] {
+  order: 40 !important;
+}
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="distance"] {
+  order: 50 !important;
+}
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="move"] {
+  order: 60 !important;
+}
+
+/* menu は“ボタン自体”を右端へ */
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="menu"] {
+  order: 999 !important;
+  margin-left: auto !important;
+}
+
+/* === menu を絶対に右端へ（data-slot が無くても当てる） === */
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="menu"],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label="その他"],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label="メニュー"],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label="More"],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label="Menu"] {
+  order: 999 !important;
+  margin-left: auto !important;
+}
+
+/* === Toolbar (button-order minimal) =============================== */
+/* 1行固定 + shrink禁止 */
+[data-toolbar="true"] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+[data-toolbar="true"] > * {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+[data-toolbar="true"] button,
+[data-toolbar="true"] [role="button"] {
+  white-space: nowrap;
+}
+
+/* wrapper は透過して孫ボタンを flex アイテム化（DOMは動かさない） */
+[data-toolbar="true"] > :is(div, span, section):has(button, [role="button"]) {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ボタン自身の data-slot で順序制御 */
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="reset"] {
+  order: 10 !important;
+}
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="add"] {
+  order: 20 !important;
+}
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="today"] {
+  order: 30 !important;
+}
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="size"] {
+  order: 40 !important;
+}
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="distance"] {
+  order: 50 !important;
+}
+/* 使う場合のみ有効 */
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="move"] {
+  order: 60 !important;
+}
+
+/* menu は右端へ（data-slot or aria-label のどちらでも効く） */
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="menu"],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label="その他"],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label="メニュー"],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label="More"],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label="Menu"] {
+  order: 999 !important;
+  margin-left: auto !important;
+}
+/* ================================================================ */
+
+/* --- Toolbar: wrapper fallback orders --- */
+/* move がボタンでない場合、wrapper 自体に data-slot="move" を付けて order:60 */
+[data-toolbar="true"] > *[data-slot="move"] {
+  order: 60 !important;
+}
+
+/* menu も念のため wrapper 側をサポート（ボタンに付いてなくても右端へ） */
+[data-toolbar="true"] > *[data-slot="menu"] {
+  order: 999 !important;
+  margin-left: auto !important;
+}
+
+/* === menu force-right fallback (data-slot 付与前でも効く) === */
+[data-toolbar="true"] :is(button, [role="button"])[data-slot="menu"],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label*="menu" i],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label="その他"],
+[data-toolbar="true"] :is(button, [role="button"])[aria-label="メニュー"],
+[data-toolbar="true"] :is(button, [role="button"])[title="Menu"],
+[data-toolbar="true"] :is(button, [role="button"])[title="メニュー"] {
+  order: 999 !important;
+  margin-left: auto !important;
+}
+
+/* ---- Toolbar: ANY wrapper that contains a button becomes transparent ---- */
+[data-toolbar="true"] > *:has(button, [role="button"]) {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* menu は wrapper ごと右端へ */
+[data-toolbar="true"] > *:has([title="予定を追加"]) {
+  order: 20 !important;
+}
+[data-toolbar="true"] > *:has([title="今日の日付にする"]) {
+  order: 30 !important;
+}
+[data-toolbar="true"] > *:has([title="表示の大きさ"]) {
+  order: 40 !important;
+}
+[data-toolbar="true"] > *:has([title="距離の表示切替"]) {
+  order: 50 !important;
+}
+/* menu（aria/title どちらでも）を右端へ */
+/* ---- Toolbar: wrapper-level data-slot fallbacks (Shadow DOM 対策) ---- */
+[data-toolbar="true"] > *[data-slot="reset"] {
+  order: 10 !important;
+}
+[data-toolbar="true"] > *[data-slot="add"] {
+  order: 20 !important;
+}
+[data-toolbar="true"] > *[data-slot="today"] {
+  order: 30 !important;
+}
+[data-toolbar="true"] > *[data-slot="size"] {
+  order: 40 !important;
+}
+[data-toolbar="true"] > *[data-slot="distance"] {
+  order: 50 !important;
+}
+[data-toolbar="true"] > *[data-slot="move"] {
+  order: 60 !important;
+}
+/* 右端固定（既存の menu 右寄せに加えて wrapper 側でも効かせる） */
+[data-toolbar="true"] > *[data-slot="menu"] {
+  order: 999 !important;
+  margin-left: auto !important;
+}
+
+/* ボタンの data-slot を見て、ラッパー自体の order を決める */
+/* 右端固定（menu は margin-left:auto） */
+/* =============================================================== */

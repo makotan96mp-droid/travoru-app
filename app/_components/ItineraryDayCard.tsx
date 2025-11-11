@@ -77,6 +77,9 @@ export default function ItineraryDayCard({
 
   // === 並べ替えのための内部リスト ===
   const [list, setList] = useState<Item[]>(items);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const justAddedRef = useRef(false);
+
   // items/日付キーが変わったら取り込み
   useEffect(() => {
     setList(items);
@@ -138,6 +141,15 @@ export default function ItineraryDayCard({
       return false;
     }
   })();
+
+  useEffect(() => {
+    if (justAddedRef.current) {
+      justAddedRef.current = false;
+      try {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      } catch {}
+    }
+  }, [list.length]);
 
   return (
     <section
@@ -231,10 +243,28 @@ export default function ItineraryDayCard({
                       </Draggable>
                     ))
                   )}
+                  <div ref={bottomRef} />
                   {provided.placeholder}
                 </ol>
               )}
             </Droppable>
+
+            {onAdd ? (
+              <div className="mt-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      justAddedRef.current = true;
+                    } catch {}
+                    onAdd?.();
+                  }}
+                  className="w-full rounded-xl border border-dashed border-black/20 py-2 text-sm hover:bg-black/5"
+                >
+                  ＋ 追加
+                </button>
+              </div>
+            ) : null}
           </DragDropContext>
         ) : (
           <ol ref={listRef} className="px-3 pb-3 sm:px-4">
