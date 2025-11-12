@@ -1,12 +1,10 @@
-import type { Metadata } from 'next';
-
-const isProd = (process.env.NEXT_PUBLIC_SITE_ENV ?? 'prod') === 'prod';
 import "./globals.css";
 import type { Metadata } from "next";
 import { Playfair_Display, Noto_Serif_JP } from "next/font/google";
 import Header from "./_components/Header";
 import Footer from "./_components/Footer";
 
+const isProd = (process.env.NEXT_PUBLIC_SITE_ENV ?? "prod") === "prod";
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-hero",
@@ -22,7 +20,7 @@ const notoSerifJP = Noto_Serif_JP({
 
 export const metadata: Metadata = {
   robots: isProd ? undefined : { index: false, follow: false, noimageindex: true, nocache: true },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://travoru.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://travoru.app"),
   title: "Travoru – AI旅程ジェネレーター",
   description: "AIが時間最適のリアルな旅程を自動生成。主要予約サイトへの導線も完備。",
 };
@@ -31,17 +29,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja" className={`${playfair.variable} ${notoSerifJP.variable}`}>
       <body className="antialiased bg-slate-950 text-white">
-    <script suppressHydrationWarning type="application/ld+json">{JSON.stringify({
-      "@context":"https://schema.org",
-      "@type":"WebSite",
-      "name":"Travoru",
-      "url": process.env.NEXT_PUBLIC_SITE_URL || "https://example.com",
-      "potentialAction": {
-        "@type":"SearchAction",
-        "target":"https://example.com/new?q={query}",
-        "query-input":"required name=query"
-      }
-    })}</script>
+        <script suppressHydrationWarning type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "Travoru",
+            url: process.env.NEXT_PUBLIC_SITE_URL || "https://example.com",
+            potentialAction: {
+              "@type": "SearchAction",
+              target: "https://example.com/new?q={query}",
+              "query-input": "required name=query",
+            },
+          })}
+        </script>
         <a href="#main" className="skip-link">
           コンテンツへスキップ
         </a>
