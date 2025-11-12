@@ -20,7 +20,8 @@
     "dev:start": "pnpm run dev:kill && pnpm run dev:clean && pnpm run dev:try",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "check:runtime": "bash -lc 'for p in ${RUNTIME_PORT:-} 3001 3000 3002; do [ -z \"$p\" ] && continue; if curl -fsS http://localhost:$p/demo-itinerary -o /dev/null; then   printf \"OK: runtime check (:%s)\\n\" \"$p\"; exit 0; fi; done; echo \"SKIP: runtime check (no server)\"; exit 0'",
-    "dev:try": "bash -lc 'for p in 3001 3000 3002; do echo \"→ starting Next on :$p\"; PORT=$p next dev -p $p && exit 0; done'"
+    "dev:try": "bash -lc 'for p in 3001 3000 3002; do echo \"→ starting Next on :$p\"; PORT=$p next dev -p $p && exit 0; done'",
+    "check:og": "node tools/check-og.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
