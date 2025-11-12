@@ -83,7 +83,7 @@ export default async function CityPage({ params }: Props) {
         <p className="text-white/80 max-w-prose">{city.description}</p>
         <div className="rounded-2xl overflow-hidden border border-white/15 max-w-3xl">
           <Image
-            src={city.image}
+            src={((city as any)?.image ?? (city as any)?.img ?? "/images/hero-poster.jpg")}
             alt={city.title}
             width={1600}
             height={900}
