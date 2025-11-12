@@ -70,6 +70,7 @@ jobs:
         with:
           name: next-logs
           path: |
+  if-no-files-found: ignore
   include-hidden-files: true
             .next/**
             .next-run.pid
