@@ -1,4 +1,5 @@
 "use client";
+import { renderIconNode } from "@/lib/ui/iconRender";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 import { pickIconFrom } from "@/lib/iconMap";
