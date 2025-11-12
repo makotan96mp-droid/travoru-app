@@ -1,14 +1,13 @@
 name: SEO health check
 on:
   workflow_dispatch:
-  pull_request:
   push:
-    branches: [ main ]
-
-concurrency:
-  group: seo-${{ github.ref }}
-  cancel-in-progress: true
-
+    branches:
+      - main
+      - feat/**
+env:
+  NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+  NEXT_PUBLIC_SITE_ENV: ci
 jobs:
   seo:
     runs-on: ubuntu-latest
