@@ -64,6 +64,7 @@ jobs:
         with:
           name: next-logs
           path: |
+  include-hidden-files: true
             .next/**
             .next-run.pid
           retention-days: 3
