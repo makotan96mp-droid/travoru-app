@@ -17,7 +17,7 @@ export async function generateMetadata(
 
   const title = city?.title ?? "Travoru";
   const description = city?.description ?? "あなたの旅程をサクッと作成。";
-  const ogImage = absoluteImage(city?.image ?? "/images/hero-poster.jpg");
+  const ogImage = absoluteImage((city as any)?.image ?? (city as any)?.img ?? "/images/hero-poster.jpg");
   const url = `${SITE_URL}/i/${key ?? ""}`;
 
   return {
