@@ -10,13 +10,20 @@ on:
     branches:
       - main
       - feat/**
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: seo-${{ github.event.inputs.target_ref || github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   seo:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+      NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'https://travoru.app' }}
       NEXT_PUBLIC_SITE_ENV: ci
       PORT: 3001
       NEXT_TELEMETRY_DISABLED: 1
@@ -25,7 +32,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # 手動実行時は inputs.target_ref、push 時はトリガーされたブランチ
+          # 手動実行時は inputs.target_ref、push/PR 時はトリガーされたブランチ
           ref: ${{ github.event.inputs.target_ref || github.ref_name }}
 
       - name: Setup PNPM
@@ -54,7 +61,7 @@ jobs:
       - name: Start & probe
         run: |
           pnpm exec next start -p "$PORT" &
-          sleep 2
+          pnpm exec wait-on "http://localhost:${PORT}/new" -t 15000
           echo "---- robots meta ----"
           curl -s "http://localhost:$PORT/new" | grep -i '<meta name="robots"' -n || true
           echo "---- og:image ----"
