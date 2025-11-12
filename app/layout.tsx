@@ -26,6 +26,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja" className={`${playfair.variable} ${notoSerifJP.variable}`}>
       <body className="antialiased bg-slate-950 text-white">
+    <script suppressHydrationWarning type="application/ld+json">{JSON.stringify({
+      "@context":"https://schema.org",
+      "@type":"WebSite",
+      "name":"Travoru",
+      "url": process.env.NEXT_PUBLIC_SITE_URL || "https://example.com",
+      "potentialAction": {
+        "@type":"SearchAction",
+        "target":"https://example.com/new?q={query}",
+        "query-input":"required name=query"
+      }
+    })}</script>
         <a href="#main" className="skip-link">
           コンテンツへスキップ
         </a>
