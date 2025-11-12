@@ -1,4 +1,5 @@
 name: SEO health check
+
 on:
   workflow_dispatch:
     inputs:
@@ -7,7 +8,7 @@ on:
         required: false
         default: "main"
   push:
-    branches: [ main, feat/** ]
+    branches: [ main, 'feat/**' ]
   pull_request:
     branches: [ main ]
 
@@ -51,7 +52,6 @@ jobs:
       - name: Guard site url
         run: pnpm run guard:site-url
 
-      # === 追加: Next.js ビルドキャッシュ（.next/cache） ===
       - name: Restore Next.js cache
         uses: actions/cache/restore@v4
         with:
@@ -86,27 +86,35 @@ jobs:
           echo "---- og:image ----"
           printf "%s" "$HTML" | grep -ni 'property="og:image"' || true
 
-      # === 追加: og:image 実体の 200 応答確認 & 要約出力 ===
-      - name: Verify og:image returns 200
+      - name: Verify og:image (local GET, fallback HEAD) & summary
         run: |
-          IMG_URL=$(curl -s "http://localhost:$PORT/new" \
-            | sed -n 's/.*property="og:image" content="\([^"]*\)".*/\1/p' | head -1)
-          echo "og:image => $IMG_URL"
-          STATUS=$(curl -s -I "$IMG_URL" | head -1)
-          echo "$STATUS"
-          echo "$STATUS" | grep -q " 200 "  # 200 以外ならここで失敗
+          set -euo pipefail
+          PAGE="http://localhost:${PORT}/new"
+
+          HTML="$(curl -sS "$PAGE")"
+          IMG_URL="$(printf "%s" "$HTML" | sed -n 's/.*property="og:image" content="\([^"]*\)".*/\1/p' | head -1)"
+          echo "og:image (src) => ${IMG_URL:-<empty>}"
+          test -n "${IMG_URL:-}"
+
+          LOCAL_IMG_URL="$(printf "%s" "$IMG_URL" | sed -E "s#^https?://[^/]+#http://localhost:${PORT}#")"
+          echo "og:image (local) => $LOCAL_IMG_URL"
+
+          CODE="$(curl -sS -L -o /dev/null -w "%{http_code}" "$LOCAL_IMG_URL" || true)"
+          echo "GET => $CODE"
+          if [ "$CODE" != "200" ]; then
+            STATUS="$(curl -sS -I "$LOCAL_IMG_URL" | head -1 || true)"
+            echo "HEAD => $STATUS"
+            echo "$STATUS" | grep -q " 200 "
+          fi
 
           {
             echo "## SEO Probe Summary"
             echo ""
-            echo "- robots: \`$(curl -s "http://localhost:$PORT/new" \
-              | sed -n 's/.*<meta name="robots" content="\([^"]*\)".*/\1/p' | head -1)\`"
-            echo "- canonical: \`$(curl -s "http://localhost:$PORT/new" \
-              | sed -n 's/.*<link rel="canonical" href="\([^"]*\)".*/\1/p' | head -1)\`"
-            echo "- og:image: \`$IMG_URL\` (HEAD: \`$STATUS\`)"
+            echo "- robots: \`$(printf "%s" "$HTML" | sed -n 's/.*<meta name="robots" content="\([^"]*\)".*/\1/p' | head -1)\`"
+            echo "- canonical: \`$(printf "%s" "$HTML" | sed -n 's/.*<link rel="canonical" href="\([^"]*\)".*/\1/p' | head -1)\`"
+            echo "- og:image: src=\`$IMG_URL\` local=\`$LOCAL_IMG_URL\` (GET $CODE)"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      # === 追加: robots.txt / sitemap.xml の到達性 ===
       - name: Check robots.txt & sitemap.xml
         run: |
           curl -s -I "http://localhost:$PORT/robots.txt"   | head -1 | tee /dev/stderr | grep -q " 200 "

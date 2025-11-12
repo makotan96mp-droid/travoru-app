@@ -1,0 +1,44 @@
+"use client";
+import { ReactNode } from "react";
+
+export default function StepPanel({
+  step,
+  title,
+  caption,
+  children,
+  footer,
+}: {
+  step: number;
+  title: string;
+  caption?: string;
+  children: ReactNode;
+  footer?: ReactNode;
+}) {
+  return (
+    <section
+      className="rounded-2xl border border-white/20 bg-white/85 text-slate-900
+                 shadow-[0_12px_40px_rgba(0,0,0,0.18)] backdrop-blur
+                 dark:bg-slate-950/70 dark:text-white overflow-hidden"
+    >
+      {/* ヘッダー帯 */}
+      <header className="flex items-center gap-3 px-5 py-3
+                         bg-gradient-to-r from-slate-900/55 via-slate-900/45 to-slate-900/30
+                         text-white border-b border-white/15">
+        <span className="inline-flex h-6 min-w-6 items-center justify-center
+                         rounded-full bg-white/95 text-slate-900 text-[12px] font-bold">
+          {step}
+        </span>
+        <div className="leading-tight">
+          <h3 className="font-semibold">{`ステップ ${step}：${title}`}</h3>
+          {caption && <p className="text-xs opacity-80">{caption}</p>}
+        </div>
+      </header>
+
+      {/* 本文 */}
+      <div className="p-5">
+        {children}
+        {footer && <div className="mt-5">{footer}</div>}
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,51 @@
+
+> travoru-app@0.1.0 typecheck /Users/shiraishi/Projects/travoru-app
+> tsc -p tsconfig.json --noEmit
+
+app/demo-itinerary/DemoClient.tsx(31,87): error TS1005: ']' expected.
+app/demo-itinerary/DemoClient.tsx(32,11): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(32,18): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(32,27): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(32,37): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(32,46): error TS1181: Array element destructuring pattern expected.
+app/demo-itinerary/DemoClient.tsx(32,52): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(32,64): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(32,65): error TS1180: Property destructuring pattern expected.
+app/demo-itinerary/DemoClient.tsx(32,73): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(32,83): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(32,107): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(32,111): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(32,122): error TS1359: Identifier expected. 'true' is a reserved word that cannot be used here.
+app/demo-itinerary/DemoClient.tsx(32,127): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(33,11): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(33,18): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(33,27): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(33,36): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(33,45): error TS1181: Array element destructuring pattern expected.
+app/demo-itinerary/DemoClient.tsx(33,53): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(33,59): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(33,60): error TS1180: Property destructuring pattern expected.
+app/demo-itinerary/DemoClient.tsx(33,84): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(33,89): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(34,11): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(34,18): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(34,27): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(34,35): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(34,44): error TS1181: Array element destructuring pattern expected.
+app/demo-itinerary/DemoClient.tsx(34,50): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(34,51): error TS1180: Property destructuring pattern expected.
+app/demo-itinerary/DemoClient.tsx(34,75): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(34,79): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(35,11): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(35,18): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(35,27): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(35,37): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(35,46): error TS1181: Array element destructuring pattern expected.
+app/demo-itinerary/DemoClient.tsx(35,51): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(35,59): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(35,60): error TS1180: Property destructuring pattern expected.
+app/demo-itinerary/DemoClient.tsx(35,84): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(35,89): error TS1005: ':' expected.
+app/demo-itinerary/DemoClient.tsx(36,3): error TS1128: Declaration or statement expected.
+app/demo-itinerary/DemoClient.tsx(36,5): error TS1128: Declaration or statement expected.
+ ELIFECYCLE  Command failed with exit code 2.

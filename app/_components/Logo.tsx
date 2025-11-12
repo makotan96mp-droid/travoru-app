@@ -5,6 +5,8 @@ export default function Logo({ className = "h-7" }: { className?: string }) {
     <div className={`flex items-center gap-2 ${className}`} aria-label="Travoru">
       {/* 画像ロゴ（高さ 28px）。dark 背景でも埋もれにくいよう軽い影を付与 */}
       <Image
+        loading="lazy"
+        decoding="async"
         src="/logo.png"
         alt="Travoru"
         width={140}
