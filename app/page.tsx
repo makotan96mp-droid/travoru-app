@@ -1,3 +1,24 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Travoru — AI旅程ジェネレーター',
+  description: '都市と日程を選ぶだけで、AIが最適ルートの旅程を自動生成します。',
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    url: '/',
+    siteName: 'Travoru',
+    title: 'Travoru — AI旅程ジェネレーター',
+    description: '都市と日程を選ぶだけで、AIが最適ルートの旅程を自動生成します。',
+    images: ['/favicon.ico']
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Travoru — AI旅程ジェネレーター',
+    description: '都市と日程を選ぶだけで、AIが最適ルートの旅程を自動生成します。',
+    images: ['/favicon.ico']
+  }
+};
 import Image from "next/image";
 import { CITY_META } from "@/lib/seo";
 import FullPageVideo from "./_components/FullPageVideo";
