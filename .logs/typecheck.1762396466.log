@@ -1,0 +1,14 @@
+
+> travoru-app@0.1.0 typecheck /Users/shiraishi/Projects/travoru-app
+> tsc -p tsconfig.json --noEmit
+
+app/_components/ItineraryDayCard.tsx(46,3): error TS2339: Property 'onDragEnd' does not exist on type 'Props'.
+app/_components/ItineraryDayCard.tsx(204,34): error TS2304: Cannot find name 'onAdd'.
+app/_components/ItineraryDayCard.tsx(204,57): error TS2304: Cannot find name 'onAdd'.
+app/demo-itinerary/DemoClient.tsx(32,49): error TS2698: Spread types may only be created from object types.
+app/demo-itinerary/DemoClient.tsx(32,64): error TS2339: Property 'time' does not exist on type 'never'.
+app/demo-itinerary/DemoClient.tsx(63,9): error TS2322: Type '{ dayKey: string; baseDate: string; items: Item[]; density: "compact" | "cozy" | "comfortable"; showDistance: boolean; draggable: true; onReorder: (next: Item[]) => void; onDateChange: (v: string) => void; hour12: boolean; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'hour12' does not exist on type 'IntrinsicAttributes & Props'.
+app/demo/page.tsx(61,11): error TS2322: Type '{ key: string; dayKey: string; items: any; baseDate: string; mainCap: number; density: "compact"; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'mainCap' does not exist on type 'IntrinsicAttributes & Props'.
+ ELIFECYCLE  Command failed with exit code 2.

@@ -1,0 +1,132 @@
+
+> travoru-app@0.1.0 prebuild /Users/shiraishi/Projects/travoru-app
+> bash scripts/check-all.sh
+
+OK: ハードコードなし（CITY_META由来のみ）
+OK: SEOスニペット（JSON-LD/Canonical/OG/Twitter）がソース/実HTMLで検出されました
+
+> travoru-app@0.1.0 build /Users/shiraishi/Projects/travoru-app
+> next build
+
+   ▲ Next.js 16.0.0 (Turbopack)
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 6 errors:
+./app/demo-itinerary/DemoClient.tsx:332:9
+Parsing ecmascript source code failed
+[0m [90m 330 |[39m           className[33m=[39m[32m"rounded-lg border px-3 py-1 text-sm hover:bg-black/5"[39m
+ [90m 331 |[39m           [33mReset[39m
+[31m[1m>[22m[39m[90m 332 |[39m         [33m<[39m[33m/[39m[33mbutton[39m[33m>[39m
+ [90m     |[39m         [31m[1m^[22m[39m
+ [90m 333 |[39m         [33m<[39m[33mbutton[39m
+ [90m 334 |[39m           onClick[33m=[39m{handleShareLink}
+ [90m 335 |[39m           className[33m=[39m[32m"rounded-lg border px-3 py-1 text-sm hover:bg-black/5"[39m[0m
+
+Expression expected
+
+Import trace:
+  Server Component:
+    ./app/demo-itinerary/DemoClient.tsx
+    ./app/demo-itinerary/page.tsx
+
+
+./app/demo-itinerary/DemoClient.tsx:158:65
+Parsing ecmascript source code failed
+[0m [90m 156 |[39m   }
+ [90m 157 |[39m   [36mconst[39m t [33m=[39m [33mString[39m(v [33m||[39m [32m""[39m)[33m.[39mtoLowerCase()[33m;[39m
+[31m[1m>[22m[39m[90m 158 |[39m   [36mif[39m ([[32m"compact"[39m[33m,[39m [32m"コンパクト"[39m[33m,[39m [32m"small"[39m[33m,[39m [32m"s"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"compact"[39m[33m;[39m
+ [90m     |[39m                                                                 [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 159 |[39m   [36mif[39m ([[32m"cozy"[39m[33m,[39m [32m"標準"[39m[33m,[39m [32m"standard"[39m[33m,[39m [32m"medium"[39m[33m,[39m [32m"m"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"cozy"[39m[33m;[39m
+ [90m 160 |[39m   [36mif[39m ([[32m"comfortable"[39m[33m,[39m [32m"ゆったり"[39m[33m,[39m [32m"large"[39m[33m,[39m [32m"l"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"comfortable"[39m[33m;[39m
+ [90m 161 |[39m   [36mreturn[39m [36mnull[39m[33m;[39m[0m
+
+Return statement is not allowed here
+
+Import trace:
+  Server Component:
+    ./app/demo-itinerary/DemoClient.tsx
+    ./app/demo-itinerary/page.tsx
+
+
+./app/demo-itinerary/DemoClient.tsx:159:66
+Parsing ecmascript source code failed
+[0m [90m 157 |[39m   [36mconst[39m t [33m=[39m [33mString[39m(v [33m||[39m [32m""[39m)[33m.[39mtoLowerCase()[33m;[39m
+ [90m 158 |[39m   [36mif[39m ([[32m"compact"[39m[33m,[39m [32m"コンパクト"[39m[33m,[39m [32m"small"[39m[33m,[39m [32m"s"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"compact"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 159 |[39m   [36mif[39m ([[32m"cozy"[39m[33m,[39m [32m"標準"[39m[33m,[39m [32m"standard"[39m[33m,[39m [32m"medium"[39m[33m,[39m [32m"m"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"cozy"[39m[33m;[39m
+ [90m     |[39m                                                                  [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 160 |[39m   [36mif[39m ([[32m"comfortable"[39m[33m,[39m [32m"ゆったり"[39m[33m,[39m [32m"large"[39m[33m,[39m [32m"l"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"comfortable"[39m[33m;[39m
+ [90m 161 |[39m   [36mreturn[39m [36mnull[39m[33m;[39m
+ [90m 162 |[39m[0m
+
+Return statement is not allowed here
+
+Import trace:
+  Server Component:
+    ./app/demo-itinerary/DemoClient.tsx
+    ./app/demo-itinerary/page.tsx
+
+
+./app/demo-itinerary/DemoClient.tsx:160:66
+Parsing ecmascript source code failed
+[0m [90m 158 |[39m   [36mif[39m ([[32m"compact"[39m[33m,[39m [32m"コンパクト"[39m[33m,[39m [32m"small"[39m[33m,[39m [32m"s"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"compact"[39m[33m;[39m
+ [90m 159 |[39m   [36mif[39m ([[32m"cozy"[39m[33m,[39m [32m"標準"[39m[33m,[39m [32m"standard"[39m[33m,[39m [32m"medium"[39m[33m,[39m [32m"m"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"cozy"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 160 |[39m   [36mif[39m ([[32m"comfortable"[39m[33m,[39m [32m"ゆったり"[39m[33m,[39m [32m"large"[39m[33m,[39m [32m"l"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"comfortable"[39m[33m;[39m
+ [90m     |[39m                                                                  [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 161 |[39m   [36mreturn[39m [36mnull[39m[33m;[39m
+ [90m 162 |[39m
+ [90m 163 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mDemoItineraryClient[39m() {[0m
+
+Return statement is not allowed here
+
+Import trace:
+  Server Component:
+    ./app/demo-itinerary/DemoClient.tsx
+    ./app/demo-itinerary/page.tsx
+
+
+./app/demo-itinerary/DemoClient.tsx:161:3
+Parsing ecmascript source code failed
+[0m [90m 159 |[39m   [36mif[39m ([[32m"cozy"[39m[33m,[39m [32m"標準"[39m[33m,[39m [32m"standard"[39m[33m,[39m [32m"medium"[39m[33m,[39m [32m"m"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"cozy"[39m[33m;[39m
+ [90m 160 |[39m   [36mif[39m ([[32m"comfortable"[39m[33m,[39m [32m"ゆったり"[39m[33m,[39m [32m"large"[39m[33m,[39m [32m"l"[39m][33m.[39mincludes(t)) [36mreturn[39m [32m"comfortable"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 161 |[39m   [36mreturn[39m [36mnull[39m[33m;[39m
+ [90m     |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 162 |[39m
+ [90m 163 |[39m [36mexport[39m [36mdefault[39m [36mfunction[39m [33mDemoItineraryClient[39m() {
+ [90m 164 |[39m   [36mconst[39m sp [33m=[39m useSearchParams()[33m;[39m[0m
+
+Return statement is not allowed here
+
+Import trace:
+  Server Component:
+    ./app/demo-itinerary/DemoClient.tsx
+    ./app/demo-itinerary/page.tsx
+
+
+./app/demo-itinerary/DemoClient.tsx:332:10
+Parsing ecmascript source code failed
+[0m [90m 330 |[39m           className[33m=[39m[32m"rounded-lg border px-3 py-1 text-sm hover:bg-black/5"[39m
+ [90m 331 |[39m           [33mReset[39m
+[31m[1m>[22m[39m[90m 332 |[39m         [33m<[39m[33m/[39m[33mbutton[39m[33m>[39m
+ [90m     |[39m          [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 333 |[39m         [33m<[39m[33mbutton[39m
+ [90m 334 |[39m           onClick[33m=[39m{handleShareLink}
+ [90m 335 |[39m           className[33m=[39m[32m"rounded-lg border px-3 py-1 text-sm hover:bg-black/5"[39m[0m
+
+Unterminated regexp literal
+
+Import trace:
+  Server Component:
+    ./app/demo-itinerary/DemoClient.tsx
+    ./app/demo-itinerary/page.tsx
+
+
+    at <unknown> (./app/demo-itinerary/DemoClient.tsx:332:9)
+    at <unknown> (./app/demo-itinerary/DemoClient.tsx:158:65)
+    at <unknown> (./app/demo-itinerary/DemoClient.tsx:159:66)
+    at <unknown> (./app/demo-itinerary/DemoClient.tsx:160:66)
+    at <unknown> (./app/demo-itinerary/DemoClient.tsx:161:3)
+    at <unknown> (./app/demo-itinerary/DemoClient.tsx:332:10)
+ ELIFECYCLE  Command failed with exit code 1.

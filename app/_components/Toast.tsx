@@ -10,9 +10,7 @@ export default function Toast({ message }: { message: string }) {
   if (!open) return null;
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-      <div className="rounded-2xl bg-black text-white px-4 py-2 shadow-soft text-sm">
-        {message}
-      </div>
+      <div className="rounded-2xl bg-black text-white px-4 py-2 shadow-soft text-sm">{message}</div>
     </div>
   );
 }

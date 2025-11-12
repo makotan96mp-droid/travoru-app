@@ -1,0 +1,4 @@
+
+> travoru-app@0.1.0 typecheck /Users/shiraishi/Projects/travoru-app
+> tsc -p tsconfig.json --noEmit
+

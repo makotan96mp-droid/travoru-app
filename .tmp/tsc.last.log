@@ -1,0 +1,23 @@
+app/demo-itinerary/DemoClient.tsx(716,5): error TS2657: JSX expressions must have one parent element.
+app/demo-itinerary/DemoClient.tsx(758,11): error TS17002: Expected corresponding JSX closing tag for 'main'.
+app/demo-itinerary/DemoClient.tsx(766,9): error TS1005: ')' expected.
+app/demo-itinerary/DemoClient.tsx(867,7): error TS1128: Declaration or statement expected.
+app/demo-itinerary/DemoClient.tsx(877,23): error TS1136: Property assignment expected.
+app/demo-itinerary/DemoClient.tsx(877,27): error TS1005: ';' expected.
+app/demo-itinerary/DemoClient.tsx(878,7): error TS1161: Unterminated regular expression literal.
+app/demo-itinerary/DemoClient.tsx(879,12): error TS1005: ';' expected.
+app/demo-itinerary/DemoClient.tsx(880,9): error TS2657: JSX expressions must have one parent element.
+app/demo-itinerary/DemoClient.tsx(882,7): error TS1128: Declaration or statement expected.
+app/demo-itinerary/DemoClient.tsx(884,9): error TS1003: Identifier expected.
+app/demo-itinerary/DemoClient.tsx(885,11): error TS1005: ',' expected.
+app/demo-itinerary/DemoClient.tsx(886,11): error TS1005: ',' expected.
+app/demo-itinerary/DemoClient.tsx(887,11): error TS1005: ',' expected.
+app/demo-itinerary/DemoClient.tsx(887,15): error TS1005: ',' expected.
+app/demo-itinerary/DemoClient.tsx(887,20): error TS1005: ';' expected.
+app/demo-itinerary/DemoClient.tsx(890,9): error TS1128: Declaration or statement expected.
+app/demo-itinerary/DemoClient.tsx(891,7): error TS1109: Expression expected.
+app/demo-itinerary/DemoClient.tsx(891,9): error TS1128: Declaration or statement expected.
+app/demo-itinerary/DemoClient.tsx(891,15): error TS1128: Declaration or statement expected.
+app/demo-itinerary/DemoClient.tsx(928,5): error TS1128: Declaration or statement expected.
+app/demo-itinerary/DemoClient.tsx(929,3): error TS1109: Expression expected.
+app/demo-itinerary/DemoClient.tsx(930,1): error TS1128: Declaration or statement expected.

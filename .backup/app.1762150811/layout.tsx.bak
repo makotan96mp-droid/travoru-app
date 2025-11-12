@@ -1,0 +1,57 @@
+import "./globals.css";
+import type { Metadata } from "next";
+import { Inter, Playfair_Display } from "next/font/google";
+import Script from "next/script";
+
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "600", '700'],
+  display: "swap",
+  variable: "--font-playfair",
+});
+
+/** ---- Site-wide SEO defaults ---- */
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  title: { default: "Travoru – AI旅程ジェネレーター", template: "%s | Travoru" },
+  description: "AIが時間最適のリアルな旅程を自動生成。主要予約サイトへの導線も完備。",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    title: "Travoru",
+    description: "AIが時間最適のリアルな旅程を自動生成。主要予約サイトへの導線も完備。",
+    url: "/",
+    siteName: "Travoru",
+    images: [
+      { url: "/og/og-1200x630.jpg", width: 1200, height: 630 },
+      { url: "/og/og-1200x1200.jpg", width: 1200, height: 1200 },
+    ],
+    locale: "ja_JP",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Travoru",
+    description: "AIが時間最適のリアルな旅程を自動生成。主要予約サイトへの導線も完備。",
+    images: ["/og/og-1200x630.jpg"],
+  },
+};
+/** ---- /SEO defaults ---- */
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="ja" className={`${inter.variable} ${playfair.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preload" as="image" href="/og/og-1200x630.jpg" />
+      </head>
+      <body className={inter.className}>
+        {/* 例：サードパーティSDKは必要時のみコメント解除して遅延読込 */}
+        {/* <Script src="https://example.com/sdk.js" strategy="afterInteractive" /> */}
+        {/* <Script src="https://example.com/legacy.js" strategy="lazyOnload" /> */}
+        {children}
+      </body>
+    </html>
+  );
+}

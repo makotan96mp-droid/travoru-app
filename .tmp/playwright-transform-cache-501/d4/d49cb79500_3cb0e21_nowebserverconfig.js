@@ -1,0 +1,14 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _test = require("@playwright/test");
+var _default = exports.default = (0, _test.defineConfig)({
+  use: {
+    baseURL: process.env.BASE_URL || "http://localhost:3001" // 既存の Next に接続
+  }
+  // webServer を定義しない＝Playwrightは何も立ち上げない
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfdGVzdCIsInJlcXVpcmUiLCJfZGVmYXVsdCIsImV4cG9ydHMiLCJkZWZhdWx0IiwiZGVmaW5lQ29uZmlnIiwidXNlIiwiYmFzZVVSTCIsInByb2Nlc3MiLCJlbnYiLCJCQVNFX1VSTCJdLCJzb3VyY2VzIjpbIm5vLXdlYnNlcnZlci5jb25maWcudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgZGVmaW5lQ29uZmlnIH0gZnJvbSBcIkBwbGF5d3JpZ2h0L3Rlc3RcIjtcbmV4cG9ydCBkZWZhdWx0IGRlZmluZUNvbmZpZyh7XG4gIHVzZToge1xuICAgIGJhc2VVUkw6IHByb2Nlc3MuZW52LkJBU0VfVVJMIHx8IFwiaHR0cDovL2xvY2FsaG9zdDozMDAxXCIsIC8vIOaXouWtmOOBriBOZXh0IOOBq+aOpee2mlxuICB9LFxuICAvLyB3ZWJTZXJ2ZXIg44KS5a6a576p44GX44Gq44GE77ydUGxheXdyaWdodOOBr+S9leOCgueri+OBoeS4iuOBkuOBquOBhFxufSk7XG4iXSwibWFwcGluZ3MiOiI7Ozs7OztBQUFBLElBQUFBLEtBQUEsR0FBQUMsT0FBQTtBQUFnRCxJQUFBQyxRQUFBLEdBQUFDLE9BQUEsQ0FBQUMsT0FBQSxHQUNqQyxJQUFBQyxrQkFBWSxFQUFDO0VBQzFCQyxHQUFHLEVBQUU7SUFDSEMsT0FBTyxFQUFFQyxPQUFPLENBQUNDLEdBQUcsQ0FBQ0MsUUFBUSxJQUFJLHVCQUF1QixDQUFFO0VBQzVEO0VBQ0E7QUFDRixDQUFDLENBQUMiLCJpZ25vcmVMaXN0IjpbXX0=

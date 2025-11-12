@@ -34,3 +34,15 @@ next-env.d.ts
 # raw video (do not commit)
 public/videos/*.mov
 # raw videos
+# local backups
+*.bak.*
+.backup/
+
+# local caches
+.tmp/
+.prettier-cache
+og:image
+
+# caches (Playwright etc)
+.cache/
+.cache/ms-playwright/

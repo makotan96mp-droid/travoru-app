@@ -1,0 +1,103 @@
+"use client";
+import Image from "next/image";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import StepPanel from "./StepPanel";
+
+type Step = { title: string; body: string; image: string; alt: string };
+type InputStep = { title: string; text?: string; body?: string; image: string; alt?: string };
+
+const STEPS: Step[] = [
+  {
+    title: "入力",
+    body: "都市・日付・興味をさっと選択。30秒で完了。",
+    image: "/shots/new-form.jpg",
+    alt: "入力フォームのスクリーンショット",
+  },
+  {
+    title: "生成",
+    body: "移動時間・混雑・屋内外を考慮して、無理のないプランへ。",
+    image: "/shots/itinerary-top.jpg",
+    alt: "旅程プレビューのスクリーンショット",
+  },
+  {
+    title: "予約導線",
+    body: "主要予約サイト（Booking・Agoda・Trip.com・楽天トラベル）にワンタップ。",
+    image: "/shots/booking-links.jpg",
+    alt: "予約導線のスクリーンショット",
+  },
+];
+
+export default function StickySteps({ steps }: { steps?: InputStep[] }) {
+  const DATA: Step[] = (steps ?? STEPS).map((s: any) => ({
+    title: s.title,
+    body: s.body ?? s.text ?? "",
+    image: s.image,
+    alt: s.alt ?? s.title,
+  }));
+
+  const firstRef = useRef<HTMLDivElement>(null);
+  const firstInView = useInView(firstRef, { margin: "-10% 0px -80% 0px" });
+
+  return (
+    <section id="how-it-works" className="relative z-10" role="region" aria-labelledby="how-it-works">
+      <div className="mx-auto max-w-6xl px-4 py-16">
+        <h2 id="how-steps">使い方</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* 左：番号付き説明（sticky） */}
+          <aside className="md:sticky md:top-24 h-fit">
+            <div
+              className={
+                "rounded-2xl border border-white/20 bg-slate-900/40 backdrop-blur p-6 transition-shadow " +
+                (firstInView ? "shadow-xl" : "shadow-none")
+              }
+            >
+              <ol className="space-y-5 text-sm text-white/80 relative pl-4">
+                <span className="absolute left-2 top-1 bottom-1 w-px bg-white/15" />
+                {DATA.map((s, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-black text-xs font-semibold">
+                      {i + 1}
+                    </span>
+                    <div>
+                      <p className="font-semibold text-white">{s.title}</p>
+                      <p className="opacity-90 whitespace-pre-line">{s.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <a href="/new" className="mt-6 inline-flex items-center rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm hover:bg-white/15">
+                今すぐ試す
+              </a>
+            </div>
+          </aside>
+
+          {/* 右：StepPanelで縦積み */}
+          <div className="space-y-6 max-w-2xl md:max-w-3xl md:mx-0 mx-auto">
+            {DATA.map((s, i) => (
+              <StepPanel
+                key={i}
+                step={i + 1}
+                title={s.title}
+                caption={s.body}
+              >
+                <div ref={i === 0 ? firstRef : undefined}>
+                  <div className="relative overflow-hidden rounded-xl border border-slate-200/80 dark:border-white/15 bg-white dark:bg-slate-900/40">
+                    <Image loading="lazy" decoding="async" src={s.image}
+                      alt={s.alt}
+                      width={1600}
+                      height={900}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </StepPanel>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

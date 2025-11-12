@@ -1,0 +1,15 @@
+import type { Metadata } from 'next';
+import './globals.css'; // ← これが必須（Tailwind v4 読み込み）
+
+export const metadata: Metadata = {
+  title: 'Travoru – AI旅程ジェネレーター',
+  description: 'AIが時間最適のリアルな旅程を自動生成。主要予約サイトへの導線も完備。',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="ja">
+      <body>{children}</body>
+    </html>
+  );
+}

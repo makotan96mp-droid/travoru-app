@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* 4K超のアップスケール防止（論理解像度 1920px を上限） */
+.hero-video { max-width: 1920px; margin: 0 auto; }
+@media (max-width: 1920px) { .hero-video { max-width: 100%; } }
+
+/* ---------- UI polish (v4) ---------- */
+@layer components {
+  .btn { @apply inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 font-medium transition shadow-sm ring-1 ring-black/10 hover:bg-black/5; }
+  .btn-primary { @apply bg-black text-white hover:bg-black/85 ring-0; }
+  .btn-outline { @apply bg-white/70 backdrop-blur ring-1 ring-black/15 hover:bg-white; }
+
+  .card { @apply overflow-hidden rounded-2xl border border-black/10 bg-white/70 backdrop-blur shadow-sm; }
+  .card-hover { @apply transition hover:shadow-md hover:border-black/20; }
+
+  .badge { @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ring-1 ring-black/10 bg-white/80 backdrop-blur; }
+}
+
+/* hero の行間・最大幅（拡大でボケるのを防ぐ） */
+.hero-container { @apply max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8; }
+.hero-title { @apply text-white drop-shadow-lg leading-tight text-3xl sm:text-5xl font-semibold; }
+.hero-desc  { @apply text-white/90 drop-shadow mt-3 text-sm sm:text-base; }
+.hero-actions { @apply mt-6 flex flex-wrap items-center gap-3; }
+.hero-video { max-width: 1920px; margin: 0 auto; }
+
+/* ==== kill hero central dark overlay ==== */
+.hero-container::before {
+  /* 以前の黒グラ、ぼかしなどを完全無効化 */
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+}
+/* 念のため、汎用クラス名で残っている場合も潰す */
+.hero-overlay,
+.hero-mask {
+  background: none !important;
+  box-shadow: none !important;
+}

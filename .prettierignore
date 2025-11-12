@@ -1,0 +1,5 @@
+.next
+.tmp
+.backup
+**/playwright-transform-cache-*/
+node_modules

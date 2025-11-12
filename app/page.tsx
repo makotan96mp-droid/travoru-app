@@ -1,160 +1,142 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Travoru — AI旅程ジェネレーター',
+  description: '都市と日程を選ぶだけで、AIが最適ルートの旅程を自動生成します。',
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    url: '/',
+    siteName: 'Travoru',
+    title: 'Travoru — AI旅程ジェネレーター',
+    description: '都市と日程を選ぶだけで、AIが最適ルートの旅程を自動生成します。',
+    images: ['/favicon.ico']
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Travoru — AI旅程ジェネレーター',
+    description: '都市と日程を選ぶだけで、AIが最適ルートの旅程を自動生成します。',
+    images: ['/favicon.ico']
+  }
+};
 import Image from "next/image";
-import FullPageVideo from "./_components/FullPageVideo";import Reveal from "./_components/Reveal";
-import Logo from "./_components/Logo";
+import { CITY_META } from "@/lib/seo";
+import FullPageVideo from "./_components/FullPageVideo";
 import StickySteps from "./_components/StickySteps";
 
-export default function Home() {
+const DESTS = (["tokyo", "kyoto", "osaka"] as const).map((id) => {
+  const c = CITY_META[id];
+  return {
+    href: `/i/${id}`,
+    title: c.title,
+    desc: (c as any).tagline ?? "",
+    img: ((c as any)?.image ?? (c as any)?.img ?? "/images/hero-poster.jpg"),
+    alt: ` のイメージ`,
+  };
+});
+
+export default function Page() {
   return (
-    <div className="relative min-h-[90vh] text-white">
-      {/* ★ ここが“固定”のフルスクリーン動画（-z-10 で最背面） */}
-      <FullPageVideo />
-
-      {/* ヘッダー（動画の上に乗るので relative + z-10） */}
-      <header className="fixed inset-x-0 top-0 z-40  bg-black/30">
-  <div className="w-full max-w-6xl mx-auto flex items-center justify-between px-3 sm:px-4 py-1">
-    <div className="flex items-center">
-      <a href="/" aria-label="Travoru">
-        <Logo className="h-12 w-auto" />
-      </a>
-    </div>
-    <nav className="space-x-4 text-[12px] leading-tight">
-      <a href="#features" className="hover:opacity-80">Features</a>
-      <a href="#how-it-works" className="hover:opacity-80">How it works</a>
-      <a href="/new" className="btn-ghost">Create plan</a>
-    </nav>
-  </div>
-</header>
-<div className="fixed inset-x-0 top-0 h-16 z-[15] pointer-events-none bg-gradient-to-b from-black/20 to-transparent"></div>
-
-      {/* ヒーロー（動画の上） */}
-      <section className="relative z-10 min-h-[80vh] flex items-center">
-        <div className="container">
-          <Reveal><h1 className="text-3xl sm:text-5xl md:text-6xl font-semibold leading-[1.15] max-w-[44ch] drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] max-w-[18ch] sm:max-w-[22ch] font-playfair antialiased-strong">
-            AIが、あなたの高揚感<br  />そのままに旅程を描く。<br /> 
-          </h1></Reveal>
-          <Reveal delay={0.1}><p className="text-white/90 text-base sm:text-lg mt-5 max-w-[60ch] whitespace-pre-line">
-            日程と興味を選ぶだけ。<br/>
-            時間最適のリアルなプランを自動生成。<br/>
-            主要予約サイトへのリンク導線も完備。<br /> 
-          </p></Reveal>
-          <Reveal delay={0.2}><div className="mt-8 flex flex-wrap gap-2 sm:gap-3">
-            <a href="/new" className="btn">今すぐ旅程を作る（無料）</a>
-            <a href="#features" className="btn-ghost">人気の目的地</a>
-          </div></Reveal>
+    <main className="hero-container">
+      {/* ===== Hero ===== */}
+      <section className="relative stretched-container">
+        <div className="absolute inset-0 -z-10">
+          <FullPageVideo />
         </div>
-      </section>
 
-      {/* Sticky Steps（スクロール中ヘッダーが粘着 → 高級感） */}
-      <div className="hero relative z-10">
-        <StickySteps
-          steps={[
-            { title: "入力", text: "日程・都市・興味を選ぶだけ", image: "/images/tokyo.jpg" },
-            { title: "生成", text: "移動時間や混雑も考慮した時間割を作成", image: "/images/kyoto.jpg" },
-            { title: "予約導線", text: "主要予約サイトリンクでスムーズに予約", image: "/images/osaka.jpg" },
-          ]}
-        />
-      </div>
+        <div className="py-28 sm:py-36 px-4 sm:px-8">
+          <div className="mx-auto max-w-6xl text-left">
+            <h1 className="hero-title text-balance text-hero-glow leading-tightish font-serif text-hero-glow leading-tightish font-serif">
+              AIが、あなたの高揚感
+              <br />
+              <span className="inline-block whitespace-nowrap sm:whitespace-normal">
+                そのままに旅程を描く。
+              </span>
+            </h1>
 
-
-      {/* 人気の目的地：ここからは背景が白／文字黒 */}
-      <div className="h-20 bg-gradient-to-b from-transparent to-white"></div>
-
-<section id="features" className="relative z-10 bg-white/95  text-black">
-  <div className="container py-20">
-    <h2 className="text-2xl sm:text-3xl font-semibold mb-6">人気の目的地</h2>
-    <p className="text-neutral-600 -mt-4 mb-6 text-sm whitespace-pre-line">写真をクリックしてイメージを膨らませましょう。<br /> </p>
-
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-      {[
-        { title: "Tokyo", img: "/images/tokyo.jpg", desc: "グルメ・カルチャー・夜景" },
-        { title: "Kyoto", img: "/images/kyoto.jpg", desc: "寺社と四季、静かな街歩き" },
-        { title: "Osaka", img: "/images/osaka.jpg", desc: "粉もん・ミックスカルチャー" }
-      ].map((d, i) => (
-        <a
-          key={d.title || i}
-          href="/new"
-  className="group relative rounded-2xl overflow-hidden border border-white/20 shadow-[var(--shadow-soft)] transition-transform duration-300 will-change-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-black/20"
-        >
-          <Image priority={i===0} sizes="(max-width: 640px) 100vw, 33vw" src={d.img} alt={d.title} width={1200} height={672} className="w-full h-56 object-cover rounded-xl" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
-          <div className="absolute bottom-3 left-3 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
-            <h3 className="text-xl font-semibold">{d.title}</h3>
-            <p className="text-sm text-white/90">{d.desc}</p>
-          </div>
-        </a>
-      ))}
-    </div>
-
-    <div className="mt-8">
-      <a href="/new" className="btn">自分の旅程を作る</a>
-    </div>
-  </div>
-</section>
-
-      {/* How it works（半透明＋ブラーで下の動画がうっすら見える） */}
-      <section id="how-more" className="relative z-10 text-black  bg-white/80 ">
-        <div className="container py-20">
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-6">How it works</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="card p-0 overflow-hidden">
-              <div className="p-5">
-                <h3 className="font-semibold">Step 1 — 入力</h3>
-                <p className="text-sm text-neutral-600">日程・都市・興味を選ぶだけ</p>
-              </div>
-              <div className="bg-white">
-                <Image src="/images/tokyo.jpg" priority alt="Form mock" width={1200} height={800} className="w-full h-auto rounded-xl" sizes="(max-width: 640px) 100vw, 50vw" />
-              </div>
+            <div className="mt-6 text-white/90 text-[15px] sm:text-base font-medium  text-hero-glow leading-relaxed hero-sub hero-sub hero-sub-elevated">
+              <div>日程と興味を選ぶだけ</div>
+              <div>時間最適のリアルなプランを自動生成</div>
+              <div>主要サイトへのリンクですぐに予約完了</div>
             </div>
 
-            <div className="card p-0 overflow-hidden">
-              <div className="p-5">
-                <h3 className="font-semibold">Step 2 — 生成</h3>
-                <p className="text-sm text-neutral-600">移動時間や混雑も考慮した時間割を作成</p>
-              </div>
-              <div className="bg-white">
-                <Image src="/images/kyoto.jpg" alt="Itinerary mock" width={1200} height={800} className="w-full h-auto rounded-xl" sizes="(max-width: 640px) 100vw, 50vw" />
-              </div>
-            </div>
-          </div>
-
-          <div className="card mt-6">
-            <h3 className="font-semibold mb-2">Step 3 — 予約導線</h3>
-            <p className="text-sm text-neutral-600 mb-4">主要予約サイトのリンクでスムーズに予約。<br /> </p>
-            <div className="flex flex-wrap gap-2">
-              <a className="btn" href="/new">今すぐ試す</a>
-              <a className="btn-ghost" href="#features">人気の目的地を見る</a>
+            <div className="mt-7 flex items-center gap-4">
+              <a
+                href="/new"
+                className="inline-flex h-10 items-center rounded-full px-5 text-[15px] font-medium
+                        text-white bg-black/85 hover:bg-black/90 active:bg-black
+                        shadow-[0_6px_20px_rgba(0,0,0,.35)] backdrop-blur lift-1 z-20"
+                aria-labelledby={`dest--title`}
+                aria-describedby={`dest--desc`}
+              >
+                今すぐプランを作る
+              </a>
+              <a
+                href="#how-it-works"
+                className="inline-flex h-10 items-center rounded-full px-5 text-[15px] font-medium
+                        text-white/95 border border-white/30 bg-white/10 hover:bg-white/15
+                        shadow-[0_2px_10px_rgba(0,0,0,.25)] backdrop-blur lift-1 z-20"
+                aria-labelledby={`dest--title`}
+                aria-describedby={`dest--desc`}
+              >
+                使い方を見る
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 強いCTA（フッター直前） */}
-      <section className="relative z-10 bg-white shadow-lg text-center py-16" style={{backgroundImage: "url(/images/wave.svg)", backgroundRepeat: "no-repeat", backgroundPosition: "center top", backgroundSize: "cover"}}>
-        <div className="container">
-          <Reveal><h3 className="text-2xl font-semibold text-neutral-900">今すぐ旅程を作ってみる</h3></Reveal>
-        <Reveal delay={0.1}><p className="text-neutral-700 leading-relaxed">無料プレビュー（回数制限あり）。<br/>
-            詳細は購入後に解禁。<br /> </p></Reveal>
-          <Reveal delay={0.2}><div className="mt-6">
-            <a href="/new" className="btn">Create plan</a>
-          </div></Reveal>
+      {/* ===== How it works（半透明カード） ===== */}
+      <StickySteps />
+
+      {/* ===== 人気の目的地 ===== */}
+      <section className="my-20 relative z-10 overflow-visible stretched-container">
+        <h2 className="text-lg sm:text-xl font-semibold mb-4">人気の目的地</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          {DESTS.map((d, i) => (
+            <a
+              key={d.href}
+              href={d.href}
+              className="group relative rounded-lg sm:rounded-xl overflow-hidden border border-white/35 bg-slate-900/60 shadow-[0_20px_40px_rgba(0,0,0,0.28)] ring-1 ring-white/20 transition hover:shadow-md cursor-pointer stretched-container z-20 focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black/30 motion-reduce:transition-none motion-reduce:hover:scale-100"
+              aria-labelledby={`dest--title`}
+              aria-describedby={`dest--desc`}
+            >
+              <Image
+                decoding="async"
+                priority={i === 0}
+                sizes="(max-width: 640px) 100vw, 33vw"
+                src={d.img}
+                alt=""
+                aria-hidden="true"
+                width={1200}
+                height={672}
+                className="w-full h-48 sm:h-56 object-cover"
+                fetchPriority={i === 0 ? "high" : "auto"}
+              />
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pointer-events-none" />
+              <div className="absolute bottom-3 left-3 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.28)]">
+                <h3 id={`dest--title`} className="text-xl font-semibold">
+                  {d.title}
+                </h3>
+                <p id={`dest--desc`} className="text-sm text-white/80">
+                  {d.desc}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div className="mt-8">
+          <a
+            href="/new"
+            className="btn z-20"
+            aria-labelledby={`dest--title`}
+            aria-describedby={`dest--desc`}
+          >
+            自分の旅程を作る
+          </a>
         </div>
       </section>
-
-      {/* フッター（不透明） */}
-      <footer className="relative z-10 bg-black text-white">
-        <div className="container py-10">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="font-semibold tracking-wide">Travoru</div>
-            <nav className="text-sm space-x-4 text-white/80">
-              <a href="/new" className="hover:text-white">Create plan</a>
-              <a href="#features" className="hover:text-white">Features</a>
-              <a href="#how-it-works" className="hover:text-white">How it works</a>
-            </nav>
-          </div>
-          <p className="text-xs text-white/60 mt-4">© {new Date().getFullYear()} Travoru</p>
-        </div>
-      </footer>
-    </div>
+    </main>
   );
 }

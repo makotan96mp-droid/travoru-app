@@ -1,64 +1,102 @@
-import Link from "next/link";
+import type { Metadata, ResolvingMetadata } from "next";
+import Image from "next/image";
+// "@/lib/seo" が使えない場合は下行に切り替え:
+// import { CITY_META, absoluteImage, SITE_URL } from "@/lib/seo";
+import { CITY_META, absoluteImage, SITE_URL } from "@/lib/seo";
 
-type Params = { id: string };
-type SearchParams = { city?: string; start?: string; end?: string; interests?: string };
+// Next.js 16: params は Promise なので await が必要
+type Props = { params: Promise<{ id: string }> };
 
-const DUMMY_ITINERARY = [
-  { time: "09:00", activity: "Check-in / Luggage drop" },
-  { time: "10:00", activity: "Top spot #1 (indoor if rainy)" },
-  { time: "12:00", activity: "Local lunch (foodie pick)" },
-  { time: "14:00", activity: "Transit-optimized move to spot #2" },
-  { time: "16:00", activity: "Cafe break & shopping" },
-  { time: "19:00", activity: "Dinner reservation (free-cancel eligible)" },
-];
-
-// Next.js 16 / React 19: params & searchParams は Promise なので await する
-export default async function ItineraryPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<Params>;
-  searchParams: Promise<SearchParams>;
-}) {
+export async function generateMetadata(
+  { params }: Props,
+  _parent: ResolvingMetadata,
+): Promise<Metadata> {
   const { id } = await params;
-  const { city = "tokyo", start = "—", end = "—", interests = "—" } = await searchParams;
+  const key = id?.toLowerCase();
+  const city = CITY_META[key as keyof typeof CITY_META];
+
+  const title = city?.title ?? "Travoru";
+  const description = city?.description ?? "あなたの旅程をサクッと作成。";
+  const ogImage = absoluteImage((city as any)?.image ?? (city as any)?.img ?? "/images/hero-poster.jpg");
+  const url = `${SITE_URL}/i/${key ?? ""}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      url,
+      title,
+      description,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+    robots: { index: true, follow: true },
+  };
+}
+
+export default async function CityPage({ params }: Props) {
+  const { id } = await params;
+  const key = id?.toLowerCase();
+  const city = CITY_META[key as keyof typeof CITY_META];
+  if (!city) return <main className="min-h-dvh p-8">Not found</main>;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"}/i/${key}`,
+    name: city.title,
+    description: city.description,
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"}`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: city.title,
+          item: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001"}/i/${key}`,
+        },
+      ],
+    },
+  };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Itinerary: {id}</h1>
-        <Link href="/new" className="underline text-sm">Create another</Link>
-      </div>
-
-      <div className="card">
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div><span className="font-medium">City:</span> {city}</div>
-          <div><span className="font-medium">Dates:</span> {start} → {end}</div>
-          <div className="col-span-2"><span className="font-medium">Interests:</span> {interests}</div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main className="min-h-dvh p-8 space-y-6">
+        <h1 className="text-3xl font-semibold">{city.title}</h1>
+        <p className="text-white/80 max-w-prose">{city.description}</p>
+        <div className="rounded-2xl overflow-hidden border border-white/15 max-w-3xl">
+          <Image
+            src={((city as any)?.image ?? (city as any)?.img ?? "/images/hero-poster.jpg")}
+            alt={city.title}
+            width={1600}
+            height={900}
+            sizes="(max-width: 768px) 100vw, 75vw"
+            className="w-full h-auto object-cover"
+            priority
+          />
         </div>
-      </div>
-
-      <div className="card">
-        <h2 className="text-lg font-semibold mb-3">Day 1 (dummy)</h2>
-        <ul className="space-y-2">
-          {DUMMY_ITINERARY.map((row, i) => (
-            <li key={i} className="flex gap-4">
-              <div className="w-20 text-neutral-600">{row.time}</div>
-              <div className="flex-1">{row.activity}</div>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="card">
-        <h3 className="font-semibold mb-2">Booking links (dummy)</h3>
-        <div className="flex flex-wrap gap-2 text-sm">
-          <a className="btn" href="https://www.booking.com" target="_blank">Booking</a>
-          <a className="btn" href="https://www.agoda.com" target="_blank">Agoda</a>
-          <a className="btn" href="https://www.trip.com" target="_blank">Trip.com</a>
-          <a className="btn" href="https://travel.rakuten.co.jp" target="_blank">Rakuten</a>
-        </div>
-      </div>
-    </div>
+      </main>
+    </>
   );
+}
+
+export async function generateStaticParams() {
+  return Object.keys(CITY_META).map((id) => ({ id }));
 }

@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* 4K超のアップスケール防止（論理解像度 1920px を上限） */
+.hero-video { max-width: 1920px; margin: 0 auto; }
+@media (max-width: 1920px) { .hero-video { max-width: 100%; } }
+
+/* ---------- UI polish (v4) ---------- */
+@layer components {
+  .btn { @apply inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 font-medium transition shadow-sm ring-1 ring-black/10 hover:bg-black/5; }
+  .btn-primary { @apply bg-black text-white hover:bg-black/85 ring-0; }
+  .btn-outline { @apply bg-white/70 backdrop-blur ring-1 ring-black/15 hover:bg-white; }
+
+  .card { @apply overflow-hidden rounded-2xl border border-black/10 bg-white/70 backdrop-blur shadow-sm; }
+  .card-hover { @apply transition hover:shadow-md hover:border-black/20; }
+
+  .badge { @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ring-1 ring-black/10 bg-white/80 backdrop-blur; }
+}
+
+/* hero の行間・最大幅（拡大でボケるのを防ぐ） */
+.hero-container { @apply max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8; }
+.hero-title { @apply text-white drop-shadow-lg leading-tight text-3xl sm:text-5xl font-semibold; }
+.hero-desc  { @apply text-white/90 drop-shadow mt-3 text-sm sm:text-base; }
+.hero-actions { @apply mt-6 flex flex-wrap items-center gap-3; }
+.hero-video { max-width: 1920px; margin: 0 auto; }
+
+/* ==== kill hero central dark overlay ==== */
+.hero-container::before {
+  /* 以前の黒グラ、ぼかしなどを完全無効化 */
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+}
+/* 念のため、汎用クラス名で残っている場合も潰す */
+.hero-overlay,
+.hero-mask {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* === UI utilities for buttons / chips === */
+.btn{ @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm transition; }
+.btn-primary{ @apply bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900; }
+.btn-chip{ @apply rounded-full border border-slate-300/80 bg-white px-3 py-1 text-xs hover:bg-slate-50
+                 dark:border-white/20 dark:bg-slate-800 dark:hover:bg-slate-700; }
+
+/* ===== Readability helpers for hero ===== */
+.text-hero-glow {
+  text-shadow:
+    0 2px 12px rgba(0,0,0,.45),
+    0 0 1px rgba(0,0,0,.35);
+}
+.leading-tightish { line-height: 1.15; }
+.max-w-hero { max-width: 72rem; } /* = max-w-6xl 相当の生CSS版(微調整しやすい) */
+
+/* Fixed mobile CTA */
+@media (max-width: 640px) {
+  .mobile-cta {
+    position: sticky; bottom: 0; z-index: 40;
+    display: flex; justify-content: center;
+    padding: .75rem .75rem 1rem;
+    background: linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.45));
+    backdrop-filter: blur(6px);
+  }
+  .mobile-cta .btn {
+    width: 100%;
+    max-width: 28rem;
+    font-weight: 600;
+  }
+}
+
+/* ===== Hero Title face (プロっぽい明朝寄りスタック) ===== */
+.hero-title{
+  font-family: ui-serif, "Hiragino Mincho ProN", "Yu Mincho",
+               "Noto Serif JP", "Source Han Serif JP", serif;
+  letter-spacing: .02em;
+}
+
+/* === Hero title: もう一段大きく＆読みやすく === */
+.hero-title{
+  font-family: ui-serif, "Hiragino Mincho ProN", "Yu Mincho",
+               "Noto Serif JP", "Source Han Serif JP", serif;
+  letter-spacing: .02em;
+  /* SP~PCで自動スケール：約36px〜72px相当 */
+  font-size: clamp(2.25rem, 4vw + 1rem, 4.5rem);
+}
+.text-hero-glow{
+  text-shadow:
+    0 3px 16px rgba(0,0,0,.50),
+    0 0 1px rgba(0,0,0,.35),
+    0 0 6px rgba(0,0,0,.18);
+}
+.leading-tightish{ line-height: 1.15; }
+/* 小さく持ち上がる気持ちよさ */
+.btn-lift { transition: transform .15s ease, box-shadow .15s ease; }
+.btn-lift:hover  { transform: translateY(-1px); }
+.btn-lift:active { transform: translateY(0); }
+
+/* 2行の見た目を整える（対応ブラウザ） */
+.text-balance { text-wrap: balance; }
+
+@media (max-width: 380px){
+  .hero-title{ font-size: clamp(2rem, 5vw + .8rem, 4.5rem); } /* 最小値だけ微調整 */
+}
+
+@media (max-width: 640px){
+  .hero-title{ line-height: 1.08; } /* 既存の leading-tightish(1.15) より締める */
+}
+
+@media (min-width: 1024px){
+  /* 例: 既存より 8～10% アップ。数字は好みで微調整可 */
+  .hero-title{ font-size: clamp(3.2rem, 6.2vw, 5.4rem); }
+}
