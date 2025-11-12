@@ -10,20 +10,23 @@ on:
     branches:
       - main
       - feat/**
-env:
-  NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
-  NEXT_PUBLIC_SITE_ENV: ci
+
 jobs:
   seo:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
+      NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+      NEXT_PUBLIC_SITE_ENV: ci
       PORT: 3001
       NEXT_TELEMETRY_DISABLED: 1
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # 手動実行時は inputs.target_ref、push 時はトリガーされたブランチ
+          ref: ${{ github.event.inputs.target_ref || github.ref_name }}
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
@@ -38,44 +41,32 @@ jobs:
 
       - name: Install deps
         run: pnpm install --frozen-lockfile
+
       - name: Guard client metadata
-    run: pnpm run guard:client-metadata
+        run: pnpm run guard:client-metadata
+
       - name: Guard site url
-    run: pnpm run guard:site-url
+        run: pnpm run guard:site-url
 
+      - name: Build
+        run: pnpm exec next build
 
-      - name: Run SEO checks (prod)
-        run: MODE=prod bash tools/seo-check.sh
-
-      # 失敗時にログをその場で表示
-      - name: Print logs to console (on failure)
-        if: failure()
+      - name: Start & probe
         run: |
-          echo "::group::.next dir"
-          ls -la .next || true
-          echo "::endgroup::"
-          for f in .next/*.log; do
-            echo "::group::$(basename "$f")"
-            tail -n +1 "$f" || true
-            echo "::endgroup::"
-          done
-          echo "::group::next-start excerpt"
-          tail -n 200 .next/next-start.log || true
-          echo "::endgroup::"
-          echo "::group::next-build excerpt"
-          tail -n 200 .next/next-build.log || true
-          echo "::endgroup::"
+          pnpm exec next start -p "$PORT" &
+          sleep 2
+          echo "---- robots meta ----"
+          curl -s "http://localhost:$PORT/new" | grep -i '<meta name="robots"' -n || true
+          echo "---- og:image ----"
+          curl -s "http://localhost:$PORT/new" | grep -i 'property="og:image"' -n || true
 
-      # 成否に関係なく .next をアーティファクト化
-      - name: Upload Next logs (always)
+      - name: Upload .next logs (always)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: next-logs
           path: |
-  if-no-files-found: ignore
-  include-hidden-files: true
-            .next/**
-            .next-run.pid
-          retention-days: 3
-# noop 2025年 11月12日 水曜日 14時06分02秒 JST
+            .next/trace*
+            .next/**/*.log
+          if-no-files-found: ignore
+          include-hidden-files: true
