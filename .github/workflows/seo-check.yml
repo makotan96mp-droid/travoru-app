@@ -75,3 +75,4 @@ jobs:
             .next/**
             .next-run.pid
           retention-days: 3
+# noop 2025年 11月12日 水曜日 14時06分02秒 JST
