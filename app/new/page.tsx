@@ -1,3 +1,4 @@
+'use client';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -19,7 +20,6 @@ export const metadata: Metadata = {
     images: ['/favicon.ico']
   }
 };
-"use client";
 import { useState } from "react";
 
 type Purposes = Array<"観光" | "ショッピング" | "グルメ" | "宿泊">;
