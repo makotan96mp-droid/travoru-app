@@ -37,6 +37,9 @@ jobs:
   - name: Guard client metadata
     run: pnpm run guard:client-metadata
 
+  - name: Guard site url
+    run: pnpm run guard:site-url
+
 
       - name: Run SEO checks (prod)
         run: MODE=prod bash tools/seo-check.sh
