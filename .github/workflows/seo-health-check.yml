@@ -7,12 +7,9 @@ on:
         required: false
         default: "main"
   push:
-    branches:
-      - main
-      - feat/**
+    branches: [ main, feat/** ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 concurrency:
   group: seo-${{ github.event.inputs.target_ref || github.ref_name }}
@@ -32,7 +29,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # 手動実行時は inputs.target_ref、push/PR 時はトリガーされたブランチ
           ref: ${{ github.event.inputs.target_ref || github.ref_name }}
 
       - name: Setup PNPM
@@ -55,17 +51,73 @@ jobs:
       - name: Guard site url
         run: pnpm run guard:site-url
 
+      # === 追加: Next.js ビルドキャッシュ（.next/cache） ===
+      - name: Restore Next.js cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .next/cache
+          key: next-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'next.config.*') }}
+          restore-keys: |
+            next-cache-${{ runner.os }}-
+
       - name: Build
         run: pnpm exec next build
 
-      - name: Start & probe
+      - name: Save Next.js cache
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: .next/cache
+          key: next-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'next.config.*') }}
+
+      - name: Start & probe (HTML meta)
         run: |
           pnpm exec next start -p "$PORT" &
-          pnpm exec wait-on "http://localhost:${PORT}/new" -t 15000
+          pnpm exec wait-on "http://localhost:${PORT}/new" -t 20000
+
+          HTML="$(curl -s "http://localhost:$PORT/new")"
+
           echo "---- robots meta ----"
-          curl -s "http://localhost:$PORT/new" | grep -i '<meta name="robots"' -n || true
+          printf "%s" "$HTML" | grep -ni '<meta name="robots"' || true
+
+          echo "---- canonical ----"
+          printf "%s" "$HTML" | grep -ni '<link rel="canonical"' || true
+
           echo "---- og:image ----"
-          curl -s "http://localhost:$PORT/new" | grep -i 'property="og:image"' -n || true
+          printf "%s" "$HTML" | grep -ni 'property="og:image"' || true
+
+      # === 追加: og:image 実体の 200 応答確認 & 要約出力 ===
+      - name: Verify og:image returns 200
+        run: |
+          IMG_URL=$(curl -s "http://localhost:$PORT/new" \
+            | sed -n 's/.*property="og:image" content="\([^"]*\)".*/\1/p' | head -1)
+          echo "og:image => $IMG_URL"
+          STATUS=$(curl -s -I "$IMG_URL" | head -1)
+          echo "$STATUS"
+          echo "$STATUS" | grep -q " 200 "  # 200 以外ならここで失敗
+
+          {
+            echo "## SEO Probe Summary"
+            echo ""
+            echo "- robots: \`$(curl -s "http://localhost:$PORT/new" \
+              | sed -n 's/.*<meta name="robots" content="\([^"]*\)".*/\1/p' | head -1)\`"
+            echo "- canonical: \`$(curl -s "http://localhost:$PORT/new" \
+              | sed -n 's/.*<link rel="canonical" href="\([^"]*\)".*/\1/p' | head -1)\`"
+            echo "- og:image: \`$IMG_URL\` (HEAD: \`$STATUS\`)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # === 追加: robots.txt / sitemap.xml の到達性 ===
+      - name: Check robots.txt & sitemap.xml
+        run: |
+          curl -s -I "http://localhost:$PORT/robots.txt"   | head -1 | tee /dev/stderr | grep -q " 200 "
+          curl -s     "http://localhost:$PORT/robots.txt"  | grep -qi '^User-agent'
+          curl -s -I "http://localhost:$PORT/sitemap.xml"  | head -1 | tee /dev/stderr | grep -q " 200 "
+          {
+            echo ""
+            echo "### Endpoints"
+            echo "- robots.txt: 200 & contains 'User-agent'"
+            echo "- sitemap.xml: 200"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload .next logs (always)
         if: always()
