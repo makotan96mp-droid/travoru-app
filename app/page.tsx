@@ -9,7 +9,7 @@ const DESTS = (["tokyo", "kyoto", "osaka"] as const).map((id) => {
     href: `/i/${id}`,
     title: c.title,
     desc: (c as any).tagline ?? "",
-    img: c.image,
+    img: ((c as any)?.image ?? (c as any)?.img ?? "/images/hero-poster.jpg"),
     alt: ` のイメージ`,
   };
 });
