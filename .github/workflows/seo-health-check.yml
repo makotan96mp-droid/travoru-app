@@ -1,6 +1,11 @@
 name: SEO health check
 on:
   workflow_dispatch:
+    inputs:
+      target_ref:
+        description: "Branch or tag to check"
+        required: false
+        default: "main"
   push:
     branches:
       - main
@@ -33,10 +38,9 @@ jobs:
 
       - name: Install deps
         run: pnpm install --frozen-lockfile
-  - name: Guard client metadata
+      - name: Guard client metadata
     run: pnpm run guard:client-metadata
-
-  - name: Guard site url
+      - name: Guard site url
     run: pnpm run guard:site-url
 
 
