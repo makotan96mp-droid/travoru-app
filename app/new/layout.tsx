@@ -10,13 +10,11 @@ export const metadata: Metadata = {
     siteName: 'Travoru',
     title: '新規プラン作成 — Travoru',
     description: '行き先・日程・目的を入れて旅程を自動生成。',
-    images: ['/favicon.ico']
   },
   twitter: {
     card: 'summary_large_image',
     title: '新規プラン作成 — Travoru',
     description: '行き先・日程・目的を入れて旅程を自動生成。',
-    images: ['/favicon.ico']
   }
 };
 
