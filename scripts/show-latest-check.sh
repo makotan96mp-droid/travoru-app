@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 set -euo pipefail
 
 REPO="makotan96mp-droid/travoru-app"
