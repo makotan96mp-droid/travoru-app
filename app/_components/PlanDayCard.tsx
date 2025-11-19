@@ -43,6 +43,7 @@ export default function PlanDayCard(props: Props) {
   const dayOffset = getDayOffsetFromProps(props);
 
   const dayLabel = `Day ${dayOffset + 1}`;
+  const actualDate = props.date ? addDaysToISO(props.date, dayOffset) : undefined;
   const isCompact = density === "compact";
 
   return (
@@ -51,10 +52,9 @@ export default function PlanDayCard(props: Props) {
         <h2 className="text-sm font-semibold tracking-wide text-white/90">
           {dayLabel}
         </h2>
-        {props.date && (
+        {actualDate && (
           <p className="text-[11px] text-white/60">
-            {props.date}
-            {dayOffset > 0 ? ` (+${dayOffset}日目)` : ""}
+            {actualDate}
           </p>
         )}
       </header>
