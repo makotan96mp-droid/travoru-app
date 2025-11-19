@@ -1,20 +1,45 @@
 import type { PlanItem } from "./plan-types";
 
 export type PlanDay = {
-  dayOffset: number;   // 0-based from startDate
+  /** 0-based day offset (Day1 => 0) */
+  dayOffset: number;
   items: PlanItem[];
 };
 
-export function groupItemsByDay(items: PlanItem[]): PlanDay[] {
+/**
+ * dayOffset を見て 0 日目〜最終日までの配列を必ず返す。
+ * 途中の日にアイテムが無い場合も空配列で埋める。
+ */
+export function groupByDay(items: PlanItem[]): PlanDay[] {
+  if (!items.length) return [];
+
   const map = new Map<number, PlanItem[]>();
 
-  for (const it of items) {
-    const day = it.meta?.dayOffset ?? 0;
-    if (!map.has(day)) map.set(day, []);
-    map.get(day)!.push(it);
+  for (const item of items) {
+    const day = item.meta?.dayOffset ?? 0;
+    if (!map.has(day)) {
+      map.set(day, []);
+    }
+    map.get(day)!.push(item);
   }
 
-  return Array.from(map.entries())
-    .sort(([a], [b]) => a - b)
-    .map(([dayOffset, items]) => ({ dayOffset, items }));
+  // アイテムが存在する最大 dayOffset までを「連続の日」とみなす
+  let maxDay = 0;
+  for (const d of map.keys()) {
+    if (d > maxDay) maxDay = d;
+  }
+
+  const result: PlanDay[] = [];
+  for (let dayOffset = 0; dayOffset <= maxDay; dayOffset++) {
+    result.push({
+      dayOffset,
+      items: map.get(dayOffset) ?? [],
+    });
+  }
+
+  return result;
 }
+
+
+// Backwards-compat alias (古い呼び出し用)
+export const groupItemsByDay = groupByDay;
