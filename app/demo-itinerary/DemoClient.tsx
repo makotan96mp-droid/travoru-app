@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import PlanDayCard from "../_components/PlanDayCard";
 import type { PlanItem } from "@/lib/plan-types";
-import { groupItemsByDay } from "@/lib/group-by-day";
+import { groupByDayWithPlaceholder } from "@/lib/group-by-day";
 
 type EncodedPlan = {
   date?: string;
@@ -127,7 +127,7 @@ export default function DemoClient(props: DemoClientProps) {
   }
 
   const { date, items = [], ui } = decoded;
-  const days = groupItemsByDay(items);
+  const days = groupByDayWithPlaceholder(items);
   const density = ui?.density ?? "cozy";
   const showDistance = ui?.showDistance ?? true;
 
