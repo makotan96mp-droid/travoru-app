@@ -1,38 +1,76 @@
-name: OG meta & files check
+name: OG image check
 
 on:
-  pull_request:
+  workflow_dispatch:
   push:
+    branches: [ main, 'feat/**' ]
+  pull_request:
     branches: [ main ]
 
 jobs:
   check-og:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # check-og 自体はローカルの Next に対して実行
+      NEXT_PUBLIC_SITE_URL: http://localhost:3001
+      NEXT_PUBLIC_SITE_ENV: ci
+      PORT: 3001
+      NEXT_TELEMETRY_DISABLED: 1
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
         with:
           version: 9
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: pnpm
+          node-version: '22'
+          cache: 'pnpm'
 
-      - name: Install
+      - name: Install deps
         run: pnpm install --frozen-lockfile
+
+      # URL ガードは SEO 側の workflow で担保する想定なので、ここでは実行しない
+
+      - name: Restore Next.js cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .next/cache
+          key: next-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'next.config.*') }}
+          restore-keys: |
+            next-cache-${{ runner.os }}-
 
       - name: Build
         run: pnpm exec next build
 
-      # ローカルでNextを立ち上げ → wait-on で待機 → check-og を実行
-      - name: Serve & run OG checks
-        env:
-          NEXT_PUBLIC_SITE_URL: http://localhost:3001
+      - name: Save Next.js cache
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: .next/cache
+          key: next-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'next.config.*') }}
+
+      - name: Start Next server
         run: |
-          pnpm exec next start -p 3001 & NEXT_PID=$!
-          trap 'kill $NEXT_PID' EXIT
-          npx --yes wait-on http://localhost:3001
-          pnpm run check:og
+          pnpm exec next start -p "$PORT" &
+          pnpm exec wait-on "http://localhost:${PORT}/new" -t 20000
+
+      - name: Run OG tag check
+        run: pnpm exec node tools/check-og.mjs
+
+      - name: Upload .next logs (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-logs
+          path: |
+            .next/trace*
+            .next/**/*.log
+          if-no-files-found: ignore
+          include-hidden-files: true
