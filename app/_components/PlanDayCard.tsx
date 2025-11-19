@@ -111,3 +111,25 @@ export default function PlanDayCard(props: Props) {
     </section>
   );
 }
+
+
+/**
+ * 基準日の ISO 日付 (YYYY-MM-DD) に dayOffset 日を足した日付を返す。
+ * パースできなければ元の文字列をそのまま返す。
+ */
+function addDaysToISO(baseDate: string | undefined, offset: number): string | undefined {
+  if (!baseDate) return baseDate;
+
+  const m = baseDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return baseDate;
+
+  const [_, y, mStr, dStr] = m;
+  const dt = new Date(Number(y), Number(mStr) - 1, Number(dStr));
+  if (Number.isNaN(dt.getTime())) return baseDate;
+
+  dt.setDate(dt.getDate() + offset);
+
+  const mm = String(dt.getMonth() + 1).padStart(2, "0");
+  const dd = String(dt.getDate()).padStart(2, "0");
+  return `${dt.getFullYear()}-${mm}-${dd}`;
+}
