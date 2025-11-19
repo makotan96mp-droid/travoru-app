@@ -43,3 +43,25 @@ export function groupByDay(items: PlanItem[]): PlanDay[] {
 
 // Backwards-compat alias (古い呼び出し用)
 export const groupItemsByDay = groupByDay;
+
+
+/**
+ * Dayごとに必ず1件はアイテムがある状態にするヘルパー。
+ * アイテムが0件のDayには「予備日です」のダミー PlanItem を1件だけ挿入する。
+ */
+export function groupByDayWithPlaceholder(items: PlanItem[]): PlanDay[] {
+  return groupByDay(items).map((day) => {
+    if (day.items.length > 0) return day;
+    return {
+      ...day,
+      items: [{
+        time: "",
+        title: "この日はまだスポットがありません（予備日として使えます）。",
+        note: "",
+        tags: [],
+        meta: { dayOffset: day.dayOffset },
+        isMain: false,
+      }],
+    };
+  });
+}
