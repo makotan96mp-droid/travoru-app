@@ -56,13 +56,36 @@ function decodePlan(encoded: string | null | undefined): EncodedPlan | null {
     const b64 = toStandardBase64(encoded);
     let jsonStr: string;
 
-    if (typeof window !== "undefined" && typeof window.atob === "function") {
-      jsonStr = window.atob(b64);
-    } else if (typeof atob === "function") {
-      jsonStr = atob(b64);
-    } else if (typeof Buffer !== "undefined") {
-      // Node / Edge 環境用
+    if (typeof Buffer !== "undefined") {
+      // Node / CI / Edge 環境
       jsonStr = Buffer.from(b64, "base64").toString("utf8");
+    } else if (
+      typeof window !== "undefined" &&
+      typeof window.atob === "function" &&
+      typeof TextDecoder !== "undefined"
+    ) {
+      // ブラウザ: atob の結果（バイナリ文字列）を UTF-8 として復元
+      const bin = window.atob(b64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) {
+        bytes[i] = bin.charCodeAt(i);
+      }
+      jsonStr = new TextDecoder("utf-8").decode(bytes);
+    } else if (typeof atob === "function") {
+      // TextDecoder が無い古い環境向けフォールバック
+      const bin = atob(b64);
+      try {
+        jsonStr = decodeURIComponent(
+          Array.prototype
+            .map
+            .call(bin, (c: string) =>
+              '%' + c.charCodeAt(0).toString(16).padStart(2, '0')
+            )
+            .join('')
+        );
+      } catch {
+        jsonStr = bin;
+      }
     } else {
       return null;
     }
@@ -71,10 +94,13 @@ function decodePlan(encoded: string | null | undefined): EncodedPlan | null {
     if (!data || !Array.isArray((data as any).items)) return null;
     return data as EncodedPlan;
   } catch (e) {
-    console.error("Failed to decode demo plan:", e);
+    if (typeof console !== "undefined") {
+      console.error("Failed to decode demo plan:", e);
+    }
     return null;
   }
 }
+
 
 export default function DemoClient(props: DemoClientProps) {
   const searchParams = useSearchParams();
