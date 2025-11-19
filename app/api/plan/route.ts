@@ -146,6 +146,36 @@ function mergeFixedPOIs(
   return merged;
 }
 
+
+
+type MutablePlanItem = PlanItem & { meta?: { [key: string]: any } };
+
+const ALL_DAY_KEYWORDS = ["USJ", "ユニバーサル・スタジオ・ジャパン"];
+
+/**
+ * 「USJ」など終日アクティビティを allDay フラグ付きでマークする。
+ * ※ 実際に前後の日の負荷を調整するロジックは、別ステップで追加予定。
+ */
+function markAllDaySpots(items: PlanItem[]): void {
+  if (!Array.isArray(items) || items.length === 0) return;
+
+  for (const item of items as MutablePlanItem[]) {
+    const title = typeof item.title === "string" ? item.title : "";
+    const isAllDay = ALL_DAY_KEYWORDS.some((kw) => title.includes(kw));
+    if (!isAllDay) continue;
+
+    if (!item.meta) item.meta = {};
+    const meta = item.meta as { [key: string]: any };
+
+    // dayOffset がなければ 0 を入れておく（後続のグルーピングで使いやすくするため）
+    if (typeof meta.dayOffset !== "number" || !Number.isFinite(meta.dayOffset)) {
+      meta.dayOffset = 0;
+    }
+
+    meta.allDay = true;
+  }
+}
+
 export async function POST(req: NextRequest) {
   let body: PlanRequest;
   try {
@@ -177,6 +207,9 @@ export async function POST(req: NextRequest) {
     items: systemItems,
     flags,
   } as any as PlanResponse;
+
+  markAllDaySpots(systemItems);
+
 
   return NextResponse.json(resp, { status: 200 });
 }
