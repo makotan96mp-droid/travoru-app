@@ -1,5 +1,6 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getDefaultPlanDates } from "../lib/plan-dates";
 
 type Purposes = Array<"観光" | "ショッピング" | "グルメ" | "宿泊">;
 
@@ -43,16 +44,23 @@ function parseFixedPois(input: string) {
 
 export default function NewPlanPage() {
   const [city, setCity] = useState("osaka");
-  const [startDate, setStartDate] = useState(new Date().toISOString().slice(0, 10));
-  const [endDate, setEndDate] = useState(
-    new Date(Date.now() + 86400000).toISOString().slice(0, 10),
-  );
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [datesReady, setDatesReady] = useState(false);
   const [hotelName, setHotelName] = useState("");
   const [autoTransfer, setAutoTransfer] = useState(true);
   const [purposes, setPurposes] = useState<Purposes>(["観光", "グルメ"]);
   const [fixedText, setFixedText] = useState("USJ, カニ道楽, アメリカ村"); // 例
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Resolve both dates from one browser-local instant, never the SSR clock.
+    const dates = getDefaultPlanDates();
+    setStartDate(dates.startDate);
+    setEndDate(dates.endDate);
+    setDatesReady(true);
+  }, []);
 
   const togglePurpose = (p: Purposes[number]) => {
     setPurposes((prev) =>
@@ -122,6 +130,7 @@ export default function NewPlanPage() {
             <input
               type="date"
               value={startDate}
+              disabled={!datesReady}
               onChange={(e) => setStartDate(e.target.value)}
               className="rounded-md border px-3 py-2"
             />
@@ -131,6 +140,7 @@ export default function NewPlanPage() {
             <input
               type="date"
               value={endDate}
+              disabled={!datesReady}
               onChange={(e) => setEndDate(e.target.value)}
               className="rounded-md border px-3 py-2"
             />
@@ -193,7 +203,7 @@ export default function NewPlanPage() {
           <button
             type="button"
             onClick={submit}
-            disabled={busy}
+            disabled={busy || !datesReady}
             className="rounded-lg border px-4 py-2 text-[14px] hover:bg-black/5 disabled:opacity-60"
           >
             {busy ? "生成中..." : "この条件で行程を作る"}
